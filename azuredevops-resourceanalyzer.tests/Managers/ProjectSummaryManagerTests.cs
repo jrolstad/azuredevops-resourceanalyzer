@@ -32,7 +32,7 @@ namespace azuredevops_resourceanalyzer.tests.Managers
 
         private ProjectSummaryManager GetInstance()
         {
-            return new ProjectSummaryManager(new AzureDevopsService());
+            return new ProjectSummaryManager(new AzureDevopsService(new ConfigurationService()));
         }
     }
 }

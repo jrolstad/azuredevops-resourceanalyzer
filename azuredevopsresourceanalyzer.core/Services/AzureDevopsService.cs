@@ -6,8 +6,16 @@ namespace azuredevopsresourceanalyzer.core.Services
 {
     public class AzureDevopsService
     {
+        private readonly ConfigurationService _configurationService;
+
+        public AzureDevopsService(ConfigurationService configurationService)
+        {
+            _configurationService = configurationService;
+        }
         public List<Repository> GetRepositories(string organization, string project)
         {
+            var token = GetBearerToken();
+
             return new List<Repository>();
         }
 
@@ -24,6 +32,15 @@ namespace azuredevopsresourceanalyzer.core.Services
         public List<Commit> GetRepositoryCommits(string organization, string project, string repositoryId, DateTime? startDate)
         {
             return new List<Commit>();
+        }
+
+        private string GetBearerToken()
+        {
+            var azureAdTrustedResource = _configurationService.AzureAdTrustedResource();
+            var accessToken = "Bearer " + AzureAdTokenService.GetBearerToken(azureAdTrustedResource);
+
+            return accessToken;
+
         }
     }
 }
