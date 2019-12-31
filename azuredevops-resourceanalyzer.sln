@@ -11,6 +11,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "azuredevops-resourceanalyzer.tests", "azuredevops-resourceanalyzer.tests\azuredevops-resourceanalyzer.tests.csproj", "{47C37F48-7654-4928-A350-D6F2F74694E1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests (Unit)", "Tests (Unit)", "{655E8AFC-39E1-40E7-BF1D-90BECEC2DEBF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,9 +25,16 @@ Global
 		{E7B731C7-27F2-4126-882D-95FD2D331F8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E7B731C7-27F2-4126-882D-95FD2D331F8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E7B731C7-27F2-4126-882D-95FD2D331F8C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47C37F48-7654-4928-A350-D6F2F74694E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47C37F48-7654-4928-A350-D6F2F74694E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47C37F48-7654-4928-A350-D6F2F74694E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47C37F48-7654-4928-A350-D6F2F74694E1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{47C37F48-7654-4928-A350-D6F2F74694E1} = {655E8AFC-39E1-40E7-BF1D-90BECEC2DEBF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {19BFBD11-96E5-4E5B-8C86-06FCBBE33784}
