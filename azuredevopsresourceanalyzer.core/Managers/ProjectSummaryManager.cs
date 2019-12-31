@@ -2,11 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using azuredevopsresourceanalyzer.core.Models;
-using azuredevopsresourceanalyzer.core.Models.AzureDevops;
 using azuredevopsresourceanalyzer.core.Services;
-using BuildDefinition = azuredevopsresourceanalyzer.core.Models.BuildDefinition;
-using ReleaseDefinition = azuredevopsresourceanalyzer.core.Models.ReleaseDefinition;
-using Repository = azuredevopsresourceanalyzer.core.Models.Repository;
 
 namespace azuredevopsresourceanalyzer.core.Managers
 {
@@ -83,7 +79,7 @@ namespace azuredevopsresourceanalyzer.core.Managers
             };
         }
 
-        private static IEnumerable<CommitSummary> Map(IEnumerable<Commit> commits)
+        private static IEnumerable<CommitSummary> Map(IEnumerable<Models.AzureDevops.Commit> commits)
         {
             return commits
                 .GroupBy(c => c.CommiterName)
