@@ -55,7 +55,7 @@ namespace azuredevopsresourceanalyzer.core.Managers
             var builds = await _azureDevopsService.GetBuildDefinitions(organization, project, repository.id);
             var releaseData = builds
                 .AsParallel()
-                .Select(async b => await _azureDevopsService.GetReleaseDefinitions(organization, project, b.Id))
+                .Select(async b => await _azureDevopsService.GetReleaseDefinitions(organization, project, b.id))
                 .Select(r=>r.Result)
                 .ToList();
 
@@ -108,9 +108,9 @@ namespace azuredevopsresourceanalyzer.core.Managers
         {
             return new BuildDefinition
             {
-                Id = toMap.Id,
-                Name = toMap.Name,
-                Url = toMap.Url
+                Id = toMap.id,
+                Name = toMap.name,
+                Url = toMap.url
             };
         }
 
@@ -118,9 +118,9 @@ namespace azuredevopsresourceanalyzer.core.Managers
         {
             return new ReleaseDefinition
             {
-                Id = toMap.Id,
-                Name = toMap.Name,
-                Url = toMap.Url
+                Id = toMap.id,
+                Name = toMap.name,
+                Url = toMap.url
             };
         }
     }
