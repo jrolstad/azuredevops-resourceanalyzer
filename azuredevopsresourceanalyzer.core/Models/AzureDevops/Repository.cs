@@ -2,10 +2,6 @@
 
 namespace azuredevopsresourceanalyzer.core.Models.AzureDevops
 {
-    public class RepositoryResult
-    {
-        public List<Repository> value { get; set; }
-    }
     public class Repository
     {
         public string id { get; set; }

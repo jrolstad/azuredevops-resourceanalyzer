@@ -23,7 +23,7 @@ namespace azuredevopsresourceanalyzer.core.Services
             client.DefaultRequestHeaders.Authorization = GetAuthenticationHeader();
 
             var url = $"https://dev.azure.com/{organization}/{project}/_apis/git/repositories?api-version=5.0";
-            var result = await client.GetAsJson<RepositoryResult>(url);
+            var result = await client.GetAsJson<ApiResult<Repository>>(url);
 
             return result?.value;
         }
@@ -35,7 +35,7 @@ namespace azuredevopsresourceanalyzer.core.Services
             var client = new HttpClient();
             client.DefaultRequestHeaders.Authorization = GetAuthenticationHeader();
 
-            var result = await client.GetAsJson<BuildDefinitionResult>(url);
+            var result = await client.GetAsJson<ApiResult<BuildDefinition>>(url);
             return result?.value;
         }
 
@@ -48,7 +48,7 @@ namespace azuredevopsresourceanalyzer.core.Services
             var client = new HttpClient();
             client.DefaultRequestHeaders.Authorization = GetAuthenticationHeader();
 
-            var releaseDefinitionResult = await client.GetAsJson<ReleaseDefinitionResult>(url);
+            var releaseDefinitionResult = await client.GetAsJson<ApiResult<ReleaseDefinition>>(url);
         
 
             return releaseDefinitionResult?.value;
@@ -66,7 +66,7 @@ namespace azuredevopsresourceanalyzer.core.Services
             var client = new HttpClient();
             client.DefaultRequestHeaders.Authorization = GetAuthenticationHeader();
 
-            var releaseDefinitionResult = await client.GetAsJson<CommitResult>(url);
+            var releaseDefinitionResult = await client.GetAsJson<ApiResult<Commit>>(url);
 
 
             return releaseDefinitionResult?.value;

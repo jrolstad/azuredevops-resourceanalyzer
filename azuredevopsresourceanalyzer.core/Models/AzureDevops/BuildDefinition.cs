@@ -2,11 +2,6 @@
 
 namespace azuredevopsresourceanalyzer.core.Models.AzureDevops
 {
-    public class BuildDefinitionResult
-    {
-        public List<BuildDefinition> value { get; set; }
-    }
-
     public class BuildDefinition
     {
         public string id { get; set; }

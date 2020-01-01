@@ -3,10 +3,6 @@ using System.Collections.Generic;
 
 namespace azuredevopsresourceanalyzer.core.Models.AzureDevops
 {
-    public class CommitResult
-    {
-        public List<Commit> value { get; set; }
-    }
     public class Commit
     {
         public string commitId { get; set; }
