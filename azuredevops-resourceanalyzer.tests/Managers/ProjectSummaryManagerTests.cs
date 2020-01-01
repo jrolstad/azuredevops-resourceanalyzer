@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using azuredevopsresourceanalyzer.core.Managers;
 using azuredevopsresourceanalyzer.core.Services;
 using Xunit;
@@ -8,17 +9,17 @@ namespace azuredevops_resourceanalyzer.tests.Managers
     public class ProjectSummaryManagerTests
     {
         [Fact]
-        public void GetSummary_ValidInputs_CreatesSummary()
+        public async Task GetSummary_ValidInputs_CreatesSummary()
         {
             // Given
             var organization = "microsoftit";
             var project = "oneitvso";
-            var filter = "sr-im";
+            var filter = "FIN-FFS-TP";
             DateTime? startDate = null;
             var manager = GetInstance();
 
             // When
-            var result = manager.GetSummary(organization, project, filter);
+            var result = await manager.GetSummary(organization, project, filter);
 
             // Then
             Assert.NotNull(result);
