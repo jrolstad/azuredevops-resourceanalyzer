@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace azuredevopsresourceanalyzer.core.Models
 {
@@ -7,6 +8,7 @@ namespace azuredevopsresourceanalyzer.core.Models
         public string Id { get; set; }
         public string Name { get; set; }
         public string Url { get; set; }
+        public DateTime? LastCommit { get; set; }
         public List<CommitSummary> CommitSummary { get; set; }
 
     }

@@ -72,7 +72,7 @@ namespace azuredevopsresourceanalyzer.core.Managers
             return result;
         }
 
-        private Repository Map(Models.AzureDevops.Repository toMap, IEnumerable<Models.AzureDevops.Commit> commits)
+        private Repository Map(Models.AzureDevops.Repository toMap, ICollection<Models.AzureDevops.Commit> commits)
         {
             var commitSummary = Map(commits)?.ToList();
 
@@ -81,7 +81,8 @@ namespace azuredevopsresourceanalyzer.core.Managers
                 Id = toMap.id,
                 Name = toMap.name,
                 Url = toMap.weburl,
-                CommitSummary = commitSummary
+                CommitSummary = commitSummary,
+                LastCommit = commits?.Max(c=>c.author?.date)
             };
         }
 

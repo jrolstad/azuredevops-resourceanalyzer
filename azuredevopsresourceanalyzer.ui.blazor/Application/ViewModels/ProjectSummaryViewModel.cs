@@ -15,6 +15,7 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
         {
             _manager = manager;
         }
+
         public string Organization { get; set; }
         public string Project { get; set; }
         public string RepositoryFilter { get; set; }
@@ -46,8 +47,8 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
             {
                 IsSearching = false;
             }
-            
-           
+
+
         }
 
         private ProjectSummary Map(Component toMap)
@@ -55,10 +56,13 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
             return new ProjectSummary
             {
                 Repository = Map(toMap.Repository),
-                Builds = toMap.BuildDefinitions?.Select(Map).OrderBy(b=>b.Name).ToList(),
-                Releases = toMap.ReleaseDefinitions?.Select(Map).OrderBy(b=>b.Name).ToList()
+                Builds = toMap.BuildDefinitions?.Select(Map).OrderBy(b => b.Name).ToList(),
+                Releases = toMap.ReleaseDefinitions?.Select(Map).OrderBy(b => b.Name).ToList(),
+                LastCommit = toMap.Repository?.LastCommit?.Date,
+                Contributors = toMap.Repository?.CommitSummary.Select(Map).OrderByDescending(b => b.LastActivity).ToList()
             };
         }
+
         private NavigableItem Map(Repository toMap)
         {
             return new NavigableItem
@@ -67,6 +71,7 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
                 Url = toMap?.Url
             };
         }
+
         private NavigableItem Map(BuildDefinition toMap)
         {
             return new NavigableItem
@@ -75,12 +80,23 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
                 Url = toMap?.Url
             };
         }
+
         private NavigableItem Map(ReleaseDefinition toMap)
         {
             return new NavigableItem
             {
                 Name = toMap?.Name,
                 Url = toMap?.Url
+            };
+        }
+
+        private ActivityItem Map(CommitSummary toMap)
+        {
+            return new ActivityItem
+            {
+                Name = toMap?.CommitterName,
+                ActivityCount = toMap?.NumberOfCommits,
+                LastActivity = toMap?.LastCommit
             };
         }
     }
@@ -90,6 +106,8 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
         public NavigableItem Repository { get; set; }
         public List<NavigableItem> Builds { get; set; }
         public List<NavigableItem> Releases { get; set; }
+        public DateTime? LastCommit { get; set; }
+        public List<ActivityItem> Contributors { get; set; }
         
     }
 
@@ -97,5 +115,12 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
     {
         public string Name { get; set; }
         public string Url { get; set; }
+    }
+
+    public class ActivityItem
+    {
+        public string Name { get; set; }
+        public int? ActivityCount { get; set; }
+        public DateTime? LastActivity { get; set; }
     }
 }

@@ -46,6 +46,8 @@
                     <th>Repository</th>
                     <th>Builds</th>
                     <th>Releases</th>
+                    <th>Last Commit</th>
+                    <th>Contributors</th>
                 </tr>
             </thead>
             <tbody>
@@ -66,6 +68,17 @@
                             @foreach (var build in item.Releases)
                             {
                                 <li>@build.Name</li>
+                            }
+                        </ul>
+                    </td>
+                    <td>
+                        @item.LastCommit?.ToString("MM/dd/yyyy")
+                    </td>
+                    <td>
+                        <ul class="list-unstyled">
+                            @foreach (var contributor in item.Contributors)
+                            {
+                                <li>@contributor.Name (@contributor.ActivityCount) @contributor.LastActivity?.ToString("MM/dd/yyyy")</li>
                             }
                         </ul>
                     </td>
