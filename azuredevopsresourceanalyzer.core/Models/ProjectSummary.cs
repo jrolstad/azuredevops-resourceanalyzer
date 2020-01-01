@@ -10,6 +10,6 @@ namespace azuredevopsresourceanalyzer.core.Models
         public string Project { get; set; }
         public string RepositoryFilter { get; set; }
         public DateTime? StartDate { get; set; }
-        public List<Component> Components { get; set; }
+        public IEnumerable<Component> Components { get; set; }
     }
 }

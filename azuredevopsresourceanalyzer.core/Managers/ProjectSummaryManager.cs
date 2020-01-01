@@ -26,11 +26,10 @@ namespace azuredevopsresourceanalyzer.core.Managers
             var repositories = await _azureDevopsService.GetRepositories(organization, project);
             var filteredRepositories = FilterRepositories(repositories, repositoryFilter);
 
-            var components = filteredRepositories
-                .AsParallel()
-                .Select(async r=>await ProcessComponent(r,organization,project,startDate))
-                .Select(r=>r.Result)
+            var componentTasks = filteredRepositories
+                .Select(r=>ProcessComponent(r,organization,project,startDate))
                 .ToList();
+            var components = await Task.WhenAll(componentTasks);
 
             var result = new ProjectSummary
             {
@@ -53,17 +52,12 @@ namespace azuredevopsresourceanalyzer.core.Managers
         private async Task<Component> ProcessComponent(Models.AzureDevops.Repository repository, string organization, string project, DateTime? startDate)
         {
             var builds = await _azureDevopsService.GetBuildDefinitions(organization, project, repository.id);
-            var releaseData = builds
-                .AsParallel()
-                .Select(async b => await _azureDevopsService.GetReleaseDefinitions(organization, project, b.project?.id, b.id))
-                .Select(r=>r.Result)
+            
+            var releaseTasks = builds
+                .Select(b =>_azureDevopsService.GetReleaseDefinitions(organization, project, b.project?.id, b.id))
                 .ToList();
-
-            var releases = new List<Models.AzureDevops.ReleaseDefinition>();
-            foreach (var item in releaseData)
-            {
-                releases.AddRange(item);
-            }
+            var releaseData = await Task.WhenAll(releaseTasks);
+            var releases = releaseData.SelectMany(r => r);
 
             var commits = await _azureDevopsService.GetRepositoryCommits(organization, project, repository.id,startDate);
 
@@ -80,7 +74,7 @@ namespace azuredevopsresourceanalyzer.core.Managers
 
         private Repository Map(Models.AzureDevops.Repository toMap, IEnumerable<Models.AzureDevops.Commit> commits)
         {
-            var commitSummary = Map(commits).ToList();
+            var commitSummary = Map(commits)?.ToList();
 
             return new Repository
             {
@@ -93,7 +87,7 @@ namespace azuredevopsresourceanalyzer.core.Managers
 
         private static IEnumerable<CommitSummary> Map(IEnumerable<Models.AzureDevops.Commit> commits)
         {
-            return commits
+            return commits?
                 .GroupBy(c => c?.author?.name)
                 .Select(g => new CommitSummary
                 {

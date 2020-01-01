@@ -22,21 +22,26 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
 
         public List<ProjectSummary> Results { get; set; } = new List<ProjectSummary>();
 
+        public bool IsSearching { get; set; } = false;
+
         public async Task Search()
         {
             try
             {
+                IsSearching = true;
                 var data = await _manager.GetSummary(Organization, Project, RepositoryFilter, StartDate);
                 Results = data?.Components
                     .Select(Map)
                     .OrderBy(d => d.Repository)
                     .ToList();
+                IsSearching = false;
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
                 throw;
             }
+            
            
         }
 
