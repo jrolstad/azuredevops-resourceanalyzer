@@ -14,7 +14,7 @@ namespace azuredevops_resourceanalyzer.tests.Managers
             // Given
             var organization = "microsoftit";
             var project = "oneitvso";
-            var filter = "FIN-FFS-TP";
+            var filter = "fin-ffs-tp";
             DateTime? startDate = null;
             var manager = GetInstance();
 

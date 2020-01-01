@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using azuredevopsresourceanalyzer.core.Extensions;
 using azuredevopsresourceanalyzer.core.Models;
 using azuredevopsresourceanalyzer.core.Services;
 
@@ -45,7 +47,7 @@ namespace azuredevopsresourceanalyzer.core.Managers
         private IEnumerable<Models.AzureDevops.Repository> FilterRepositories(IEnumerable<Models.AzureDevops.Repository> repositories, string filter)
         {
             return string.IsNullOrWhiteSpace(filter) ? repositories : 
-                repositories.Where(r => r.name.Contains(filter));
+                repositories.Where(r => r.name.ContainsValue(filter,CultureInfo.CurrentCulture));
         }
 
         private async Task<Component> ProcessComponent(Models.AzureDevops.Repository repository, string organization, string project, DateTime? startDate)
