@@ -36,19 +36,41 @@
     </div>
 </div>
 <div class="row">
+    <p class="alert-danger">@ViewModel.Error</p>
+</div>
+<div class="row">
     <div class="col-md-12">
         <table class="table table-striped">
             <thead>
                 <tr>
                     <th>Repository</th>
+                    <th>Builds</th>
+                    <th>Releases</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach(var item in ViewModel.Results)
                 {
-                    <tr>
-                        <td>@item.Repository</td>
-                    </tr>
+                <tr>
+                    <td>@item.Repository.Name</td>
+                    <td>
+                        <ul class="list-unstyled">
+                            @foreach (var build in item.Builds)
+                            {
+                                <li>@build.Name</li>
+                            }
+                        </ul>
+                    </td>
+                    <td>
+                        <ul class="list-unstyled">
+                            @foreach (var build in item.Releases)
+                            {
+                                <li>@build.Name</li>
+                            }
+                        </ul>
+                    </td>
+
+                </tr>
                 }
             </tbody>
         </table>
