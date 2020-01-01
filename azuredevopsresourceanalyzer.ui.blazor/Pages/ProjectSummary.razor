@@ -1,7 +1,7 @@
 ﻿@page "/projectsummary"
 @using azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
 @inject ProjectSummaryViewModel ViewModel
-
+@using azuredevopsresourceanalyzer.ui.blazor.Components
 <h1>Project Summary</h1>
 
 <div class="row">
@@ -54,20 +54,20 @@
                 @foreach(var item in ViewModel.Results)
                 {
                 <tr>
-                    <td>@item.Repository.Name</td>
+                    <td><NavigableItemComponent Item="@item.Repository"/> </td>
                     <td>
                         <ul class="list-unstyled">
                             @foreach (var build in item.Builds)
                             {
-                                <li>@build.Name</li>
+                                <li><NavigableItemComponent Item="@build" /></li>
                             }
                         </ul>
                     </td>
                     <td>
                         <ul class="list-unstyled">
-                            @foreach (var build in item.Releases)
+                            @foreach (var release in item.Releases)
                             {
-                                <li>@build.Name</li>
+                                <li><NavigableItemComponent Item="@release" /></li>
                             }
                         </ul>
                     </td>
