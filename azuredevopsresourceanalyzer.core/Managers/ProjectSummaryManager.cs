@@ -65,7 +65,7 @@ namespace azuredevopsresourceanalyzer.core.Managers
                 releases.AddRange(item);
             }
 
-            var commits = await _azureDevopsService.GetRepositoryCommits(organization, project, repository.id);
+            var commits = await _azureDevopsService.GetRepositoryCommits(organization, project, repository.id,startDate);
 
             var result = new Component
             {

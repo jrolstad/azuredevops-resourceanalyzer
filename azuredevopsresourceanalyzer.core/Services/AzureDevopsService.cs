@@ -54,9 +54,14 @@ namespace azuredevopsresourceanalyzer.core.Services
             return releaseDefinitionResult?.value;
         }
 
-        public async Task<List<Commit>> GetRepositoryCommits(string organization, string project, string repositoryId)
+        public async Task<List<Commit>> GetRepositoryCommits(string organization, string project, string repositoryId,DateTime? startDate)
         {
             var url = $"https://dev.azure.com/{organization}/{project}/_apis/git/repositories/{repositoryId}/commits?api-version=5.1&$top=1000&searchCriteria.itemVersion.version=master";
+
+            if (startDate.HasValue)
+            {
+                url += $"&searchCriteria.fromDate={startDate?.ToString("MM/dd/yyyy")}";
+            }
 
             var client = new HttpClient();
             client.DefaultRequestHeaders.Authorization = GetAuthenticationHeader();

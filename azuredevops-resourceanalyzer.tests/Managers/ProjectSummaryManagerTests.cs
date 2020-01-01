@@ -15,11 +15,11 @@ namespace azuredevops_resourceanalyzer.tests.Managers
             var organization = "microsoftit";
             var project = "oneitvso";
             var filter = "fin-ffs-tp";
-            DateTime? startDate = null;
+            DateTime? startDate = DateTime.Today.AddYears(-2);
             var manager = GetInstance();
 
             // When
-            var result = await manager.GetSummary(organization, project, filter);
+            var result = await manager.GetSummary(organization, project, filter, startDate);
 
             // Then
             Assert.NotNull(result);
