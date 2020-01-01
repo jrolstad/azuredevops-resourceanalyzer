@@ -55,7 +55,7 @@ namespace azuredevopsresourceanalyzer.core.Managers
             var builds = await _azureDevopsService.GetBuildDefinitions(organization, project, repository.id);
             var releaseData = builds
                 .AsParallel()
-                .Select(async b => await _azureDevopsService.GetReleaseDefinitions(organization, project, b.id))
+                .Select(async b => await _azureDevopsService.GetReleaseDefinitions(organization, project, b.project?.id, b.id))
                 .Select(r=>r.Result)
                 .ToList();
 

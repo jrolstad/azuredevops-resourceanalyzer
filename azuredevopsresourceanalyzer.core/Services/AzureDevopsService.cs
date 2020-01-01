@@ -39,22 +39,19 @@ namespace azuredevopsresourceanalyzer.core.Services
             return result?.value;
         }
 
-        private ReleaseDefinitionResult _releaseDefinitionResult;
 
-        public async Task<List<ReleaseDefinition>> GetReleaseDefinitions(string organization, string project, string buildId)
+        public async Task<List<ReleaseDefinition>> GetReleaseDefinitions(string organization, string project, string projectId, string buildId)
         {
-            if (_releaseDefinitionResult == null)
-            {
-                var url =
-                    $"https://vsrm.dev.azure.com/{organization}/{project}/_apis/release/definitions?api-version=5.1";
+            
+            var url = $"https://vsrm.dev.azure.com/{organization}/{project}/_apis/release/definitions?api-version=5.1&artifactType=Build&artifactSourceId={projectId}:{buildId}";
 
-                var client = new HttpClient();
-                client.DefaultRequestHeaders.Authorization = GetAuthenticationHeader();
+            var client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = GetAuthenticationHeader();
 
-                _releaseDefinitionResult = await client.GetAsJson<ReleaseDefinitionResult>(url);
-            }
+            var releaseDefinitionResult = await client.GetAsJson<ReleaseDefinitionResult>(url);
+        
 
-            return _releaseDefinitionResult?.value;
+            return releaseDefinitionResult?.value;
         }
 
         public async Task<List<Commit>> GetRepositoryCommits(string organization, string project, string repositoryId, DateTime? startDate)
