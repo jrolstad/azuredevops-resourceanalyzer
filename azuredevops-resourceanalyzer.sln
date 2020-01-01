@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29509.3
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "azuredevopsresourceanalyzer.core", "azuredevopsresourceanalyzer.core\azuredevopsresourceanalyzer.core.csproj", "{E7B731C7-27F2-4126-882D-95FD2D331F8C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "azuredevopsresourceanalyzer.core", "azuredevopsresourceanalyzer.core\azuredevopsresourceanalyzer.core.csproj", "{E7B731C7-27F2-4126-882D-95FD2D331F8C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1752CD71-018D-42C5-B0A3-013BC8A735F9}"
 	ProjectSection(SolutionItems) = preProject
@@ -11,9 +11,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "azuredevops-resourceanalyzer.tests", "azuredevops-resourceanalyzer.tests\azuredevops-resourceanalyzer.tests.csproj", "{47C37F48-7654-4928-A350-D6F2F74694E1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "azuredevops-resourceanalyzer.tests", "azuredevops-resourceanalyzer.tests\azuredevops-resourceanalyzer.tests.csproj", "{47C37F48-7654-4928-A350-D6F2F74694E1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests (Unit)", "Tests (Unit)", "{655E8AFC-39E1-40E7-BF1D-90BECEC2DEBF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "azuredevopsresourceanalyzer.ui.blazor", "azuredevopsresourceanalyzer.ui.blazor\azuredevopsresourceanalyzer.ui.blazor.csproj", "{33C22C95-E770-4BF3-80E2-7AF7241C2FE8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,6 +31,10 @@ Global
 		{47C37F48-7654-4928-A350-D6F2F74694E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47C37F48-7654-4928-A350-D6F2F74694E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{47C37F48-7654-4928-A350-D6F2F74694E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33C22C95-E770-4BF3-80E2-7AF7241C2FE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33C22C95-E770-4BF3-80E2-7AF7241C2FE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33C22C95-E770-4BF3-80E2-7AF7241C2FE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33C22C95-E770-4BF3-80E2-7AF7241C2FE8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

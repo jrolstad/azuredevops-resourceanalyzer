@@ -1,0 +1,46 @@
+﻿@page "/projectsummary"
+@using azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
+@inject ProjectSummaryViewModel ViewModel
+
+<h1>Project Summary</h1>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-row">
+            <div class="col">
+                <input type="text" class="form-control" id="organizationInput" placeholder="Organization" @bind="@ViewModel.Organization">
+            </div>
+            <div class="col">
+                <input type="text" class="form-control" id="projectInput" placeholder="Project" @bind="@ViewModel.Project">
+            </div>
+            <div class="col">
+                <input type="text" class="form-control" id="repositoryInput" placeholder="Repository Filter" @bind="@ViewModel.RepositoryFilter">
+                       </div>
+            <div class="col">
+                <input type="date" class="form-control" id="startDateInput" placeholder="Start Date" @bind="@ViewModel.StartDate">
+            </div>
+            <div class="col">
+                <button class="btn btn-primary" type="button" id="searchButton" @onclick="@(async () => await ViewModel.Search())">Search</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Repository</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var item in ViewModel.Results)
+                {
+                    <tr>
+                        <td>@item.Repository</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
