@@ -65,7 +65,7 @@ namespace azuredevopsresourceanalyzer.core.Managers
                 releases.AddRange(item);
             }
 
-            var commits = await _azureDevopsService.GetRepositoryCommits(organization, project, repository.id, startDate);
+            var commits = await _azureDevopsService.GetRepositoryCommits(organization, project, repository.id);
 
             var result = new Component
             {
@@ -94,12 +94,12 @@ namespace azuredevopsresourceanalyzer.core.Managers
         private static IEnumerable<CommitSummary> Map(IEnumerable<Models.AzureDevops.Commit> commits)
         {
             return commits
-                .GroupBy(c => c.CommiterName)
+                .GroupBy(c => c?.author?.name)
                 .Select(g => new CommitSummary
                 {
                     CommitterName = g.Key,
                     NumberOfCommits = g.Count(),
-                    LastCommit = g.Max(c=>c.CommittedAt)
+                    LastCommit = g.Max(c=>c?.author?.date?.Date)
                 })
                 .OrderByDescending(c=>c.LastCommit);
         }

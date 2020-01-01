@@ -6,6 +6,6 @@ namespace azuredevopsresourceanalyzer.core.Models
     {
         public string CommitterName { get; set; }
         public int NumberOfCommits { get; set; }
-        public DateTime LastCommit { get; set; }
+        public DateTime? LastCommit { get; set; }
     }
 }
