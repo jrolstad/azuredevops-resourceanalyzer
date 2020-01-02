@@ -81,8 +81,7 @@ namespace azuredevopsresourceanalyzer.core.Managers
                 Id = toMap.id,
                 Name = toMap.name,
                 Url = toMap.weburl,
-                CommitSummary = commitSummary,
-                LastCommit = commits?.Max(c=>c.author?.date)
+                CommitSummary = commitSummary
             };
         }
 

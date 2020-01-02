@@ -58,7 +58,6 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
                 Repository = Map(toMap.Repository),
                 Builds = toMap.BuildDefinitions?.Select(Map).OrderBy(b => b.Name).ToList(),
                 Releases = toMap.ReleaseDefinitions?.Select(Map).OrderBy(b => b.Name).ToList(),
-                LastCommit = toMap.Repository?.LastCommit?.Date,
                 Contributors = toMap.Repository?.CommitSummary.Select(Map).OrderByDescending(b => b.LastActivity).ToList()
             };
         }
@@ -106,7 +105,6 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
         public NavigableItem Repository { get; set; }
         public List<NavigableItem> Builds { get; set; }
         public List<NavigableItem> Releases { get; set; }
-        public DateTime? LastCommit { get; set; }
         public List<ActivityItem> Contributors { get; set; }
         
     }
