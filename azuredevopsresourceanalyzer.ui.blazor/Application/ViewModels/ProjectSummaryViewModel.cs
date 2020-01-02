@@ -38,6 +38,14 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
 
         public async Task Search()
         {
+            if (string.IsNullOrWhiteSpace(this.Organization) || string.IsNullOrWhiteSpace(this.Project))
+            {
+                Error = "Unable to search; please enter an organization and project first";
+                this.Results = new List<ProjectSummary>();
+
+                return;
+            }
+
             try
             {
                 Error = null;
@@ -62,9 +70,18 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
 
         public async Task SearchProjects()
         {
+            if (string.IsNullOrWhiteSpace(this.Organization))
+            {
+                Error = "Unable to search projects; please enter an organization first";
+                this.Projects = new List<string>();
+
+                return;
+            }
+
             try
             {
                 Error = null;
+                
                 IsSearchingProjects = true;
                 var data = await _projectManager.Get(this.Organization);
                 this.Projects = data?.Select(p => p.Name).OrderBy(p => p).ToList();
