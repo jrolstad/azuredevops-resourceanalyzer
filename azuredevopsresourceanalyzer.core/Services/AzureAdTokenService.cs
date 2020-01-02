@@ -1,13 +1,14 @@
-﻿using Microsoft.Azure.Services.AppAuthentication;
+﻿using System.Threading.Tasks;
+using Microsoft.Azure.Services.AppAuthentication;
 
 namespace azuredevopsresourceanalyzer.core.Services
 {
     public class AzureAdTokenService
     {
-        public static string GetBearerToken(string resource)
+        public static async Task<string> GetBearerToken(string resource)
         {
             var tokenProvider = new AzureServiceTokenProvider();
-            var token = tokenProvider.GetAccessTokenAsync(resource).Result;
+            var token = await tokenProvider.GetAccessTokenAsync(resource);
             return token;
         }
     }
