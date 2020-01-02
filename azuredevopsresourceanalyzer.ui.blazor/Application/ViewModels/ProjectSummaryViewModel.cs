@@ -10,21 +10,34 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
     public class ProjectSummaryViewModel
     {
         private readonly ProjectSummaryManager _manager;
+        private readonly ProjectManager _projectManager;
 
-        public ProjectSummaryViewModel(ProjectSummaryManager manager)
+        public ProjectSummaryViewModel(ProjectSummaryManager manager, ProjectManager projectManager)
         {
             _manager = manager;
+            _projectManager = projectManager;
         }
 
-        public string Organization { get; set; }
+        private string _organization;
+        public string Organization
+        {
+            get => _organization;
+            set
+            {
+                _organization = value;
+                //SearchProjects()
+
+            } }
         public string Project { get; set; }
+        public List<string> Projects { get; set; } = new List<string>();
         public string RepositoryFilter { get; set; }
         public DateTime? StartDate { get; set; }
+        
 
         public List<ProjectSummary> Results { get; set; } = new List<ProjectSummary>();
 
         public bool IsSearching { get; set; } = false;
-
+        public bool IsSearchingProjects { get; set; } = false;
         public string Error { get; set; }
 
         public async Task Search()
@@ -49,6 +62,27 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
             }
 
 
+        }
+
+        public async Task SearchProjects()
+        {
+            try
+            {
+                Error = null;
+                IsSearchingProjects = true;
+                var data = await _projectManager.Get(this.Organization);
+                this.Projects = data?.Select(p => p.Name).OrderBy(p => p).ToList();
+                this.Project = this.Projects?.FirstOrDefault();
+            }
+            catch (Exception e)
+            {
+                Error = e.ToString();
+            }
+            finally
+            {
+                IsSearchingProjects = false;
+            }
+           
         }
 
         private ProjectSummary Map(Component toMap)

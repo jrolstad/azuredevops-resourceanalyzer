@@ -12,9 +12,12 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.Configuration
         public static void Configure(IServiceCollection services, IConfiguration configuration)
         {
             services.AddTransient<ProjectSummaryViewModel>();
+
             services.AddTransient<ProjectSummaryManager>();
-            services.AddTransient<AzureDevopsService>();
-            services.AddTransient<ConfigurationService>();
+            services.AddTransient<ProjectManager>();
+
+            services.AddSingleton<AzureDevopsService>();
+            services.AddSingleton<ConfigurationService>();
             services.AddSingleton<IHttpClientFactory, StaticHttpClientFactory>();
         }
     }
