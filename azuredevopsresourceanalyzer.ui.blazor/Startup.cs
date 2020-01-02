@@ -1,22 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using azuredevopsresourceanalyzer.core.Factories;
-using azuredevopsresourceanalyzer.core.Managers;
-using azuredevopsresourceanalyzer.core.Services;
-using azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.AzureAD.UI;
-using Microsoft.AspNetCore.Authorization;
+using azuredevopsresourceanalyzer.ui.blazor.Application.Configuration;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 
 namespace azuredevopsresourceanalyzer.ui.blazor
 {
@@ -32,55 +18,19 @@ namespace azuredevopsresourceanalyzer.ui.blazor
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddAuthentication(AzureADDefaults.AuthenticationScheme)
-                .AddAzureAD(options => Configuration.Bind("AzureAd", options));
+        { 
+            AuthenticationConfig.Configure(services,Configuration);
+            BlazorConfig.Configure(services,Configuration);
 
-            services.AddControllersWithViews(options =>
-            {
-                var policy = new AuthorizationPolicyBuilder()
-                    .RequireAuthenticatedUser()
-                    .Build();
-                options.Filters.Add(new AuthorizeFilter(policy));
-            });
-
-            services.AddRazorPages();
-            services.AddServerSideBlazor();
-            services.AddTransient<ProjectSummaryViewModel>();
-            services.AddTransient<ProjectSummaryManager>();
-            services.AddTransient<AzureDevopsService>();
-            services.AddTransient<ConfigurationService>();
-            services.AddSingleton<IHttpClientFactory,StaticHttpClientFactory>();
+            DependencyInjectionConfig.Configure(services, Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
-
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
-
-            app.UseRouting();
-
-            app.UseAuthentication();
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-                endpoints.MapBlazorHub();
-                endpoints.MapFallbackToPage("/_Host");
-            });
+            MvcConfig.Configure(app,env);
+            AuthenticationConfig.Configure(app,env);
+            BlazorConfig.Configure(app,env);
         }
     }
 }
