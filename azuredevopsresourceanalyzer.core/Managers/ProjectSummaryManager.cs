@@ -117,7 +117,6 @@ namespace azuredevopsresourceanalyzer.core.Managers
                 .OrderByDescending(c => c.LastActivity);
         }
 
-
         private BuildDefinition Map(Models.AzureDevops.BuildDefinition toMap)
         {
             return new BuildDefinition

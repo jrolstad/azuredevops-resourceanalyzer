@@ -73,5 +73,14 @@ namespace azuredevopsresourceanalyzer.core.Services
             return releaseDefinitionResult?.value;
         }
 
+        public async Task<List<Project>> GetProjects(string organization)
+        {
+            var url = $"https://dev.azure.com/{organization}/_apis/projects?api-version=5.1";
+
+            var client = _httpClientFactory.Get();
+            var releaseDefinitionResult = await client.GetAsJson<ApiResult<Project>>(url);
+
+            return releaseDefinitionResult?.value;
+        }
     }
 }
