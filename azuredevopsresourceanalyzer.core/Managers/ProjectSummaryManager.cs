@@ -51,6 +51,9 @@ namespace azuredevopsresourceanalyzer.core.Managers
 
         private async Task<Component> ProcessComponent(Models.AzureDevops.Repository repository, string organization, string project, DateTime? startDate)
         {
+            var pullRequests = await _azureDevopsService.GetPullRequests(organization, project, repository.id);
+
+
             var builds = await _azureDevopsService.GetBuildDefinitions(organization, project, repository.id);
             
             var releaseTasks = builds
@@ -63,7 +66,7 @@ namespace azuredevopsresourceanalyzer.core.Managers
 
             var result = new Component
             {
-                Repository = Map(repository,commits),
+                Repository = Map(repository,commits,pullRequests),
                 BuildDefinitions = builds.Select(Map).ToList(),
                 ReleaseDefinitions = releases.Select(Map).ToList()
 
@@ -72,31 +75,48 @@ namespace azuredevopsresourceanalyzer.core.Managers
             return result;
         }
 
-        private Repository Map(Models.AzureDevops.Repository toMap, ICollection<Models.AzureDevops.Commit> commits)
+        private Repository Map(Models.AzureDevops.Repository toMap, 
+            ICollection<Models.AzureDevops.Commit> commits,
+            ICollection<Models.AzureDevops.PullRequest> pullRequests)
         {
             var commitSummary = Map(commits)?.ToList();
-
+            var pullRequestSummary = Map(pullRequests)?.ToList();
             return new Repository
             {
                 Id = toMap.id,
                 Name = toMap.name,
                 Url = toMap.weburl,
-                CommitSummary = commitSummary
+                CommitSummary = commitSummary,
+                PullRequestSummary = pullRequestSummary
             };
         }
 
-        private static IEnumerable<CommitSummary> Map(IEnumerable<Models.AzureDevops.Commit> commits)
+        private static IEnumerable<ActivitySummary> Map(IEnumerable<Models.AzureDevops.Commit> commits)
         {
             return commits?
                 .GroupBy(c => c?.author?.name)
-                .Select(g => new CommitSummary
+                .Select(g => new ActivitySummary
                 {
                     CommitterName = g.Key,
-                    NumberOfCommits = g.Count(),
-                    LastCommit = g.Max(c=>c?.author?.date?.Date)
+                    Count = g.Count(),
+                    LastActivity = g.Max(c=>c?.author?.date?.Date)
                 })
-                .OrderByDescending(c=>c.LastCommit);
+                .OrderByDescending(c=>c.LastActivity);
         }
+
+        private static IEnumerable<ActivitySummary> Map(IEnumerable<Models.AzureDevops.PullRequest> pullRequests)
+        {
+            return pullRequests?
+                .GroupBy(c => c?.createdBy?.displayName)
+                .Select(g => new ActivitySummary
+                {
+                    CommitterName = g.Key,
+                    Count = g.Count(),
+                    LastActivity = g.Max(c => DateTime.Parse(c.creationDate))
+                })
+                .OrderByDescending(c => c.LastActivity);
+        }
+
 
         private BuildDefinition Map(Models.AzureDevops.BuildDefinition toMap)
         {

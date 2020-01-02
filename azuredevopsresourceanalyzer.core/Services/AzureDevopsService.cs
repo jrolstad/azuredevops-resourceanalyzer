@@ -48,6 +48,17 @@ namespace azuredevopsresourceanalyzer.core.Services
             return releaseDefinitionResult?.value;
         }
 
+        public async Task<List<PullRequest>> GetPullRequests(string organization, string project, string repositoryId)
+        {
+
+            var url = $"https://dev.azure.com/{organization}/{project}/_apis/git/repositories/{repositoryId}/pullrequests?api-version=5.1&searchCriteria.status=all";
+
+            var client = _httpClientFactory.Get();
+            var releaseDefinitionResult = await client.GetAsJson<ApiResult<PullRequest>>(url);
+
+            return releaseDefinitionResult?.value;
+        }
+
         public async Task<List<Commit>> GetRepositoryCommits(string organization, string project, string repositoryId,DateTime? startDate)
         {
             var url = $"https://dev.azure.com/{organization}/{project}/_apis/git/repositories/{repositoryId}/commits?api-version=5.1&$top=1000&searchCriteria.itemVersion.version=master";

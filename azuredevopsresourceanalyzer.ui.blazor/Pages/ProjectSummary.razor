@@ -47,13 +47,14 @@
                     <th>Builds</th>
                     <th>Releases</th>
                     <th>Contributors</th>
+                    <th>Pull Requests</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach(var item in ViewModel.Results)
                 {
                 <tr>
-                    <td><NavigableItemComponent Item="@item.Repository"/> </td>
+                    <td><NavigableItemComponent Item="@item.Repository" /> </td>
                     <td>
                         <ul class="list-unstyled">
                             @foreach (var build in item.Builds)
@@ -74,7 +75,15 @@
                         <ul class="list-unstyled">
                             @foreach (var contributor in item.Contributors)
                             {
-                                <li>@contributor.Name (@contributor.ActivityCount) @contributor.LastActivity?.ToString("MM/dd/yyyy")</li>
+                                <li>@contributor.Name (@contributor.ActivityCount) @contributor.LastActivity?.ToString("M/d/yyyy")</li>
+                            }
+                        </ul>
+                    </td>
+                    <td>
+                        <ul class="list-unstyled">
+                            @foreach (var pullRequest in item.PullRequests)
+                            {
+                                <li>@pullRequest.Name (@pullRequest.ActivityCount) @pullRequest.LastActivity?.ToString("M/d/yyyy")</li>
                             }
                         </ul>
                     </td>

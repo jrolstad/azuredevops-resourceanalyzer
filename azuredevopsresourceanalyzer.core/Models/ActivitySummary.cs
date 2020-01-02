@@ -2,10 +2,11 @@
 
 namespace azuredevopsresourceanalyzer.core.Models
 {
-    public class CommitSummary
+    public class ActivitySummary
     {
         public string CommitterName { get; set; }
-        public int NumberOfCommits { get; set; }
-        public DateTime? LastCommit { get; set; }
+        public int Count { get; set; }
+        public DateTime? LastActivity { get; set; }
     }
+    
 }

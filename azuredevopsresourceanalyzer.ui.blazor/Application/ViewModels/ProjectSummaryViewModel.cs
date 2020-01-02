@@ -58,7 +58,8 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
                 Repository = Map(toMap.Repository),
                 Builds = toMap.BuildDefinitions?.Select(Map).OrderBy(b => b.Name).ToList(),
                 Releases = toMap.ReleaseDefinitions?.Select(Map).OrderBy(b => b.Name).ToList(),
-                Contributors = toMap.Repository?.CommitSummary.Select(Map).OrderByDescending(b => b.LastActivity).ToList()
+                Contributors = toMap.Repository?.CommitSummary.Select(Map).OrderByDescending(b => b.LastActivity).ToList(),
+                PullRequests = toMap.Repository?.PullRequestSummary.Select(Map).OrderByDescending(b => b.LastActivity).ToList()
             };
         }
 
@@ -89,13 +90,13 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
             };
         }
 
-        private ActivityItem Map(CommitSummary toMap)
+        private ActivityItem Map(ActivitySummary toMap)
         {
             return new ActivityItem
             {
                 Name = toMap?.CommitterName,
-                ActivityCount = toMap?.NumberOfCommits,
-                LastActivity = toMap?.LastCommit
+                ActivityCount = toMap?.Count,
+                LastActivity = toMap?.LastActivity
             };
         }
     }
@@ -106,7 +107,7 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
         public List<NavigableItem> Builds { get; set; }
         public List<NavigableItem> Releases { get; set; }
         public List<ActivityItem> Contributors { get; set; }
-        
+        public List<ActivityItem> PullRequests { get; set; }
     }
 
     public class NavigableItem

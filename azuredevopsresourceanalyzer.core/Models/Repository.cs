@@ -8,7 +8,8 @@ namespace azuredevopsresourceanalyzer.core.Models
         public string Id { get; set; }
         public string Name { get; set; }
         public string Url { get; set; }
-        public List<CommitSummary> CommitSummary { get; set; }
+        public List<ActivitySummary> CommitSummary { get; set; }
+        public List<ActivitySummary> PullRequestSummary { get; set; }
 
     }
 }
