@@ -80,6 +80,7 @@
                     <th>Repository</th>
                     <th>Builds</th>
                     <th>Releases</th>
+                    <th>Branches</th>
                     <th>Contributors</th>
                     <th>Pull Requests</th>
                 </tr>
@@ -102,6 +103,14 @@
                             @foreach (var release in item.Releases)
                             {
                                 <li><NavigableItemComponent Item="@release" /></li>
+                            }
+                        </ul>
+                    </td>
+                    <td>
+                        <ul class="list-unstyled">
+                            @foreach (var branch in item.Branches)
+                            {
+                                <li><BranchSummaryComponent Branch="@branch"/></li>
                             }
                         </ul>
                     </td>

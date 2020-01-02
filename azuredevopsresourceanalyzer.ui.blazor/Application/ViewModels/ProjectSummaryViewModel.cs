@@ -106,7 +106,8 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
                 Builds = toMap.BuildDefinitions?.Select(Map).OrderBy(b => b.Name).ToList(),
                 Releases = toMap.ReleaseDefinitions?.Select(Map).OrderBy(b => b.Name).ToList(),
                 Contributors = toMap.Repository?.CommitSummary.Select(Map).OrderByDescending(b => b.LastActivity).ToList(),
-                PullRequests = toMap.Repository?.PullRequestSummary.Select(Map).OrderByDescending(b => b.LastActivity).ToList()
+                PullRequests = toMap.Repository?.PullRequestSummary.Select(Map).OrderByDescending(b => b.LastActivity).ToList(),
+                Branches = toMap.Repository?.Branches.Select(Map).ToList()
             };
         }
 
@@ -146,6 +147,16 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
                 LastActivity = toMap?.LastActivity
             };
         }
+
+        private BranchSummary Map(Branch toMap)
+        {
+            return new BranchSummary
+            {
+                Name = toMap.Name,
+                CommitsAhead = toMap.CommitsAhead,
+                CommitsBehind = toMap.CommitsBehind
+            };
+        }
     }
 
     public class ProjectSummary
@@ -155,6 +166,8 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
         public List<NavigableItem> Releases { get; set; }
         public List<ActivityItem> Contributors { get; set; }
         public List<ActivityItem> PullRequests { get; set; }
+
+        public List<BranchSummary> Branches { get; set; }
     }
 
     public class NavigableItem
@@ -168,5 +181,12 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
         public string Name { get; set; }
         public int? ActivityCount { get; set; }
         public DateTime? LastActivity { get; set; }
+    }
+
+    public class BranchSummary
+    {
+        public string Name { get; set; }
+        public int CommitsAhead { get; set; }
+        public int CommitsBehind { get; set; }
     }
 }

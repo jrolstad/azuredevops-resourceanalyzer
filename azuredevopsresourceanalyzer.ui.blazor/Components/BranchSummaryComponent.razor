@@ -1,0 +1,26 @@
+﻿@using azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
+
+
+@Branch.Name
+@if (@Branch.CommitsBehind == 0)
+{
+    <span class="badge badge-secondary">@Branch.CommitsBehind</span>
+}
+else
+{
+    <span class="badge badge-danger">@Branch.CommitsBehind</span>
+}
+
+@if (@Branch.CommitsAhead == 0)
+{
+    <span class="badge badge-secondary">@Branch.CommitsAhead</span>
+}
+else
+{
+    <span class="badge badge-success">@Branch.CommitsAhead</span>
+}
+
+
+@code {
+    [Parameter] public BranchSummary Branch { get; set; }
+}
