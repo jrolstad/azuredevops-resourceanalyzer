@@ -113,28 +113,34 @@ namespace azuredevopsresourceanalyzer.core.Managers
                 });
         }
 
-        private static IEnumerable<ActivitySummary> Map(IEnumerable<Models.AzureDevops.Commit> commits)
+        private static IEnumerable<CommitSummary> Map(IEnumerable<Models.AzureDevops.Commit> commits)
         {
             return commits?
                 .GroupBy(c => c?.author?.name)
-                .Select(g => new ActivitySummary
+                .Select(g => new CommitSummary
                 {
-                    CommitterName = g.Key,
+                    AuthorName = g.Key,
                     Count = g.Count(),
-                    LastActivity = g.Max(c=>c?.author?.date?.Date)
+                    LastActivity = g.Max(c=>c?.author?.date?.Date),
+                    Additions = g.Sum(c=>c.changeCounts?.Add),
+                    Edits = g.Sum(c=>c.changeCounts?.Edit),
+                    Deletions = g.Sum(c=>c.changeCounts?.Delete),
                 })
                 .OrderByDescending(c=>c.LastActivity);
         }
 
-        private static IEnumerable<ActivitySummary> Map(IEnumerable<Models.AzureDevops.PullRequest> pullRequests)
+        private static IEnumerable<PullRequestSummary> Map(IEnumerable<Models.AzureDevops.PullRequest> pullRequests)
         {
             return pullRequests?
                 .GroupBy(c => c?.createdBy?.displayName)
-                .Select(g => new ActivitySummary
+                .Select(g => new PullRequestSummary
                 {
-                    CommitterName = g.Key,
+                    AuthorName = g.Key,
                     Count = g.Count(),
-                    LastActivity = g.Max(c => DateTime.Parse(c.creationDate))
+                    LastActivity = g.Max(c => DateTime.Parse(c.creationDate)),
+                    AbandonedCount = g.Count(c=>string.Equals("abandoned",c.status,StringComparison.CurrentCultureIgnoreCase)),
+                    ActiveCount = g.Count(c=>string.Equals("active", c.status,StringComparison.CurrentCultureIgnoreCase)),
+                    CompletedCount = g.Count(c=>string.Equals("completed", c.status,StringComparison.CurrentCultureIgnoreCase)),
                 })
                 .OrderByDescending(c => c.LastActivity);
         }

@@ -138,11 +138,20 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
             };
         }
 
-        private ActivityItem Map(ActivitySummary toMap)
+        private ActivityItem Map(PullRequestSummary toMap)
         {
             return new ActivityItem
             {
-                Name = toMap?.CommitterName,
+                Name = toMap?.AuthorName,
+                ActivityCount = toMap?.Count,
+                LastActivity = toMap?.LastActivity
+            };
+        }
+        private ActivityItem Map(CommitSummary toMap)
+        {
+            return new ActivityItem
+            {
+                Name = toMap?.AuthorName,
                 ActivityCount = toMap?.Count,
                 LastActivity = toMap?.LastActivity
             };
