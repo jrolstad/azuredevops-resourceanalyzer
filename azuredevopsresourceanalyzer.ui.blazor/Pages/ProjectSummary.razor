@@ -119,3 +119,14 @@
         </table>
     </div>
 </div>
+
+@code
+{
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ViewModel.Initialize();
+        await base.OnInitializedAsync();
+    }
+
+}

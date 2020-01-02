@@ -18,16 +18,7 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
             _projectManager = projectManager;
         }
 
-        private string _organization;
-        public string Organization
-        {
-            get => _organization;
-            set
-            {
-                _organization = value;
-                //SearchProjects()
-
-            } }
+        public string Organization { get; set; }
         public string Project { get; set; }
         public List<string> Projects { get; set; } = new List<string>();
         public string RepositoryFilter { get; set; }
@@ -39,6 +30,11 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
         public bool IsSearching { get; set; } = false;
         public bool IsSearchingProjects { get; set; } = false;
         public string Error { get; set; }
+
+        public async Task Initialize()
+        {
+            this.StartDate = DateTime.Today.AddYears(-2);
+        }
 
         public async Task Search()
         {
