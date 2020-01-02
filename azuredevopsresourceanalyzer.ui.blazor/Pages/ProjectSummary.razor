@@ -72,20 +72,11 @@
                         </ul>
                     </td>
                     <td>
-                        <ul class="list-unstyled">
-                            @foreach (var contributor in item.Contributors)
-                            {
-                                <li>@contributor.Name (@contributor.ActivityCount) @contributor.LastActivity?.ToString("M/d/yyyy")</li>
-                            }
-                        </ul>
+                        <ActivityItemComponent Items="@item.Contributors"/>
+                        
                     </td>
                     <td>
-                        <ul class="list-unstyled">
-                            @foreach (var pullRequest in item.PullRequests)
-                            {
-                                <li>@pullRequest.Name (@pullRequest.ActivityCount) @pullRequest.LastActivity?.ToString("M/d/yyyy")</li>
-                            }
-                        </ul>
+                        <ActivityItemComponent Items="@item.PullRequests"/>
                     </td>
 
                 </tr>

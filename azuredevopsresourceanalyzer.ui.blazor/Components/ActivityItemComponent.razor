@@ -1,0 +1,10 @@
+﻿@using azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
+<ul class="list-unstyled">
+    @foreach (var items in Items)
+    {
+        <li>@items.Name (@items.ActivityCount) @items.LastActivity?.ToString("M/d/yyyy")</li>
+    }
+</ul>
+@code {
+    [Parameter] public IEnumerable<ActivityItem> Items { get; set; }
+}
