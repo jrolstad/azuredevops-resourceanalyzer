@@ -21,6 +21,6 @@ Provides tools for analyzing resources in Azure DevOps instances so they are eas
 |---|---|---|
 |azuredevopsresourceanalyzer.ui.blazor.tests|Unit Tests for the azuredevopsresourceanalyzer.ui.blazor project|
 
-#Development Environment Setup
+# Development Environment Setup
 The interactions with Azure are performed via REST API who use the ADAL library for bearer tokens.  
 * Configure [Azure Service Authentication](https://stackoverflow.com/questions/56827628/vs2019-azure-service-authentication-account-selection-for-local-debugging) in Visual Studio before running the application.
