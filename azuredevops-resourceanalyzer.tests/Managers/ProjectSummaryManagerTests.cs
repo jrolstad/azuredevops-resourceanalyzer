@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using azuredevopsresourceanalyzer.core.Factories;
 using azuredevopsresourceanalyzer.core.Managers;
 using azuredevopsresourceanalyzer.core.Services;
 using Xunit;
@@ -33,7 +34,7 @@ namespace azuredevops_resourceanalyzer.tests.Managers
 
         private ProjectSummaryManager GetInstance()
         {
-            return new ProjectSummaryManager(new AzureDevopsService(new ConfigurationService()));
+            return new ProjectSummaryManager(new AzureDevopsService(new StaticHttpClientFactory(new ConfigurationService())));
         }
     }
 }

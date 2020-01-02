@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using azuredevopsresourceanalyzer.core.Factories;
 using azuredevopsresourceanalyzer.core.Managers;
 using azuredevopsresourceanalyzer.core.Services;
 using azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels;
@@ -45,10 +46,11 @@ namespace azuredevopsresourceanalyzer.ui.blazor
 
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddSingleton<ProjectSummaryViewModel>();
-            services.AddSingleton<ProjectSummaryManager>();
-            services.AddSingleton<AzureDevopsService>();
-            services.AddSingleton<ConfigurationService>();
+            services.AddTransient<ProjectSummaryViewModel>();
+            services.AddTransient<ProjectSummaryManager>();
+            services.AddTransient<AzureDevopsService>();
+            services.AddTransient<ConfigurationService>();
+            services.AddSingleton<IHttpClientFactory,StaticHttpClientFactory>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
