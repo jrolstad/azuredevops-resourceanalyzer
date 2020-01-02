@@ -1,5 +1,4 @@
-﻿using azuredevopsresourceanalyzer.core.Factories;
-using azuredevopsresourceanalyzer.core.Managers;
+﻿using azuredevopsresourceanalyzer.core.Managers;
 using azuredevopsresourceanalyzer.core.Services;
 using azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels;
 using Microsoft.Extensions.Configuration;
@@ -11,6 +10,8 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.Configuration
     {
         public static void Configure(IServiceCollection services, IConfiguration configuration)
         {
+            services.AddHttpClient();
+
             services.AddTransient<ProjectSummaryViewModel>();
 
             services.AddTransient<ProjectSummaryManager>();
@@ -18,7 +19,6 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.Configuration
 
             services.AddSingleton<AzureDevopsService>();
             services.AddSingleton<ConfigurationService>();
-            services.AddSingleton<IHttpClientFactory, StaticHttpClientFactory>();
         }
     }
 }
