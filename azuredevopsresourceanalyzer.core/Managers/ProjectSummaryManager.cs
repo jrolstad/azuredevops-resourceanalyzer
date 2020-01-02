@@ -63,9 +63,13 @@ namespace azuredevopsresourceanalyzer.core.Managers
             var releaseData = await Task.WhenAll(releaseTasks);
             var releases = releaseData.SelectMany(r => r);
 
-            var commits = await _azureDevopsService.GetRepositoryCommits(organization, project, repository.id,startDate);
-            var pullRequests = await _azureDevopsService.GetPullRequests(organization, project, repository.id);
-            var branches = await _azureDevopsService.GetBranchStatistics(organization, project, repository.id);
+            var commitTask = _azureDevopsService.GetRepositoryCommits(organization, project, repository.id,startDate);
+            var pullRequestTask = _azureDevopsService.GetPullRequests(organization, project, repository.id);
+            var branchTask = _azureDevopsService.GetBranchStatistics(organization, project, repository.id);
+
+            var commits = (await Task.WhenAll(commitTask)).SelectMany(r=>r).ToList();
+            var pullRequests = (await Task.WhenAll(pullRequestTask)).SelectMany(r=>r).ToList();
+            var branches = (await Task.WhenAll(branchTask)).SelectMany(r=>r).ToList();
 
             var result = new Component
             {
