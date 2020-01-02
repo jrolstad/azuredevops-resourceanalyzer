@@ -138,18 +138,18 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
             };
         }
 
-        private ActivityItem Map(PullRequestSummary toMap)
+        private ActivityItem<PullRequestDetail> Map(PullRequestSummary toMap)
         {
-            return new ActivityItem
+            return new ActivityItem<PullRequestDetail>
             {
                 Name = toMap?.AuthorName,
                 ActivityCount = toMap?.Count,
                 LastActivity = toMap?.LastActivity
             };
         }
-        private ActivityItem Map(CommitSummary toMap)
+        private ActivityItem<CommitDetail> Map(CommitSummary toMap)
         {
-            return new ActivityItem
+            return new ActivityItem<CommitDetail>
             {
                 Name = toMap?.AuthorName,
                 ActivityCount = toMap?.Count,
@@ -173,8 +173,8 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
         public NavigableItem Repository { get; set; }
         public List<NavigableItem> Builds { get; set; }
         public List<NavigableItem> Releases { get; set; }
-        public List<ActivityItem> Contributors { get; set; }
-        public List<ActivityItem> PullRequests { get; set; }
+        public List<ActivityItem<CommitDetail>> Contributors { get; set; }
+        public List<ActivityItem<PullRequestDetail>> PullRequests { get; set; }
 
         public List<BranchSummary> Branches { get; set; }
     }
@@ -185,32 +185,28 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
         public string Url { get; set; }
     }
 
-    public class ActivityItem
+    public class ActivityItem<T>
     {
         public string Name { get; set; }
         public int? ActivityCount { get; set; }
         public DateTime? LastActivity { get; set; }
+
+        public T ActivityDetails { get; set; }
     }
 
-    //public class PullRequestSummary
-    //{
-    //    public string Name { get; set; }
-    //    public int? ActivityCount { get; set; }
-    //    public DateTime? LastActivity { get; set; }
-    //    public int Active { get; set; }
-    //    public int Abandoned { get; set; }
-    //    public int Complete { get; set; }
-    //}
+    public class PullRequestDetail
+    {
+        public int Active { get; set; }
+        public int Abandoned { get; set; }
+        public int Complete { get; set; }
+    }
 
-    //public class CommitSummary
-    //{
-    //    public string Name { get; set; }
-    //    public int? ActivityCount { get; set; }
-    //    public DateTime? LastActivity { get; set; }
-    //    public int Additions { get; set; }
-    //    public int Edits { get; set; }
-    //    public int Deletions { get; set; }
-    //}
+    public class CommitDetail
+    {
+        public int Additions { get; set; }
+        public int Edits { get; set; }
+        public int Deletions { get; set; }
+    }
 
     public class BranchSummary
     {
