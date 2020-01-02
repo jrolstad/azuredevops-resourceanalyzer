@@ -8,5 +8,6 @@ namespace azuredevopsresourceanalyzer.core.Models.AzureDevops
         public string name { get; set; }
         public string url { get; set; }
         public Project project { get; set; }
+        public Dictionary<string, Link> _links { get; set; }
     }
 }

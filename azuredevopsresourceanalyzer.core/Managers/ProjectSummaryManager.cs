@@ -141,21 +141,29 @@ namespace azuredevopsresourceanalyzer.core.Managers
 
         private BuildDefinition Map(Models.AzureDevops.BuildDefinition toMap)
         {
+            var link = toMap._links?
+                .Where(l => string.Equals(l.Key, "web", StringComparison.InvariantCultureIgnoreCase))
+                .Select(l => l.Value?.href)
+                .FirstOrDefault();
             return new BuildDefinition
             {
                 Id = toMap.id,
                 Name = toMap.name,
-                Url = toMap.url
+                Url = link
             };
         }
 
         private ReleaseDefinition Map(Models.AzureDevops.ReleaseDefinition toMap)
         {
+            var link = toMap._links?
+                .Where(l=>string.Equals(l.Key,"web",StringComparison.InvariantCultureIgnoreCase))
+                .Select(l=>l.Value?.href)
+                .FirstOrDefault();
             return new ReleaseDefinition
             {
                 Id = toMap.id,
                 Name = toMap.name,
-                Url = toMap.url
+                Url = link
             };
         }
     }

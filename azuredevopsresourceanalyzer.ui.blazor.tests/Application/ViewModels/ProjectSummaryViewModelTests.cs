@@ -171,9 +171,10 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.Application.ViewModels
             var viewModel = root.Get<ProjectSummaryViewModel>();
             await viewModel.Initialize();
 
-            viewModel.Organization = "jrolstad";
-            viewModel.Project = "Rolstad";
-            viewModel.StartDate = DateTime.Today.AddYears(-10);
+            viewModel.Organization = "microsoftit";
+            viewModel.Project = "oneitvso";
+            viewModel.RepositoryFilter = "fin-ffs-tp-wrt";
+            viewModel.StartDate = DateTime.Today.AddYears(-2);
             // When
             await viewModel.Search();
 
