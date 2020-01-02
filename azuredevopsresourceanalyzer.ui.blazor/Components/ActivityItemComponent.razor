@@ -1,10 +1,26 @@
 ﻿@using azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
-<ul class="list-unstyled">
-    @foreach (var items in Items)
-    {
-        <li>@items.Name (@items.ActivityCount) @items.LastActivity?.ToString("M/d/yyyy")</li>
-    }
-</ul>
+@if (Items == null || Items.Any())
+{
+    <table class="table-secondary">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Count</th>
+            <th>Last</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Items)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.ActivityCount</td>
+                <td>@item.LastActivity?.ToString("M/d/yyy")</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
 @code {
     [Parameter] public IEnumerable<ActivityItem> Items { get; set; }
 }
