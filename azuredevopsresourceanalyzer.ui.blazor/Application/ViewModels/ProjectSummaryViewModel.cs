@@ -192,10 +192,31 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
         public DateTime? LastActivity { get; set; }
     }
 
+    //public class PullRequestSummary
+    //{
+    //    public string Name { get; set; }
+    //    public int? ActivityCount { get; set; }
+    //    public DateTime? LastActivity { get; set; }
+    //    public int Active { get; set; }
+    //    public int Abandoned { get; set; }
+    //    public int Complete { get; set; }
+    //}
+
+    //public class CommitSummary
+    //{
+    //    public string Name { get; set; }
+    //    public int? ActivityCount { get; set; }
+    //    public DateTime? LastActivity { get; set; }
+    //    public int Additions { get; set; }
+    //    public int Edits { get; set; }
+    //    public int Deletions { get; set; }
+    //}
+
     public class BranchSummary
     {
         public string Name { get; set; }
         public int CommitsAhead { get; set; }
         public int CommitsBehind { get; set; }
+        
     }
 }
