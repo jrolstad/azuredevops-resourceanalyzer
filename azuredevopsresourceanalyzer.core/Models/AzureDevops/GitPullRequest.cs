@@ -2,7 +2,7 @@
 
 namespace azuredevopsresourceanalyzer.core.Models.AzureDevops
 {
-    public class PullRequest
+    public class GitPullRequest
     {
         public string closedDate { get; set; }
         public IdentifyRef createdBy { get; set; }

@@ -19,12 +19,12 @@ namespace azuredevopsresourceanalyzer.core.Services
             _httpClientFactory = httpClientFactory;
             _configurationService = configurationService;
         }
-        public async Task<List<Repository>> GetRepositories(string organization, string project)
+        public async Task<List<GitRepository>> GetRepositories(string organization, string project)
         {
 
             var url = $"https://dev.azure.com/{organization}/{project}/_apis/git/repositories?api-version=5.0";
             var client = await GetClient();
-            var result = await client.GetAsJson<ApiResult<Repository>>(url);
+            var result = await client.GetAsJson<ApiResult<GitRepository>>(url);
 
             return result?.value;
         }
@@ -49,13 +49,13 @@ namespace azuredevopsresourceanalyzer.core.Services
             return releaseDefinitionResult?.value;
         }
 
-        public async Task<List<PullRequest>> GetPullRequests(string organization, string project, string repositoryId)
+        public async Task<List<GitPullRequest>> GetPullRequests(string organization, string project, string repositoryId)
         {
 
             var url = $"https://dev.azure.com/{organization}/{project}/_apis/git/repositories/{repositoryId}/pullrequests?api-version=5.1&searchCriteria.status=all";
 
             var client = await GetClient();
-            var releaseDefinitionResult = await client.GetAsJson<ApiResult<PullRequest>>(url);
+            var releaseDefinitionResult = await client.GetAsJson<ApiResult<GitPullRequest>>(url);
 
             return releaseDefinitionResult?.value;
         }
@@ -71,7 +71,7 @@ namespace azuredevopsresourceanalyzer.core.Services
             return releaseDefinitionResult?.value;
         }
 
-        public async Task<List<Commit>> GetRepositoryCommits(string organization, string project, string repositoryId,DateTime? startDate)
+        public async Task<List<GitCommitRef>> GetRepositoryCommits(string organization, string project, string repositoryId,DateTime? startDate)
         {
             var url = $"https://dev.azure.com/{organization}/{project}/_apis/git/repositories/{repositoryId}/commits?api-version=5.1&$top=1000&searchCriteria.itemVersion.version=master";
 
@@ -81,7 +81,7 @@ namespace azuredevopsresourceanalyzer.core.Services
             }
             var client = await GetClient();
 
-            var releaseDefinitionResult = await client.GetAsJson<ApiResult<Commit>>(url);
+            var releaseDefinitionResult = await client.GetAsJson<ApiResult<GitCommitRef>>(url);
 
             return releaseDefinitionResult?.value;
         }

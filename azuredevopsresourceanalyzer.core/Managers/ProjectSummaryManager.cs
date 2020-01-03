@@ -47,13 +47,13 @@ namespace azuredevopsresourceanalyzer.core.Managers
             return result;
         }
 
-        private IEnumerable<Models.AzureDevops.Repository> FilterRepositories(IEnumerable<Models.AzureDevops.Repository> repositories, string filter)
+        private IEnumerable<Models.AzureDevops.GitRepository> FilterRepositories(IEnumerable<Models.AzureDevops.GitRepository> repositories, string filter)
         {
             return string.IsNullOrWhiteSpace(filter) ? repositories : 
                 repositories.Where(r => r.name.ContainsValue(filter,CultureInfo.CurrentCulture));
         }
 
-        private async Task<Component> ProcessComponent(Models.AzureDevops.Repository repository, string organization, string project, DateTime? startDate)
+        private async Task<Component> ProcessComponent(Models.AzureDevops.GitRepository repository, string organization, string project, DateTime? startDate)
         {
              var builds = await _azureDevopsService.GetBuildDefinitions(organization, project, repository.id);
             
@@ -81,9 +81,9 @@ namespace azuredevopsresourceanalyzer.core.Managers
             return result;
         }
 
-        private Repository Map(Models.AzureDevops.Repository toMap,
-            ICollection<Commit> commits,
-            ICollection<PullRequest> pullRequests,
+        private Repository Map(Models.AzureDevops.GitRepository toMap,
+            ICollection<GitCommitRef> commits,
+            ICollection<GitPullRequest> pullRequests,
             ICollection<GitBranchStat> branches,
             ICollection<Models.AzureDevops.BuildDefinition> builds)
         {
@@ -114,7 +114,7 @@ namespace azuredevopsresourceanalyzer.core.Managers
                 });
         }
 
-        private static IEnumerable<CommitSummary> Map(IEnumerable<Models.AzureDevops.Commit> commits)
+        private static IEnumerable<CommitSummary> Map(IEnumerable<Models.AzureDevops.GitCommitRef> commits)
         {
             return commits?
                 .GroupBy(c => c?.author?.name)
@@ -130,7 +130,7 @@ namespace azuredevopsresourceanalyzer.core.Managers
                 .OrderByDescending(c=>c.LastActivity);
         }
 
-        private static IEnumerable<PullRequestSummary> Map(IEnumerable<Models.AzureDevops.PullRequest> pullRequests)
+        private static IEnumerable<PullRequestSummary> Map(IEnumerable<Models.AzureDevops.GitPullRequest> pullRequests)
         {
             return pullRequests?
                 .GroupBy(c => c?.createdBy?.displayName)
