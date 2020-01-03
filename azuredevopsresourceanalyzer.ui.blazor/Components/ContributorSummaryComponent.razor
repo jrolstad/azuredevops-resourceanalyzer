@@ -5,7 +5,7 @@
         <thead>
         <tr>
             <th>Name</th>
-            <th>Count</th>
+            <th>Commits</th>
             <th>Last</th>
         </tr>
         </thead>
@@ -14,7 +14,11 @@
         {
             <tr>
                 <td>@item.Name</td>
-                <td>@item.ActivityCount</td>
+                <td>
+                    @item.ActivityCount
+                    <span class="badge badge-danger" title="Deletions">@item.ActivityDetails.Deletions</span>
+                    <span class="badge badge-success" title="Additions">@item.ActivityDetails.Additions</span>
+                </td>
                 <td>@item.LastActivity?.ToString("M/d/yyy")</td>
             </tr>
         }
@@ -22,5 +26,5 @@
     </table>
 }
 @code {
-    [Parameter] public IEnumerable<ActivityItem<CommitDetail> Items { get; set; }
+    [Parameter] public IEnumerable<ActivityItem<CommitDetail>> Items { get; set; }
 }

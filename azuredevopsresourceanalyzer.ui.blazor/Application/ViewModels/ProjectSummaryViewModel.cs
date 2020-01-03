@@ -144,7 +144,13 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
             {
                 Name = toMap?.AuthorName,
                 ActivityCount = toMap?.Count,
-                LastActivity = toMap?.LastActivity
+                LastActivity = toMap?.LastActivity,
+                ActivityDetails = new PullRequestDetail
+                {
+                    Abandoned = toMap.AbandonedCount,
+                    Active = toMap.ActiveCount,
+                    Complete = toMap.CompletedCount
+                }
             };
         }
         private ActivityItem<CommitDetail> Map(CommitSummary toMap)
@@ -153,7 +159,13 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
             {
                 Name = toMap?.AuthorName,
                 ActivityCount = toMap?.Count,
-                LastActivity = toMap?.LastActivity
+                LastActivity = toMap?.LastActivity,
+                ActivityDetails = new CommitDetail
+                {
+                    Additions = toMap.Additions.GetValueOrDefault(),
+                    Edits = toMap.Edits.GetValueOrDefault(),
+                    Deletions = toMap.Edits.GetValueOrDefault()
+                }
             };
         }
 

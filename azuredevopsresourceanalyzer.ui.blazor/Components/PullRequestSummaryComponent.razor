@@ -14,7 +14,11 @@
         {
             <tr>
                 <td>@item.Name</td>
-                <td>@item.ActivityCount</td>
+                <td>
+                    <span class="badge badge-danger" hidden="@(item.ActivityDetails.Abandoned==0)" title="Abandoned">@item.ActivityDetails.Abandoned</span>
+                    <span class="badge badge-primary" hidden="@(item.ActivityDetails.Active==0)" title="Active">@item.ActivityDetails.Active</span>
+                    <span class="badge badge-success" hidden="@(item.ActivityDetails.Complete==0)" title="Complete">@item.ActivityDetails.Complete</span>
+                </td>
                 <td>@item.LastActivity?.ToString("M/d/yyy")</td>
             </tr>
         }

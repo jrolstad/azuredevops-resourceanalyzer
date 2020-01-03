@@ -4,20 +4,20 @@
 @Branch.Name
 @if (@Branch.CommitsBehind == 0)
 {
-    <span class="badge badge-secondary">@Branch.CommitsBehind</span>
+    <span class="badge badge-secondary"title="Commits Behind">@Branch.CommitsBehind</span>
 }
 else
 {
-    <span class="badge badge-danger">@Branch.CommitsBehind</span>
+    <span class="badge badge-danger"title="Commits Behind">@Branch.CommitsBehind</span>
 }
 
 @if (@Branch.CommitsAhead == 0)
 {
-    <span class="badge badge-secondary">@Branch.CommitsAhead</span>
+    <span class="badge badge-secondary" title="Commits Ahead">@Branch.CommitsAhead</span>
 }
 else
 {
-    <span class="badge badge-success">@Branch.CommitsAhead</span>
+    <span class="badge badge-success"title="Commits Ahead">@Branch.CommitsAhead</span>
 }
 
 
