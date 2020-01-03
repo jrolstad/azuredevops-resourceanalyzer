@@ -1,4 +1,6 @@
-﻿namespace azuredevopsresourceanalyzer.core.Models.AzureDevops
+﻿using System.Collections.Generic;
+
+namespace azuredevopsresourceanalyzer.core.Models.AzureDevops
 {
     public class PullRequest
     {
@@ -6,11 +8,7 @@
         public IdentifyRef createdBy { get; set; }
         public string creationDate { get; set; }
         public string status { get; set; }
-    }
 
-    public class IdentifyRef
-    {
-        public string displayName { get; set; }
-        public string id { get; set; }
+        public List<ResourceReference> workItems { get; set; }
     }
 }

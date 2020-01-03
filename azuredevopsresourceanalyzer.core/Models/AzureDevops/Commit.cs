@@ -9,6 +9,7 @@ namespace azuredevopsresourceanalyzer.core.Models.AzureDevops
         public CommitAuthor author { get; set; }
         public CommitAuthor committer { get; set; }
         public CommitChangeCount changeCounts { get; set; }
+        public List<ResourceReference> workItems { get; set; }
     }
 
     public class CommitAuthor
