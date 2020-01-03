@@ -7,9 +7,6 @@ using azuredevopsresourceanalyzer.core.Extensions;
 using azuredevopsresourceanalyzer.core.Models;
 using azuredevopsresourceanalyzer.core.Models.AzureDevops;
 using azuredevopsresourceanalyzer.core.Services;
-using BuildDefinition = azuredevopsresourceanalyzer.core.Models.BuildDefinition;
-using ReleaseDefinition = azuredevopsresourceanalyzer.core.Models.ReleaseDefinition;
-using Repository = azuredevopsresourceanalyzer.core.Models.Repository;
 
 namespace azuredevopsresourceanalyzer.core.Managers
 {
@@ -47,13 +44,13 @@ namespace azuredevopsresourceanalyzer.core.Managers
             return result;
         }
 
-        private IEnumerable<Models.AzureDevops.GitRepository> FilterRepositories(IEnumerable<Models.AzureDevops.GitRepository> repositories, string filter)
+        private IEnumerable<GitRepository> FilterRepositories(IEnumerable<Models.AzureDevops.GitRepository> repositories, string filter)
         {
             return string.IsNullOrWhiteSpace(filter) ? repositories : 
                 repositories.Where(r => r.name.ContainsValue(filter,CultureInfo.CurrentCulture));
         }
 
-        private async Task<Component> ProcessComponent(Models.AzureDevops.GitRepository repository, string organization, string project, DateTime? startDate)
+        private async Task<Component> ProcessComponent(GitRepository repository, string organization, string project, DateTime? startDate)
         {
              var builds = await _azureDevopsService.GetBuildDefinitions(organization, project, repository.id);
             
@@ -79,17 +76,17 @@ namespace azuredevopsresourceanalyzer.core.Managers
             return result;
         }
 
-        private Repository Map(Models.AzureDevops.GitRepository toMap,
+        private Repository Map(GitRepository toMap,
             IEnumerable<GitCommitRef> commits,
             IEnumerable<GitPullRequest> pullRequests,
             IEnumerable<GitBranchStat> branches,
             IEnumerable<Models.AzureDevops.BuildDefinition> builds,
             IEnumerable<Models.AzureDevops.ReleaseDefinition> releases)
         {
-            var releasesByBuildId = releases.ToLookup(r => r.BuildId);
             var commitSummary = Map(commits)?.ToList();
             var pullRequestSummary = Map(pullRequests)?.ToList();
             var branchSummary = Map(branches)?.ToList();
+            var releasesByBuildId = releases.ToLookup(r => r.BuildId);
             var buildSummary = builds.Select(b=>Map(b,releasesByBuildId)).ToList();
 
             return new Repository
@@ -147,13 +144,14 @@ namespace azuredevopsresourceanalyzer.core.Managers
                 .OrderByDescending(c => c.LastActivity);
         }
 
-        private BuildDefinition Map(Models.AzureDevops.BuildDefinition toMap, ILookup<string,Models.AzureDevops.ReleaseDefinition> releasesByBuildId)
+        private Models.BuildDefinition Map(Models.AzureDevops.BuildDefinition toMap, ILookup<string,Models.AzureDevops.ReleaseDefinition> releasesByBuildId)
         {
             var link = GetWebUrl(toMap._links);
-            var releaseData = releasesByBuildId[toMap.id];
-            var releases = releaseData.Select(Map).ToList();
 
-            return new BuildDefinition
+            var releasesForBuild = releasesByBuildId[toMap.id];
+            var releases = Map(releasesForBuild).ToList();
+
+            return new Models.BuildDefinition
             {
                 Id = toMap.id,
                 Name = toMap.name,
@@ -162,15 +160,14 @@ namespace azuredevopsresourceanalyzer.core.Managers
             };
         }
 
-        private ReleaseDefinition Map(Models.AzureDevops.ReleaseDefinition toMap)
+        private IEnumerable<Models.ReleaseDefinition> Map(IEnumerable<Models.AzureDevops.ReleaseDefinition> toMap)
         {
-            var link = GetWebUrl(toMap._links);
-            return new ReleaseDefinition
+            return toMap.Select(r => new Models.ReleaseDefinition
             {
-                Id = toMap.id,
-                Name = toMap.name,
-                Url = link
-            };
+                Id = r.id,
+                Name = r.name,
+                Url = GetWebUrl(r._links)
+            });
         }
 
         private string GetWebUrl(Dictionary<string, Link> links)
