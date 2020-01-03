@@ -8,6 +8,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1752CD71-018D-42C5-B0A3-013BC8A735F9}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		Notes.txt = Notes.txt
 		README.md = README.md
 	EndProjectSection
 EndProject
@@ -15,7 +16,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests (Unit)", "Tests (Unit
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "azuredevopsresourceanalyzer.ui.blazor", "azuredevopsresourceanalyzer.ui.blazor\azuredevopsresourceanalyzer.ui.blazor.csproj", "{33C22C95-E770-4BF3-80E2-7AF7241C2FE8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "azuredevopsresourceanalyzer.ui.blazor.tests", "azuredevopsresourceanalyzer.ui.blazor.tests\azuredevopsresourceanalyzer.ui.blazor.tests.csproj", "{C052B067-F753-44DD-94F0-30834601E24E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "azuredevopsresourceanalyzer.ui.blazor.tests", "azuredevopsresourceanalyzer.ui.blazor.tests\azuredevopsresourceanalyzer.ui.blazor.tests.csproj", "{C052B067-F753-44DD-94F0-30834601E24E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,0 +1,11 @@
+Get All Area Paths
+https://dev.azure.com/microsoftit/oneitvso/_apis/wit/classificationnodes/Areas?api-version=5.0&$depth=10000
+
+Get All Teams
+https://dev.azure.com/{organization}/_apis/teams?$mine={$mine}&$top={$top}&$skip={$skip}&$expandIdentity={$expandIdentity}&api-version=6.0-preview.3
+
+Get All Iterations for team
+https://dev.azure.com/{organization}/{project}/{team}/_apis/work/teamsettings/iterations?api-version=6.0-preview.1
+
+Get Iteration work items
+https://dev.azure.com/{organization}/{project}/{team}/_apis/work/teamsettings/iterations/{iterationId}/workitems?api-version=6.0-preview.1
