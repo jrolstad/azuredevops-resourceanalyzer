@@ -13,5 +13,6 @@ namespace azuredevopsresourceanalyzer.core.Models
         public List<PullRequestSummary> PullRequestSummary { get; set; }
         public List<Branch> Branches { get; set; }
         public List<BuildDefinition> BuildDefinitions { get; set; }
+        public IEnumerable<ReleaseDefinition> ReleaseDefinitions { get; set; }
     }
 }

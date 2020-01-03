@@ -55,31 +55,32 @@ namespace azuredevopsresourceanalyzer.core.Managers
         {
              var buildDefinitions = await _azureDevopsService.GetBuildDefinitions(organization, project, repository.id);
             
-            var releaseDefinitionTasks = buildDefinitions
-                .Select(b => _azureDevopsService.GetReleaseDefinitions(organization, project, b.project?.id, b.id))
+            var releaseDefinitionForBuildsTasks = buildDefinitions
+                .Select(b => _azureDevopsService.GetReleaseDefinitionsByBuild(organization, project, b.project?.id, b.id))
                 .ToList();
-            var releaseDefinitionData = await Task.WhenAll(releaseDefinitionTasks);
-            var releaseDefinitions = releaseDefinitionData.SelectMany(r => r);
+            var releaseDefinitionForBuildsData = await Task.WhenAll(releaseDefinitionForBuildsTasks);
+            var releaseDefinitionForBuilds = releaseDefinitionForBuildsData.SelectMany(r => r);
 
             if (IsEmpty(repository))
             {
                 return new Component
                 {
-                    Repository = Map(repository, builds: buildDefinitions, releases: releaseDefinitions)
+                    Repository = Map(repository, builds: buildDefinitions, releases: releaseDefinitionForBuilds)
                 };
             }
 
             var commitTask = _azureDevopsService.GetRepositoryCommits(organization, project, repository.id,startDate);
             var pullRequestTask = _azureDevopsService.GetPullRequests(organization, project, repository.id);
             var branchTask = _azureDevopsService.GetBranchStatistics(organization, project, repository.id);
+            var releaseDefinitionForRepoTask = _azureDevopsService.GetReleaseDefinitionsByRepository(organization, project, repository.project?.id, repository.id);
 
             var commits = (await Task.WhenAll(commitTask)).SelectMany(r=>r);
             var pullRequests = (await Task.WhenAll(pullRequestTask)).SelectMany(r=>r);
             var branches = (await Task.WhenAll(branchTask)).SelectMany(r=>r);
-            
+            var releaseDefinitions = (await Task.WhenAll(releaseDefinitionForRepoTask)).SelectMany(r => r);
             return new Component
             {
-                Repository = Map(repository,commits,pullRequests,branches, buildDefinitions, releaseDefinitions),
+                Repository = Map(repository,commits,pullRequests,branches, buildDefinitions, releaseDefinitionForBuilds, releaseDefinitions),
             };
 
         }
@@ -94,14 +95,15 @@ namespace azuredevopsresourceanalyzer.core.Managers
             IEnumerable<GitPullRequest> pullRequests = null,
             IEnumerable<GitBranchStat> branches = null,
             IEnumerable<Models.AzureDevops.BuildDefinition> builds = null,
-            IEnumerable<Models.AzureDevops.ReleaseDefinition> releases = null)
+            IEnumerable<Models.AzureDevops.ReleaseDefinition> releases = null,
+            IEnumerable<Models.AzureDevops.ReleaseDefinition> releaseDefinitionsForRepo = null)
         {
             var commitSummary = Map(commits ?? new List<GitCommitRef>())?.ToList();
             var pullRequestSummary = Map(pullRequests ?? new List<GitPullRequest>())?.ToList();
             var branchSummary = Map(branches ?? new List<GitBranchStat>(),toMap)?.ToList();
             var releasesByBuildId = releases?.ToLookup(r => r.BuildId);
             var buildSummary = builds?.Select(b=>Map(b,releasesByBuildId)).ToList();
-
+            var repoReleaseDefinitions = Map(releaseDefinitionsForRepo ?? new List<Models.AzureDevops.ReleaseDefinition>()).ToList();
             return new Repository
             {
                 Id = toMap.id,
@@ -110,7 +112,8 @@ namespace azuredevopsresourceanalyzer.core.Managers
                 CommitSummary = commitSummary,
                 PullRequestSummary = pullRequestSummary,
                 Branches = branchSummary,
-                BuildDefinitions = buildSummary
+                BuildDefinitions = buildSummary,
+                ReleaseDefinitions = repoReleaseDefinitions
             };
         }
 

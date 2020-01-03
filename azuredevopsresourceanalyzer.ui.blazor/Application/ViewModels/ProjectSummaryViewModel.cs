@@ -104,11 +104,17 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
             {
                 Repository = Map(toMap.Repository),
                 Builds = toMap.Repository.BuildDefinitions?.Select(Map).OrderBy(b => b.Name).ToList(),
-                Releases = toMap.Repository.BuildDefinitions?.SelectMany(b=>b.ReleaseDefinitions)?.Select(Map).OrderBy(b => b.Name).ToList(),
+                Releases = GetReleaseDefinitions(toMap)?.Select(Map).OrderBy(b => b.Name).ToList(),
                 Contributors = toMap.Repository?.CommitSummary.Select(Map).OrderByDescending(b => b.LastActivity).ToList(),
                 PullRequests = toMap.Repository?.PullRequestSummary.Select(Map).OrderByDescending(b => b.LastActivity).ToList(),
                 Branches = toMap.Repository?.Branches.Select(Map).ToList()
             };
+        }
+
+        private static IEnumerable<ReleaseDefinition> GetReleaseDefinitions(Component toMap)
+        {
+            return toMap.Repository.BuildDefinitions?.SelectMany(b=>b.ReleaseDefinitions)
+                .Union(toMap.Repository.ReleaseDefinitions);
         }
 
         private NavigableItem Map(Repository toMap)

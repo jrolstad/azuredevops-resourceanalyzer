@@ -38,14 +38,26 @@ namespace azuredevopsresourceanalyzer.core.Services
         }
 
 
-        public async Task<List<ReleaseDefinition>> GetReleaseDefinitions(string organization, string project, string projectId, string buildId)
+        public async Task<List<ReleaseDefinition>> GetReleaseDefinitionsByBuild(string organization, string project, string projectId, string buildId)
         {
-            
+
             var url = $"https://vsrm.dev.azure.com/{organization}/{project}/_apis/release/definitions?api-version=5.1&artifactType=Build&artifactSourceId={projectId}:{buildId}";
 
             var client = await GetClient();
             var releaseDefinitionResult = await client.GetAsJson<ApiResult<ReleaseDefinition>>(url);
-            releaseDefinitionResult.value.ForEach(v=>v.BuildId = buildId);
+            releaseDefinitionResult.value.ForEach(v => v.BuildId = buildId);
+
+            return releaseDefinitionResult?.value;
+        }
+
+        public async Task<List<ReleaseDefinition>> GetReleaseDefinitionsByRepository(string organization, string project, string projectId, string repositoryId)
+        {
+
+            var url = $"https://vsrm.dev.azure.com/{organization}/{project}/_apis/release/definitions?api-version=5.1&artifactType=Git&artifactSourceId={projectId}:{repositoryId}";
+
+            var client = await GetClient();
+            var releaseDefinitionResult = await client.GetAsJson<ApiResult<ReleaseDefinition>>(url);
+            releaseDefinitionResult.value.ForEach(v => v.RepositoryId = repositoryId);
 
             return releaseDefinitionResult?.value;
         }
