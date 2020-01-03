@@ -53,19 +53,19 @@ namespace azuredevopsresourceanalyzer.core.Managers
 
         private async Task<Component> ProcessComponent(GitRepository repository, string organization, string project, DateTime? startDate)
         {
-             var builds = await _azureDevopsService.GetBuildDefinitions(organization, project, repository.id);
+             var buildDefinitions = await _azureDevopsService.GetBuildDefinitions(organization, project, repository.id);
             
-            var releaseTasks = builds
+            var releaseDefinitionTasks = buildDefinitions
                 .Select(b => _azureDevopsService.GetReleaseDefinitions(organization, project, b.project?.id, b.id))
                 .ToList();
-            var releaseData = await Task.WhenAll(releaseTasks);
-            var releases = releaseData.SelectMany(r => r);
+            var releaseDefinitionData = await Task.WhenAll(releaseDefinitionTasks);
+            var releaseDefinitions = releaseDefinitionData.SelectMany(r => r);
 
             if (IsEmpty(repository))
             {
                 return new Component
                 {
-                    Repository = Map(repository, builds: builds, releases: releases)
+                    Repository = Map(repository, builds: buildDefinitions, releases: releaseDefinitions)
                 };
             }
 
@@ -79,7 +79,7 @@ namespace azuredevopsresourceanalyzer.core.Managers
             
             return new Component
             {
-                Repository = Map(repository,commits,pullRequests,branches, builds, releases),
+                Repository = Map(repository,commits,pullRequests,branches, buildDefinitions, releaseDefinitions),
             };
 
         }
