@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 using azuredevopsresourceanalyzer.core.Extensions;
 using azuredevopsresourceanalyzer.core.Models;
 using azuredevopsresourceanalyzer.core.Models.AzureDevops;
@@ -85,7 +86,7 @@ namespace azuredevopsresourceanalyzer.core.Managers
         {
             var commitSummary = Map(commits)?.ToList();
             var pullRequestSummary = Map(pullRequests)?.ToList();
-            var branchSummary = Map(branches)?.ToList();
+            var branchSummary = Map(branches,toMap)?.ToList();
             var releasesByBuildId = releases.ToLookup(r => r.BuildId);
             var buildSummary = builds.Select(b=>Map(b,releasesByBuildId)).ToList();
 
@@ -101,14 +102,15 @@ namespace azuredevopsresourceanalyzer.core.Managers
             };
         }
 
-        private IEnumerable<Branch> Map(IEnumerable<GitBranchStat> toMap)
+        private IEnumerable<Branch> Map(IEnumerable<GitBranchStat> toMap, Models.AzureDevops.GitRepository repository)
         {
             return toMap
                 .Select(m => new Branch
                 {
                     Name = m.name,
                     CommitsAhead = m.aheadCount,
-                    CommitsBehind = m.behindCount
+                    CommitsBehind = m.behindCount,
+                    Url = $"{repository.weburl.TrimEnd('?')}?version=GB{HttpUtility.UrlEncode(m.name)}"
                 });
         }
 

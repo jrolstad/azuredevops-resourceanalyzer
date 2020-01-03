@@ -173,7 +173,7 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
         {
             return new BranchSummary
             {
-                Name = toMap.Name,
+                Name = new NavigableItem{Name = toMap.Name,Url = toMap.Url},
                 CommitsAhead = toMap.CommitsAhead,
                 CommitsBehind = toMap.CommitsBehind
             };
@@ -222,7 +222,7 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
 
     public class BranchSummary
     {
-        public string Name { get; set; }
+        public NavigableItem Name { get; set; }
         public int CommitsAhead { get; set; }
         public int CommitsBehind { get; set; }
         

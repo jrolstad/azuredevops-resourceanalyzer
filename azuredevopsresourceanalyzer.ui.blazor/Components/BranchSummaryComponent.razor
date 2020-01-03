@@ -1,7 +1,7 @@
 ﻿@using azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
 
 
-@Branch.Name
+<NavigableItemComponent Item="@Branch.Name" />
 @if (@Branch.CommitsBehind == 0)
 {
     <span class="badge badge-secondary"title="Commits Behind">@Branch.CommitsBehind</span>
