@@ -1,26 +1,20 @@
 ﻿@using azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
-@if (Items == null || Items.Any())
+@if (Releases != null && Releases.Any())
 {
-    <table class="table-secondary">
-        <thead>
-        <tr>
-            <th>Name</th>
-            <th>Last Production Release</th>
-            <th>Deployed At</th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach (var item in Items)
+    <ul class="list-unstyled">
+        @foreach (var item in Releases)
         {
-            <tr>
-                <td><NavigableItemComponent Item="@item.ReleaseDefinition" /></td>
-                <td><NavigableItemComponent Item="@item.LastProductionRelease" /></td>
-                <td>@item.DeployedAt?.ToString("M/d/yyy")</td>
-            </tr>
+            <li>
+                <NavigableItemComponent Item="@item.ReleaseDefinition" />
+                @if (item.LastProductionRelease != null)
+                {
+                    <a href="@item.LastProductionRelease.Url" class="badge badge-primary" target="_blank">@item.DeployedAt?.ToString("M/d/yyyy")</a>
+                }
+
+            </li>
         }
-        </tbody>
-    </table>
+    </ul>
 }
 @code {
-    [Parameter] public IEnumerable<ReleaseSummary> Items { get; set; }
+    [Parameter] public IEnumerable<ReleaseSummary> Releases { get; set; }
 }
