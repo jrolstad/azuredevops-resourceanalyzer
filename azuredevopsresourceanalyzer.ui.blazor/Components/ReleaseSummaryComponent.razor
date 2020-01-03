@@ -8,7 +8,7 @@
                 <NavigableItemComponent Item="@item.ReleaseDefinition" />
                 @if (item.LastProductionRelease != null)
                 {
-                    <a href="@item.LastProductionRelease.Url" class="badge badge-primary" target="_blank">@item.DeployedAt?.ToString("M/d/yyyy")</a>
+                    <a href="@item.LastProductionRelease.Url" class="badge badge-primary" target="_blank" title="Last deployed with release @item.LastProductionRelease.Name" >@item.DeployedAt?.ToString("M/d/yyyy")</a>
                 }
 
             </li>
