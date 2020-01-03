@@ -147,10 +147,7 @@ namespace azuredevopsresourceanalyzer.core.Managers
 
         private BuildDefinition Map(Models.AzureDevops.BuildDefinition toMap)
         {
-            var link = toMap._links?
-                .Where(l => string.Equals(l.Key, "web", StringComparison.InvariantCultureIgnoreCase))
-                .Select(l => l.Value?.href)
-                .FirstOrDefault();
+            var link = GetWebUrl(toMap._links);
             return new BuildDefinition
             {
                 Id = toMap.id,
@@ -161,16 +158,21 @@ namespace azuredevopsresourceanalyzer.core.Managers
 
         private ReleaseDefinition Map(Models.AzureDevops.ReleaseDefinition toMap)
         {
-            var link = toMap._links?
-                .Where(l=>string.Equals(l.Key,"web",StringComparison.InvariantCultureIgnoreCase))
-                .Select(l=>l.Value?.href)
-                .FirstOrDefault();
+            var link = GetWebUrl(toMap._links);
             return new ReleaseDefinition
             {
                 Id = toMap.id,
                 Name = toMap.name,
                 Url = link
             };
+        }
+
+        private string GetWebUrl(Dictionary<string, Link> links)
+        {
+            return links?
+                .Where(l => string.Equals(l.Key, "web", StringComparison.InvariantCultureIgnoreCase))
+                .Select(l => l.Value?.href)
+                .FirstOrDefault();
         }
     }
 }
