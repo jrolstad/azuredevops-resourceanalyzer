@@ -9,3 +9,8 @@ https://dev.azure.com/{organization}/{project}/{team}/_apis/work/teamsettings/it
 
 Get Iteration work items
 https://dev.azure.com/{organization}/{project}/{team}/_apis/work/teamsettings/iterations/{iterationId}/workitems?api-version=6.0-preview.1
+
+Get work items
+https://dev.azure.com/{organization}/{project}/_apis/wit/workitems?ids={ids}&api-version=6.0-preview.3
+
+https://docs.microsoft.com/en-us/rest/api/azure/devops/wit/work%20items/get%20work%20items%20batch?view=azure-devops-rest-6.0
