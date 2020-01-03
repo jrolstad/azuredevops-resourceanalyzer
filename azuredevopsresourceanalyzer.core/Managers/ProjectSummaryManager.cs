@@ -61,6 +61,14 @@ namespace azuredevopsresourceanalyzer.core.Managers
             var releaseData = await Task.WhenAll(releaseTasks);
             var releases = releaseData.SelectMany(r => r);
 
+            if (IsEmpty(repository))
+            {
+                return new Component
+                {
+                    Repository = Map(repository, builds: builds, releases: releases)
+                };
+            }
+
             var commitTask = _azureDevopsService.GetRepositoryCommits(organization, project, repository.id,startDate);
             var pullRequestTask = _azureDevopsService.GetPullRequests(organization, project, repository.id);
             var branchTask = _azureDevopsService.GetBranchStatistics(organization, project, repository.id);
@@ -69,26 +77,30 @@ namespace azuredevopsresourceanalyzer.core.Managers
             var pullRequests = (await Task.WhenAll(pullRequestTask)).SelectMany(r=>r);
             var branches = (await Task.WhenAll(branchTask)).SelectMany(r=>r);
             
-            var result = new Component
+            return new Component
             {
                 Repository = Map(repository,commits,pullRequests,branches, builds, releases),
             };
 
-            return result;
+        }
+
+        private static bool IsEmpty(GitRepository repository)
+        {
+            return repository.size == 0;
         }
 
         private Repository Map(GitRepository toMap,
-            IEnumerable<GitCommitRef> commits,
-            IEnumerable<GitPullRequest> pullRequests,
-            IEnumerable<GitBranchStat> branches,
-            IEnumerable<Models.AzureDevops.BuildDefinition> builds,
-            IEnumerable<Models.AzureDevops.ReleaseDefinition> releases)
+            IEnumerable<GitCommitRef> commits = null,
+            IEnumerable<GitPullRequest> pullRequests = null,
+            IEnumerable<GitBranchStat> branches = null,
+            IEnumerable<Models.AzureDevops.BuildDefinition> builds = null,
+            IEnumerable<Models.AzureDevops.ReleaseDefinition> releases = null)
         {
-            var commitSummary = Map(commits)?.ToList();
-            var pullRequestSummary = Map(pullRequests)?.ToList();
-            var branchSummary = Map(branches,toMap)?.ToList();
-            var releasesByBuildId = releases.ToLookup(r => r.BuildId);
-            var buildSummary = builds.Select(b=>Map(b,releasesByBuildId)).ToList();
+            var commitSummary = Map(commits ?? new List<GitCommitRef>())?.ToList();
+            var pullRequestSummary = Map(pullRequests ?? new List<GitPullRequest>())?.ToList();
+            var branchSummary = Map(branches ?? new List<GitBranchStat>(),toMap)?.ToList();
+            var releasesByBuildId = releases?.ToLookup(r => r.BuildId);
+            var buildSummary = builds?.Select(b=>Map(b,releasesByBuildId)).ToList();
 
             return new Repository
             {
@@ -104,7 +116,7 @@ namespace azuredevopsresourceanalyzer.core.Managers
 
         private IEnumerable<Branch> Map(IEnumerable<GitBranchStat> toMap, Models.AzureDevops.GitRepository repository)
         {
-            return toMap
+            return toMap?
                 .Select(m => new Branch
                 {
                     Name = m.name,
@@ -164,7 +176,8 @@ namespace azuredevopsresourceanalyzer.core.Managers
 
         private IEnumerable<Models.ReleaseDefinition> Map(IEnumerable<Models.AzureDevops.ReleaseDefinition> toMap)
         {
-            return toMap.Select(r => new Models.ReleaseDefinition
+            return toMap?
+                .Select(r => new Models.ReleaseDefinition
             {
                 Id = r.id,
                 Name = r.name,
