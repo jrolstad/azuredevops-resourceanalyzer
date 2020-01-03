@@ -114,14 +114,14 @@ namespace azuredevopsresourceanalyzer.core.Managers
                 });
         }
 
-        private static IEnumerable<CommitSummary> Map(IEnumerable<Models.AzureDevops.GitCommitRef> commits)
+        private static IEnumerable<ContributorSummary> Map(IEnumerable<Models.AzureDevops.GitCommitRef> commits)
         {
             return commits?
                 .GroupBy(c => c?.author?.name)
-                .Select(g => new CommitSummary
+                .Select(g => new ContributorSummary
                 {
                     AuthorName = g.Key,
-                    Count = g.Count(),
+                    CommitCount = g.Count(),
                     LastActivity = g.Max(c=>c?.author?.date?.Date),
                     Additions = g.Sum(c=>c.changeCounts?.Add),
                     Edits = g.Sum(c=>c.changeCounts?.Edit),
@@ -137,7 +137,7 @@ namespace azuredevopsresourceanalyzer.core.Managers
                 .Select(g => new PullRequestSummary
                 {
                     AuthorName = g.Key,
-                    Count = g.Count(),
+                    TotalCount = g.Count(),
                     LastActivity = g.Max(c => DateTime.Parse(c.creationDate)),
                     AbandonedCount = g.Count(c=>string.Equals("abandoned",c.status,StringComparison.CurrentCultureIgnoreCase)),
                     ActiveCount = g.Count(c=>string.Equals("active", c.status,StringComparison.CurrentCultureIgnoreCase)),

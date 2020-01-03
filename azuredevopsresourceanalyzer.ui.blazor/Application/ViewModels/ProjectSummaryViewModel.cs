@@ -143,7 +143,7 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
             return new ActivityItem<PullRequestDetail>
             {
                 Name = toMap?.AuthorName,
-                ActivityCount = toMap?.Count,
+                ActivityCount = toMap?.TotalCount,
                 LastActivity = toMap?.LastActivity,
                 ActivityDetails = new PullRequestDetail
                 {
@@ -153,12 +153,12 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
                 }
             };
         }
-        private ActivityItem<CommitDetail> Map(CommitSummary toMap)
+        private ActivityItem<CommitDetail> Map(ContributorSummary toMap)
         {
             return new ActivityItem<CommitDetail>
             {
                 Name = toMap?.AuthorName,
-                ActivityCount = toMap?.Count,
+                ActivityCount = toMap?.CommitCount,
                 LastActivity = toMap?.LastActivity,
                 ActivityDetails = new CommitDetail
                 {
