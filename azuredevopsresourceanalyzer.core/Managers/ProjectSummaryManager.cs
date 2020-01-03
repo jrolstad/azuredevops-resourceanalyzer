@@ -8,6 +8,7 @@ using azuredevopsresourceanalyzer.core.Extensions;
 using azuredevopsresourceanalyzer.core.Models;
 using azuredevopsresourceanalyzer.core.Models.AzureDevops;
 using azuredevopsresourceanalyzer.core.Services;
+using Release = azuredevopsresourceanalyzer.core.Models.AzureDevops.Release;
 
 namespace azuredevopsresourceanalyzer.core.Managers
 {
@@ -59,28 +60,34 @@ namespace azuredevopsresourceanalyzer.core.Managers
                 .Select(b => _azureDevopsService.GetReleaseDefinitionsByBuild(organization, project, b.project?.id, b.id))
                 .ToList();
             var releaseDefinitionForBuildsData = await Task.WhenAll(releaseDefinitionForBuildsTasks);
-            var releaseDefinitionForBuilds = releaseDefinitionForBuildsData.SelectMany(r => r);
+            var releaseDefinitionForBuilds = releaseDefinitionForBuildsData.SelectMany(r => r).ToList();
 
             if (IsEmpty(repository))
             {
                 return new Component
                 {
-                    Repository = Map(repository, builds: buildDefinitions, releases: releaseDefinitionForBuilds)
+                    Repository = Map(repository, buildDefinitions: buildDefinitions, releaseDefinitions: releaseDefinitionForBuilds)
                 };
             }
 
             var commitTask = _azureDevopsService.GetRepositoryCommits(organization, project, repository.id,startDate);
             var pullRequestTask = _azureDevopsService.GetPullRequests(organization, project, repository.id);
             var branchTask = _azureDevopsService.GetBranchStatistics(organization, project, repository.id);
+
             var releaseDefinitionForRepoTask = _azureDevopsService.GetReleaseDefinitionsByRepository(organization, project, repository.project?.id, repository.id);
+            var releaseDefinitions = (await Task.WhenAll(releaseDefinitionForRepoTask)).SelectMany(r => r).ToList();
+            
+            var releasesTasks = releaseDefinitionForBuilds.Union(releaseDefinitions)
+                .Select(r => _azureDevopsService.GetReleases(organization, project, r.id));
 
             var commits = (await Task.WhenAll(commitTask)).SelectMany(r=>r);
             var pullRequests = (await Task.WhenAll(pullRequestTask)).SelectMany(r=>r);
             var branches = (await Task.WhenAll(branchTask)).SelectMany(r=>r);
-            var releaseDefinitions = (await Task.WhenAll(releaseDefinitionForRepoTask)).SelectMany(r => r);
+            var releases = (await Task.WhenAll(releasesTasks)).SelectMany(r => r);
+
             return new Component
             {
-                Repository = Map(repository,commits,pullRequests,branches, buildDefinitions, releaseDefinitionForBuilds, releaseDefinitions),
+                Repository = Map(repository,commits,pullRequests,branches, buildDefinitions, releaseDefinitionForBuilds, releaseDefinitions, releases),
             };
 
         }
@@ -94,16 +101,19 @@ namespace azuredevopsresourceanalyzer.core.Managers
             IEnumerable<GitCommitRef> commits = null,
             IEnumerable<GitPullRequest> pullRequests = null,
             IEnumerable<GitBranchStat> branches = null,
-            IEnumerable<Models.AzureDevops.BuildDefinition> builds = null,
-            IEnumerable<Models.AzureDevops.ReleaseDefinition> releases = null,
-            IEnumerable<Models.AzureDevops.ReleaseDefinition> releaseDefinitionsForRepo = null)
+            IEnumerable<Models.AzureDevops.BuildDefinition> buildDefinitions = null,
+            IEnumerable<Models.AzureDevops.ReleaseDefinition> releaseDefinitions = null,
+            IEnumerable<Models.AzureDevops.ReleaseDefinition> releaseDefinitionsForRepo = null,
+            IEnumerable<Models.AzureDevops.Release> releases = null)
         {
             var commitSummary = Map(commits ?? new List<GitCommitRef>())?.ToList();
             var pullRequestSummary = Map(pullRequests ?? new List<GitPullRequest>())?.ToList();
             var branchSummary = Map(branches ?? new List<GitBranchStat>(),toMap)?.ToList();
-            var releasesByBuildId = releases?.ToLookup(r => r.BuildId);
-            var buildSummary = builds?.Select(b=>Map(b,releasesByBuildId)).ToList();
-            var repoReleaseDefinitions = Map(releaseDefinitionsForRepo ?? new List<Models.AzureDevops.ReleaseDefinition>()).ToList();
+            var releaseDefinitionsByBuildId = releaseDefinitions?.ToLookup(r => r.BuildId);
+            var releasesByReleaseDefinitionId = (releases ?? new List<Release>()).ToLookup(r => r.ReleaseDefinitionId);
+            var buildSummary = buildDefinitions?.Select(b=>Map(b,releaseDefinitionsByBuildId, releasesByReleaseDefinitionId)).ToList();
+            var repoReleaseDefinitions = Map(releaseDefinitionsForRepo ?? new List<Models.AzureDevops.ReleaseDefinition>(), releasesByReleaseDefinitionId).ToList();
+            
             return new Repository
             {
                 Id = toMap.id,
@@ -168,12 +178,14 @@ namespace azuredevopsresourceanalyzer.core.Managers
                 .OrderByDescending(c => c.LastActivity);
         }
 
-        private Models.BuildDefinition Map(Models.AzureDevops.BuildDefinition toMap, ILookup<string,Models.AzureDevops.ReleaseDefinition> releasesByBuildId)
+        private Models.BuildDefinition Map(Models.AzureDevops.BuildDefinition toMap, 
+            ILookup<string,Models.AzureDevops.ReleaseDefinition> releasesByBuildId,
+            ILookup<string, Models.AzureDevops.Release> releasesByReleaseDefinitionId)
         {
             var link = GetWebUrl(toMap._links);
 
             var releasesForBuild = releasesByBuildId[toMap.id];
-            var releases = Map(releasesForBuild).ToList();
+            var releases = Map(releasesForBuild, releasesByReleaseDefinitionId).ToList();
 
             return new Models.BuildDefinition
             {
@@ -184,15 +196,66 @@ namespace azuredevopsresourceanalyzer.core.Managers
             };
         }
 
-        private IEnumerable<Models.ReleaseDefinition> Map(IEnumerable<Models.AzureDevops.ReleaseDefinition> toMap)
+        private IEnumerable<Models.ReleaseDefinition> Map(IEnumerable<Models.AzureDevops.ReleaseDefinition> toMap,
+            ILookup<string, Models.AzureDevops.Release> releasesByReleaseDefinitionId)
         {
             return toMap?
                 .Select(r => new Models.ReleaseDefinition
             {
                 Id = r.id,
                 Name = r.name,
-                Url = GetWebUrl(r._links)
+                Url = GetWebUrl(r._links),
+                LastProductionRelease = GetLastProductionRelease(r.id,releasesByReleaseDefinitionId)
             });
+        }
+
+        private Models.Release GetLastProductionRelease(string releaseDefinitionId,
+            ILookup<string, Release> releasesByReleaseDefinitionId)
+        {
+            var release = releasesByReleaseDefinitionId[releaseDefinitionId]
+                .Select(r=>new{ReleaseDate = ProductionReleaseDate(r),Release=r})
+                .Where(r=>r.ReleaseDate.HasValue)
+                .OrderByDescending(r=>r.ReleaseDate)
+                .Select(r=>Map(r.Release,r.ReleaseDate))
+                .FirstOrDefault();
+
+            return release;
+        }
+
+        private bool IsProductionEnvironment(Models.AzureDevops.ReleaseEnvironment environment)
+        {
+            return environment.name.ContainsValue("prod")
+                   && !environment.name.Contains("pre")
+                && !environment.name.Contains("ppe");
+        }
+
+        private bool IsSuccessfulRelease(Models.AzureDevops.ReleaseEnvironment environment)
+        {
+            return environment.status.ContainsValue("succeeded");
+        }
+
+        private DateTime? ProductionReleaseDate(Models.AzureDevops.Release release)
+        {
+            var successfulProductionReleases = release.environments
+                .Where(e => IsProductionEnvironment(e) && IsSuccessfulRelease(e))
+                .ToList();
+            var releaseDate = successfulProductionReleases
+                .SelectMany(r => r.deploySteps)
+                .Select(s => s.queuedOn)
+                .FirstOrDefault();
+
+            return releaseDate;
+        }
+
+        private Models.Release Map(Models.AzureDevops.Release toMap, DateTime? releaseDate)
+        {
+            return new Models.Release
+            {
+                Id = toMap.id,
+                Name = toMap.name,
+                DeployedAt = releaseDate,
+                Url = GetWebUrl(toMap._links)
+            };
         }
 
         private string GetWebUrl(Dictionary<string, Link> links)

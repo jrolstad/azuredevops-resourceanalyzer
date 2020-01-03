@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace azuredevopsresourceanalyzer.core.Models.AzureDevops
 {
@@ -42,5 +43,6 @@ namespace azuredevopsresourceanalyzer.core.Models.AzureDevops
     {
         public string id { get; set; }
         public string status { get; set; }
+        public DateTime? queuedOn { get; set; }
     }
 }

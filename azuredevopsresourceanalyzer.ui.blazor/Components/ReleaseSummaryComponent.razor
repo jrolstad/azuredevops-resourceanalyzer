@@ -1,0 +1,26 @@
+﻿@using azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
+@if (Items == null || Items.Any())
+{
+    <table class="table-secondary">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Last Production Release</th>
+            <th>Deployed At</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Items)
+        {
+            <tr>
+                <td><NavigableItemComponent Item="@item.ReleaseDefinition" /></td>
+                <td><NavigableItemComponent Item="@item.LastProductionRelease" /></td>
+                <td>@item.DeployedAt?.ToString("M/d/yyy")</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+@code {
+    [Parameter] public IEnumerable<ReleaseSummary> Items { get; set; }
+}

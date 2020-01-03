@@ -4,9 +4,13 @@ namespace azuredevopsresourceanalyzer.core.Extensions
 {
     public static class StringExtensions
     {
-        public static bool ContainsValue(this string value, string toFind, CultureInfo culture)
+        public static bool ContainsValue(this string value, string toFind, CultureInfo culture=null)
         {
-            return culture.CompareInfo.IndexOf(value, toFind, CompareOptions.IgnoreCase) >= 0;
+            if (string.IsNullOrWhiteSpace(value))
+                return false;
+
+            var resolvedCulture = culture ?? CultureInfo.CurrentCulture;
+            return resolvedCulture.CompareInfo.IndexOf(value, toFind, CompareOptions.IgnoreCase) >= 0;
         }
     }
 }

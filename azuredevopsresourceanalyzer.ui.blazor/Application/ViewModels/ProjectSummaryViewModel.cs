@@ -104,7 +104,7 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
             {
                 Repository = Map(toMap.Repository),
                 Builds = toMap.Repository.BuildDefinitions?.Select(Map).OrderBy(b => b.Name).ToList(),
-                Releases = GetReleaseDefinitions(toMap)?.Select(Map).OrderBy(b => b.Name).ToList(),
+                Releases = GetReleaseDefinitions(toMap)?.Select(Map).OrderBy(b => b.ReleaseDefinition.Name).ToList(),
                 Contributors = toMap.Repository?.CommitSummary.Select(Map).OrderByDescending(b => b.LastActivity).ToList(),
                 PullRequests = toMap.Repository?.PullRequestSummary.Select(Map).OrderByDescending(b => b.LastActivity).ToList(),
                 Branches = toMap.Repository?.Branches.Select(Map).ToList()
@@ -135,13 +135,22 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
             };
         }
 
-        private NavigableItem Map(ReleaseDefinition toMap)
+        private ReleaseSummary Map(ReleaseDefinition toMap)
         {
-            return new NavigableItem
+            
+            return new ReleaseSummary
             {
-                Name = toMap?.Name,
-                Url = toMap?.Url
+                ReleaseDefinition = new NavigableItem { Name = toMap.Name,Url=toMap.Url},
+                LastProductionRelease = Map(toMap.LastProductionRelease),
+                DeployedAt = toMap.LastProductionRelease?.DeployedAt
             };
+        }
+
+        private NavigableItem Map(Release toMap)
+        {
+            if (toMap == null)
+                return null;
+            return new NavigableItem {Name = toMap.Name, Url = toMap.Url};
         }
 
         private ActivityItem<PullRequestDetail> Map(PullRequestSummary toMap)
@@ -190,7 +199,7 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
     {
         public NavigableItem Repository { get; set; }
         public List<NavigableItem> Builds { get; set; }
-        public List<NavigableItem> Releases { get; set; }
+        public List<ReleaseSummary> Releases { get; set; }
         public List<ActivityItem<CommitDetail>> Contributors { get; set; }
         public List<ActivityItem<PullRequestDetail>> PullRequests { get; set; }
 
@@ -232,5 +241,13 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
         public int CommitsAhead { get; set; }
         public int CommitsBehind { get; set; }
         
+    }
+
+    public class ReleaseSummary
+    {
+        public NavigableItem ReleaseDefinition { get; set; }
+        public NavigableItem LastProductionRelease { get; set; }
+        public DateTime? DeployedAt { get; set; }
+
     }
 }

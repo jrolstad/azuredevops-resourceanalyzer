@@ -99,12 +99,7 @@
                         </ul>
                     </td>
                     <td>
-                        <ul class="list-unstyled">
-                            @foreach (var release in item.Releases)
-                            {
-                                <li><NavigableItemComponent Item="@release" /></li>
-                            }
-                        </ul>
+                        <ReleaseSummaryComponent Items="@item.Releases"/>
                     </td>
                     <td>
                         <ul class="list-unstyled">
