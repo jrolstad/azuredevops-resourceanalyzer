@@ -45,7 +45,8 @@ namespace azuredevopsresourceanalyzer.core.Services
 
             var client = await GetClient();
             var releaseDefinitionResult = await client.GetAsJson<ApiResult<ReleaseDefinition>>(url);
-            
+            releaseDefinitionResult.value.ForEach(v=>v.BuildId = buildId);
+
             return releaseDefinitionResult?.value;
         }
 

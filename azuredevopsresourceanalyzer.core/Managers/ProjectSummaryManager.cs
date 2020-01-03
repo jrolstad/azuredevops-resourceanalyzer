@@ -58,7 +58,7 @@ namespace azuredevopsresourceanalyzer.core.Managers
              var builds = await _azureDevopsService.GetBuildDefinitions(organization, project, repository.id);
             
             var releaseTasks = builds
-                .Select(b =>_azureDevopsService.GetReleaseDefinitions(organization, project, b.project?.id, b.id))
+                .Select(b => _azureDevopsService.GetReleaseDefinitions(organization, project, b.project?.id, b.id))
                 .ToList();
             var releaseData = await Task.WhenAll(releaseTasks);
             var releases = releaseData.SelectMany(r => r);
@@ -67,30 +67,31 @@ namespace azuredevopsresourceanalyzer.core.Managers
             var pullRequestTask = _azureDevopsService.GetPullRequests(organization, project, repository.id);
             var branchTask = _azureDevopsService.GetBranchStatistics(organization, project, repository.id);
 
-            var commits = (await Task.WhenAll(commitTask)).SelectMany(r=>r).ToList();
-            var pullRequests = (await Task.WhenAll(pullRequestTask)).SelectMany(r=>r).ToList();
-            var branches = (await Task.WhenAll(branchTask)).SelectMany(r=>r).ToList();
+            var commits = (await Task.WhenAll(commitTask)).SelectMany(r=>r);
+            var pullRequests = (await Task.WhenAll(pullRequestTask)).SelectMany(r=>r);
+            var branches = (await Task.WhenAll(branchTask)).SelectMany(r=>r);
             
             var result = new Component
             {
-                Repository = Map(repository,commits,pullRequests,branches, builds),
-                ReleaseDefinitions = releases.Select(Map).ToList()
-
+                Repository = Map(repository,commits,pullRequests,branches, builds, releases),
             };
 
             return result;
         }
 
         private Repository Map(Models.AzureDevops.GitRepository toMap,
-            ICollection<GitCommitRef> commits,
-            ICollection<GitPullRequest> pullRequests,
-            ICollection<GitBranchStat> branches,
-            ICollection<Models.AzureDevops.BuildDefinition> builds)
+            IEnumerable<GitCommitRef> commits,
+            IEnumerable<GitPullRequest> pullRequests,
+            IEnumerable<GitBranchStat> branches,
+            IEnumerable<Models.AzureDevops.BuildDefinition> builds,
+            IEnumerable<Models.AzureDevops.ReleaseDefinition> releases)
         {
+            var releasesByBuildId = releases.ToLookup(r => r.BuildId);
             var commitSummary = Map(commits)?.ToList();
             var pullRequestSummary = Map(pullRequests)?.ToList();
             var branchSummary = Map(branches)?.ToList();
-            var buildSummary = builds.Select(Map).ToList();
+            var buildSummary = builds.Select(b=>Map(b,releasesByBuildId)).ToList();
+
             return new Repository
             {
                 Id = toMap.id,
@@ -146,14 +147,18 @@ namespace azuredevopsresourceanalyzer.core.Managers
                 .OrderByDescending(c => c.LastActivity);
         }
 
-        private BuildDefinition Map(Models.AzureDevops.BuildDefinition toMap)
+        private BuildDefinition Map(Models.AzureDevops.BuildDefinition toMap, ILookup<string,Models.AzureDevops.ReleaseDefinition> releasesByBuildId)
         {
             var link = GetWebUrl(toMap._links);
+            var releaseData = releasesByBuildId[toMap.id];
+            var releases = releaseData.Select(Map).ToList();
+
             return new BuildDefinition
             {
                 Id = toMap.id,
                 Name = toMap.name,
-                Url = link
+                Url = link,
+                ReleaseDefinitions = releases
             };
         }
 
