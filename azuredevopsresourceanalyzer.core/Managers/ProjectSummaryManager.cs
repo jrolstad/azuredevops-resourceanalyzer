@@ -128,6 +128,9 @@ namespace azuredevopsresourceanalyzer.core.Managers
 
         private static IEnumerable<ContributorSummary> Map(IEnumerable<Models.AzureDevops.GitCommitRef> commits)
         {
+            //For Git commits, author vs committer here is a good explanation: 
+            //https://stackoverflow.com/questions/18750808/difference-between-author-and-committer-in-git
+
             return commits?
                 .GroupBy(c => c?.author?.name)
                 .Select(g => new ContributorSummary
