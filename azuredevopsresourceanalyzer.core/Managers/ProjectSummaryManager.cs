@@ -70,11 +70,10 @@ namespace azuredevopsresourceanalyzer.core.Managers
             var commits = (await Task.WhenAll(commitTask)).SelectMany(r=>r).ToList();
             var pullRequests = (await Task.WhenAll(pullRequestTask)).SelectMany(r=>r).ToList();
             var branches = (await Task.WhenAll(branchTask)).SelectMany(r=>r).ToList();
-
+            
             var result = new Component
             {
-                Repository = Map(repository,commits,pullRequests,branches),
-                BuildDefinitions = builds.Select(Map).ToList(),
+                Repository = Map(repository,commits,pullRequests,branches, builds),
                 ReleaseDefinitions = releases.Select(Map).ToList()
 
             };
@@ -85,12 +84,13 @@ namespace azuredevopsresourceanalyzer.core.Managers
         private Repository Map(Models.AzureDevops.Repository toMap,
             ICollection<Commit> commits,
             ICollection<PullRequest> pullRequests,
-            ICollection<GitBranchStat> branches)
+            ICollection<GitBranchStat> branches,
+            ICollection<Models.AzureDevops.BuildDefinition> builds)
         {
             var commitSummary = Map(commits)?.ToList();
             var pullRequestSummary = Map(pullRequests)?.ToList();
             var branchSummary = Map(branches)?.ToList();
-
+            var buildSummary = builds.Select(Map).ToList();
             return new Repository
             {
                 Id = toMap.id,
@@ -98,7 +98,8 @@ namespace azuredevopsresourceanalyzer.core.Managers
                 Url = toMap.weburl,
                 CommitSummary = commitSummary,
                 PullRequestSummary = pullRequestSummary,
-                Branches = branchSummary
+                Branches = branchSummary,
+                BuildDefinitions = buildSummary
             };
         }
 

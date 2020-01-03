@@ -103,7 +103,7 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
             return new ProjectSummary
             {
                 Repository = Map(toMap.Repository),
-                Builds = toMap.BuildDefinitions?.Select(Map).OrderBy(b => b.Name).ToList(),
+                Builds = toMap.Repository.BuildDefinitions?.Select(Map).OrderBy(b => b.Name).ToList(),
                 Releases = toMap.ReleaseDefinitions?.Select(Map).OrderBy(b => b.Name).ToList(),
                 Contributors = toMap.Repository?.CommitSummary.Select(Map).OrderByDescending(b => b.LastActivity).ToList(),
                 PullRequests = toMap.Repository?.PullRequestSummary.Select(Map).OrderByDescending(b => b.LastActivity).ToList(),
