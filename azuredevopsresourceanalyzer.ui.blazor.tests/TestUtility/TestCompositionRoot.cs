@@ -43,7 +43,7 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.TestUtility
 
     public class TestContext
     {
-        public List<GitRepository> Repositories = new List<GitRepository>();
-        public List<Project> Projects = new List<Project>();
+        public Dictionary<string,List<GitRepository>> Repositories = new Dictionary<string, List<GitRepository>>();
+        public Dictionary<string,List<Project>> Projects = new Dictionary<string,List<Project>>();
     }
 }

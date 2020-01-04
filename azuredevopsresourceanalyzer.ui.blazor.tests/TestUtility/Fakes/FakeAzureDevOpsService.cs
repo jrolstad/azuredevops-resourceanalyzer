@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 using azuredevopsresourceanalyzer.core.Models.AzureDevops;
 using azuredevopsresourceanalyzer.core.Services;
@@ -16,7 +17,12 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.TestUtility.Fakes
         }
         public async Task<List<GitRepository>> GetRepositories(string organization, string project)
         {
-            return _context.Repositories;
+            var key = $"{organization}:{project}";
+
+            if (!_context.Repositories.ContainsKey(key))
+                throw new HttpRequestException("Organization or project not found");
+
+            return _context.Repositories[key];
         }
 
         public async Task<List<BuildDefinition>> GetBuildDefinitions(string organization, string project, string repositoryId)
@@ -56,7 +62,10 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.TestUtility.Fakes
 
         public async Task<List<Project>> GetProjects(string organization)
         {
-            return _context.Projects;
+            if (!_context.Projects.ContainsKey(organization))
+                throw new HttpRequestException("Organization not found");
+
+            return _context.Projects[organization];
         }
     }
 }

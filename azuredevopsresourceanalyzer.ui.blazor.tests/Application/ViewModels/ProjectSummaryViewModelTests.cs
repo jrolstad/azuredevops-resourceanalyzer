@@ -127,7 +127,7 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.Application.ViewModels
         {
             // Given
             var root = TestCompositionRoot.Create();
-            root.WithProject("my-project");
+            root.WithProject("my-project",organization:"jrolstad");
 
             var viewModel = root.Get<ProjectSummaryViewModel>();
             await viewModel.Initialize();
@@ -169,13 +169,14 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.Application.ViewModels
         {
             // Given
             var root = TestCompositionRoot.Create();
+            root.WithProject("jrolstad","the-project");
             root.WithRepository("FIN-FFS-TP-WRT");
 
             var viewModel = root.Get<ProjectSummaryViewModel>();
             await viewModel.Initialize();
 
-            viewModel.Organization = "microsoftit";
-            viewModel.Project = "oneitvso";
+            viewModel.Organization = "jrolstad";
+            viewModel.Project = "the-project";
             viewModel.RepositoryFilter = "fin-ffs-tp-wrt";
             viewModel.StartDate = DateTime.Today.AddYears(-2);
             // When
@@ -219,7 +220,7 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.Application.ViewModels
         {
             // Given
             var root = TestCompositionRoot.Create();
-
+            
             var viewModel = root.Get<ProjectSummaryViewModel>();
             await viewModel.Initialize();
 
