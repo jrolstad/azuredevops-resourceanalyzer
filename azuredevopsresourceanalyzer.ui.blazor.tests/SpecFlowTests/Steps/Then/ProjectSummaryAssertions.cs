@@ -169,6 +169,33 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.SpecFlowTests.Steps.Then
             }
         }
 
+        [Then(@"the project summary results contains build definitions for '(.*)'")]
+        public void ThenTheProjectSummaryResultsContainsBuildDefinitionsFor(string repository, Table table)
+        {
+            var actual = _context.ProjectSummary()
+                .Results
+                .Where(r => string.Equals(r.Repository.Name, repository, StringComparison.CurrentCultureIgnoreCase))
+                .SelectMany(r => r.Builds)
+                .ToDictionary(r => r.Name);
+
+            var expected = table.Rows
+                .Select(r => new
+                {
+                    name = r[0]
+                })
+                .ToList();
+
+            Assert.Equal(expected.Count, actual.Count);
+
+            foreach (var build in expected)
+            {
+                Assert.Contains(build.name, actual.Keys);
+                var actualValue = actual[build.name];
+
+                Assert.Equal(build.name, actualValue.Name);
+            }
+        }
+
 
 
     }

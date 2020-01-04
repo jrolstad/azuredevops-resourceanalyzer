@@ -16,6 +16,10 @@ And pull requests for 'a-repo'
 | person-1   | 2/15/2019  | active    |
 | person-1   | 1/25/2019  | abandoned |
 | person-2   | 2/25/2018  | completed |
+And build definitions for 'a-repo'
+| name    |
+| build-1 |
+| build-2 |
 
 Scenario: Execute Search shows all matching components
 Given I enter 'the-org' into Organization
@@ -39,3 +43,7 @@ And the project summary results contains pull requests for 'a-repo'
 | created by | last activity | abandoned | active | completed |
 | person-1   | 2/15/2019     | 1         | 1      | 0         |
 | person-2   | 2/25/2018     | 0         | 0      | 1         |
+And the project summary results contains build definitions for 'a-repo'
+| name    |
+| build-1 |
+| build-2 |

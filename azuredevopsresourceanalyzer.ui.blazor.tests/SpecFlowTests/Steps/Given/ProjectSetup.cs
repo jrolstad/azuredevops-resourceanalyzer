@@ -80,5 +80,21 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.SpecFlowTests.Steps.Given
                     _context.Project());
             }
         }
+
+        [Given(@"build definitions for '(.*)'")]
+        public void GivenBuildDefinitionsFor(string repository, Table table)
+        {
+            var root = _context.TestRoot();
+
+            foreach (var item in table.Rows)
+            {
+                root.WithBuildDefinition(
+                    item[0],
+                    repository,
+                    organization:_context.Organization(),
+                    project:_context.Project());
+            }
+        }
+
     }
 }
