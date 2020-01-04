@@ -7,11 +7,11 @@ using Xunit;
 namespace azuredevopsresourceanalyzer.ui.blazor.tests.SpecFlowTests.Steps.Then
 {
     [Binding]
-    public class ProjectSummaryResults
+    public class ProjectSummaryAssertions
     {
         private readonly ScenarioContext _context;
 
-        public ProjectSummaryResults(ScenarioContext injectedContext)
+        public ProjectSummaryAssertions(ScenarioContext injectedContext)
         {
             _context = injectedContext;
         }

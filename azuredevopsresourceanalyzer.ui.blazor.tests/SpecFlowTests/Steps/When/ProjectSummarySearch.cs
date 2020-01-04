@@ -1,17 +1,27 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using azuredevopsresourceanalyzer.ui.blazor.tests.SpecFlowTests.Steps.Extensions;
 using TechTalk.SpecFlow;
 
 namespace azuredevopsresourceanalyzer.ui.blazor.tests.SpecFlowTests.Steps.When
 {
     [Binding]
-    public sealed class ExecuteSearchProject
+    public class ProjectSummarySearch
     {
         private readonly ScenarioContext _context;
 
-        public ExecuteSearchProject(ScenarioContext injectedContext)
+        public ProjectSummarySearch(ScenarioContext injectedContext)
         {
             _context = injectedContext;
+        }
+
+        [When("I press the Search button")]
+        public async Task WhenIPressSearch()
+        {
+            await _context.ProjectSummary().Search();
         }
 
         [When("I press the Project Search button")]
@@ -20,6 +30,6 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.SpecFlowTests.Steps.When
             await _context.ProjectSummary().SearchProjects();
         }
 
-        
+
     }
 }

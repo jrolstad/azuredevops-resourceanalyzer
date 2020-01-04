@@ -35,18 +35,12 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.SpecFlowTests.Steps.Given
             var view = _context.ProjectSummary();
             view.RepositoryFilter = filter;
         }
+
         [Given("I enter '(.*)' into Start Date")]
         public void StartDateInput(string startDate)
         {
             var view = _context.ProjectSummary();
-            if (!string.IsNullOrWhiteSpace(startDate))
-            {
-                view.StartDate = DateTime.Parse(startDate);
-            }
-            else
-            {
-                view.StartDate = null;
-            }
+            view.StartDate = startDate.ToDateTime();
         }
     }
 }
