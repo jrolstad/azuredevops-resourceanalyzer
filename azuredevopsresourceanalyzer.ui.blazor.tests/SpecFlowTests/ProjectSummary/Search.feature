@@ -13,5 +13,7 @@ And I enter 'my-project' into Project
 And I enter '' into Repository Filter
 And I enter '12/25/2018' into Start Date
 When I press the Search button
-Then 1 components are shown
-And no errors are shown
+Then no errors are shown
+And the project summary results contain repositories
+| repository   |
+| a-repo       |

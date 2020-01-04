@@ -150,10 +150,16 @@ testRunner.And("I enter \'12/25/2018\' into Start Date", ((string)(null)), ((Tec
 testRunner.When("I press the Search button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 16
-testRunner.Then("1 components are shown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+testRunner.Then("no errors are shown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
+                TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+                            "repository"});
+                table2.AddRow(new string[] {
+                            "a-repo"});
+                table2.AddRow(new string[] {
+                            "another-repo"});
 #line 17
-testRunner.And("no errors are shown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+testRunner.And("the project summary results contain repositories", ((string)(null)), table2, "And ");
 #line hidden
             }
             this.ScenarioCleanup();

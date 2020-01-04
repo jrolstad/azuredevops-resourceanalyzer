@@ -48,6 +48,17 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.SpecFlowTests.Steps.Then
             Assert.Null(_context.ProjectSummary().Error);
         }
 
+        [Then(@"the project summary results contain repositories")]
+        public void ThenTheProjectSummaryResultsContainRepositories(Table table)
+        {
+            var expected = table.Rows
+                .Select(r => r[0].Trim())
+                .ToList();
+
+            Assert.Equal(expected,_context.ProjectSummary().Results.Select(r=>r.Repository.Name));
+        }
+
+
 
     }
 }
