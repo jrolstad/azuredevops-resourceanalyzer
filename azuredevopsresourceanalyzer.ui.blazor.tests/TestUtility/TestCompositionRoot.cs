@@ -16,15 +16,23 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.TestUtility
 
         public static TestCompositionRoot Create()
         {
-            return new TestCompositionRoot(new ServiceCollection());
+            return new TestCompositionRoot(new ServiceCollection(),true);
         }
 
-        private TestCompositionRoot(IServiceCollection services)
+        public static TestCompositionRoot CreateIntegration()
+        {
+            return new TestCompositionRoot(new ServiceCollection(), false);
+        }
+
+        private TestCompositionRoot(IServiceCollection services, bool useFakes)
         {
 
             DependencyInjectionConfig.Configure(services,new ConfigurationRoot(new List<IConfigurationProvider>()));
-            RegisterFakes(services);
-
+            if (useFakes)
+            {
+                RegisterFakes(services);
+            }
+            
             _provider = services.BuildServiceProvider();
         }
 

@@ -28,6 +28,8 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.TestUtility.Fakes
         public async Task<List<BuildDefinition>> GetBuildDefinitions(string organization, string project, string repositoryId)
         {
             var key = GetOrganizationKey(organization, project);
+            if(!_context.BuildDefinitions.ContainsKey(key)) return new List<BuildDefinition>();
+
             var definitions = _context.BuildDefinitions[key];
 
             return definitions
@@ -38,6 +40,8 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.TestUtility.Fakes
         public async Task<List<ReleaseDefinition>> GetReleaseDefinitionsByBuild(string organization, string project, string projectId, string buildId)
         {
             var key = GetOrganizationKey(organization, project);
+            if (!_context.ReleaseDefinitions.ContainsKey(key)) return new List<ReleaseDefinition>();
+
             var definitions = _context.ReleaseDefinitions[key];
 
             return definitions
@@ -48,6 +52,8 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.TestUtility.Fakes
         public async Task<List<ReleaseDefinition>> GetReleaseDefinitionsByRepository(string organization, string project, string projectId, string repositoryId)
         {
             var key = GetOrganizationKey(organization, project);
+            if (!_context.ReleaseDefinitions.ContainsKey(key)) return new List<ReleaseDefinition>();
+
             var definitions = _context.ReleaseDefinitions[key];
 
             return definitions
@@ -58,6 +64,8 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.TestUtility.Fakes
         public async Task<List<Release>> GetReleases(string organization, string project, string releaseDefinitionId)
         {
             var key = GetOrganizationKey(organization, project);
+            if (!_context.Releases.ContainsKey(key)) return new List<Release>();
+
             var definitions = _context.Releases[key];
 
             return definitions
@@ -68,6 +76,8 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.TestUtility.Fakes
         public async Task<List<GitPullRequest>> GetPullRequests(string organization, string project, string repositoryId)
         {
             var key = GetOrganizationKey(organization, project);
+            if (!_context.PullRequests.ContainsKey(key)) return new List<GitPullRequest>();
+
             var definitions = _context.PullRequests[key];
 
             return definitions
@@ -78,6 +88,8 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.TestUtility.Fakes
         public async Task<List<GitBranchStat>> GetBranchStatistics(string organization, string project, string repositoryId)
         {
             var key = GetOrganizationKey(organization, project);
+            if (!_context.BranchStats.ContainsKey(key)) return new List<GitBranchStat>();
+
             var definitions = _context.BranchStats[key];
 
             return definitions
@@ -88,6 +100,8 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.TestUtility.Fakes
         public async Task<List<GitCommitRef>> GetRepositoryCommits(string organization, string project, string repositoryId, DateTime? startDate)
         {
             var key = GetOrganizationKey(organization, project);
+            if (!_context.Commits.ContainsKey(key)) return new List<GitCommitRef>();
+
             var definitions = _context.Commits[key];
 
             return definitions

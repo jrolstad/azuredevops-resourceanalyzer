@@ -126,7 +126,9 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.Application.ViewModels
         {
             // Given
             var root = TestCompositionRoot.Create();
-            root.WithProject("my-project",organization:"jrolstad");
+            root.WithProject("project-c",organization:"jrolstad");
+            root.WithProject("project-a",organization:"jrolstad");
+            root.WithProject("project-b",organization:"jrolstad");
 
             var viewModel = root.Get<ProjectSummaryViewModel>();
             await viewModel.Initialize();
@@ -139,7 +141,7 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.Application.ViewModels
             // Then
             Assert.Null(viewModel.Error);
             Assert.NotEmpty(viewModel.Projects);
-            Assert.Equal(viewModel.Projects.First(),viewModel.Project);
+            Assert.Equal("project-a",viewModel.Project);
         }
 
         [Fact]
@@ -168,13 +170,14 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.Application.ViewModels
             var root = TestCompositionRoot.Create();
             root.WithProject("jrolstad","the-project");
             root.WithRepository("FIN-FFS-TP-WRT");
+            root.WithRepository("FIN-foo");
 
             var viewModel = root.Get<ProjectSummaryViewModel>();
             await viewModel.Initialize();
 
             viewModel.Organization = "jrolstad";
             viewModel.Project = "the-project";
-            viewModel.RepositoryFilter = "fin-ffs-tp-wrt";
+            viewModel.RepositoryFilter = "fin-ffs-tp";
             viewModel.StartDate = DateTime.Today.AddYears(-2);
             // When
             await viewModel.Search();
@@ -185,7 +188,7 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.Application.ViewModels
 
             foreach (var result in viewModel.Results)
             {
-                Assert.NotNull(result.Repository.Name);
+                Assert.Equal("FIN-FFS-TP-WRT",result.Repository.Name);
                 Assert.NotNull(result.Repository.Url);
             }
         }
