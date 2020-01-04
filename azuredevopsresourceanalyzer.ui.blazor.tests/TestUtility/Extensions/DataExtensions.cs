@@ -135,6 +135,58 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.TestUtility.Extensions
             WithItem(organization, project, root.Context.PullRequests, item);
         }
 
+        public static void WithBranch(this TestCompositionRoot root,
+            string repositoryId,
+            string name,
+            int commitsAhead = 0,
+            int commitsBehind = 0,
+            string organization = "jrolstad",
+            string project = "the-project")
+        {
+            var item = new GitBranchStat
+            {
+                aheadCount = commitsAhead,
+                behindCount = commitsBehind,
+                name = name,
+                RepositoryId = repositoryId
+            };
+
+            WithItem(organization, project, root.Context.BranchStats, item);
+        }
+
+        public static void WithCommit(this TestCompositionRoot root,
+            string repositoryId,
+            string authorName,
+            string authorEmail=null,
+            DateTime? commitDate = null,
+            int deletions = 0,
+            int edits = 0,
+            int additions = 0,
+            string organization = "jrolstad",
+            string project = "the-project")
+        {
+            var item = new GitCommitRef
+            {
+                author = new GitUserDate
+                {
+                    date = commitDate ?? DateTime.Now.AddDays(-7),
+                    email = authorEmail ?? Base64Encode(authorName),
+                    name = authorName
+                },
+                changeCounts = new ChangeCountDictionary
+                {
+                    Add = additions,
+                    Edit = edits,
+                    Delete = deletions
+                },
+                commitId = Guid.NewGuid().ToString(),
+                RepositoryId = repositoryId
+            };
+            
+
+            WithItem(organization, project, root.Context.Commits, item);
+        }
+
         public static void WithProject(this TestCompositionRoot root,
             string name, 
             string id = null,

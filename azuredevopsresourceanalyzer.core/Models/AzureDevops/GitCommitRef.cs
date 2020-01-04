@@ -10,6 +10,7 @@ namespace azuredevopsresourceanalyzer.core.Models.AzureDevops
         public GitUserDate committer { get; set; }
         public ChangeCountDictionary changeCounts { get; set; }
         public List<ResourceReference> workItems { get; set; }
+        public string RepositoryId { get; set; }
     }
 
     public class GitUserDate

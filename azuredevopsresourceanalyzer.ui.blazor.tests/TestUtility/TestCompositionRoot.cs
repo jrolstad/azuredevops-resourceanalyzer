@@ -47,6 +47,8 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.TestUtility
         public Dictionary<string,List<BuildDefinition>> BuildDefinitions = new Dictionary<string, List<BuildDefinition>>();
         public Dictionary<string,List<ReleaseDefinition>> ReleaseDefinitions = new Dictionary<string, List<ReleaseDefinition>>();
         public Dictionary<string,List<GitPullRequest>> PullRequests = new Dictionary<string, List<GitPullRequest>>();
+        public Dictionary<string,List<GitBranchStat>> BranchStats = new Dictionary<string, List<GitBranchStat>>();
+        public Dictionary<string,List<GitCommitRef>> Commits = new Dictionary<string, List<GitCommitRef>>();
         public Dictionary<string,List<Release>> Releases = new Dictionary<string, List<Release>>();
         public Dictionary<string,List<Project>> Projects = new Dictionary<string,List<Project>>();
     }
