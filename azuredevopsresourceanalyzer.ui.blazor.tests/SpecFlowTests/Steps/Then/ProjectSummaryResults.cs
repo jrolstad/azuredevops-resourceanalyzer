@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using azuredevopsresourceanalyzer.ui.blazor.tests.SpecFlowTests.Steps.Extensions;
 using TechTalk.SpecFlow;
 using Xunit;
@@ -24,5 +25,23 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.SpecFlowTests.Steps.Then
 
             Assert.Equal(count,componentsOnView.Count);
         }
+
+        [Then(@"the selected project is '(.*)'")]
+        public void ThenTheSelectedProjectIs(string project)
+        {
+            Assert.Equal(project,_context.ProjectSummary().Project);
+        }
+
+        [Then(@"the list of projects shown are")]
+        public void ThenTheListOfProjectsShownAre(Table table)
+        {
+            var expected = table.Rows
+                .Select(r => r[0].Trim())
+                .ToList();
+
+            Assert.Equal(expected,_context.ProjectSummary().Projects);
+        }
+
+
     }
 }

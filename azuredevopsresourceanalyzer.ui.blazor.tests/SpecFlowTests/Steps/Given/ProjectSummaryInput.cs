@@ -15,6 +15,14 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.SpecFlowTests.Steps.Given
             _context = injectedContext;
         }
 
+        [Given("I enter '(.*)' into organization")]
+        public void SelectedProjectInput(string organization)
+        {
+            var view = _context.ProjectSummary();
+            view.Organization = organization;
+        }
+
+
         [Given("Project Summary with organization '(.*)', project '(.*)', repository filter '(.*)' and start date '(.*)'")]
         public void GivenProjectSummaryInputs(string organization, string project, string repositoryFilter, string startDate)
         {
