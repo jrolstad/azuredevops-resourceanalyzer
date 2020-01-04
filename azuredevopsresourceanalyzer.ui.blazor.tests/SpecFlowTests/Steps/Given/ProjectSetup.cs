@@ -65,6 +65,20 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.SpecFlowTests.Steps.Given
 
         }
 
+        [Given(@"pull requests for '(.*)'")]
+        public void GivenPullRequestsFor(string repository, Table table)
+        {
+            var root = _context.TestRoot();
 
+            foreach (var item in table.Rows)
+            {
+                root.WithPullRequest(repository,
+                    item[0],
+                    item[1].ToDateTime(),
+                    item[2],
+                    _context.Organization(),
+                    _context.Project());
+            }
+        }
     }
 }

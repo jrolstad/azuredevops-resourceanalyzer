@@ -132,6 +132,43 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.SpecFlowTests.Steps.Then
 
         }
 
+        [Then(@"the project summary results contains pull requests for '(.*)'")]
+        public void ThenTheProjectSummaryResultsContainsPullRequestsFor(string repository, Table table)
+        {
+            var actual = _context.ProjectSummary()
+                .Results
+                .Where(r => string.Equals(r.Repository.Name, repository, StringComparison.CurrentCultureIgnoreCase))
+                .SelectMany(r => r.PullRequests)
+                .ToDictionary(r => r.Name);
+
+            var expected = table.Rows
+                .Select(r => new
+                {
+                    name = r[0],
+                    lastActivity = r[1].ToDateTime(),
+                    abandonedCount = r[2].ToInt32(),
+                    activeCount = r[3].ToInt32(),
+                    completedCount = r[4].ToInt32(),
+                })
+                .ToList();
+
+            Assert.Equal(expected.Count, actual.Count);
+
+            foreach (var requester in expected)
+            {
+                Assert.Contains(requester.name, actual.Keys);
+                var actualValue = actual[requester.name];
+
+                Assert.Equal(requester.lastActivity, actualValue.LastActivity);
+
+                Assert.Equal(requester.abandonedCount, actualValue.ActivityDetails.Abandoned);
+                Assert.Equal(requester.activeCount, actualValue.ActivityDetails.Active);
+                Assert.Equal(requester.completedCount, actualValue.ActivityDetails.Complete);
+
+
+            }
+        }
+
 
 
     }
