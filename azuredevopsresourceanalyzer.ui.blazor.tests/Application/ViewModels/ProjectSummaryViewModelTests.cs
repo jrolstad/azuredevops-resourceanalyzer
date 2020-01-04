@@ -122,7 +122,6 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.Application.ViewModels
         }
 
         [Fact]
-        [Trait("Category", "Integration")]
         public async Task SearchProjects_ValidOrganization_GetsProjectsAndSelectsFirstOne()
         {
             // Given
@@ -144,7 +143,6 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.Application.ViewModels
         }
 
         [Fact]
-        [Trait("Category", "Integration")]
         public async Task SearchProjects_InvalidOrganization_ShowsErrors()
         {
             // Given
@@ -164,7 +162,6 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.Application.ViewModels
         }
 
         [Fact]
-        [Trait("Category", "Integration")]
         public async Task Search_ValidOrganizationAndProject_ShowsResults()
         {
             // Given
@@ -194,7 +191,6 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.Application.ViewModels
         }
 
         [Fact]
-        [Trait("Category", "Integration")]
         public async Task Search_InvalidOrganization_ShowsErrors()
         {
             // Given
@@ -215,7 +211,6 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.Application.ViewModels
         }
 
         [Fact]
-        [Trait("Category", "Integration")]
         public async Task Search_InvalidProject_ShowsErrors()
         {
             // Given
