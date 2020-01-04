@@ -7,7 +7,7 @@ Given project 'my-project-1' in organization 'the-org'
 Given project 'my-project-4' in organization 'the-other-org'
 
 Scenario: Search projects in organization shows all projects
-Given I enter 'the-org' into organization
+Given I enter 'the-org' into Organization
 When I press the Project Search button
 Then the list of projects shown are
 | Project      |

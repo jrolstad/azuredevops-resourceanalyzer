@@ -129,7 +129,7 @@ this.ScenarioInitialize(scenarioInfo);
 this.FeatureBackground();
 #line hidden
 #line 10
-testRunner.Given("I enter \'the-org\' into organization", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+testRunner.Given("I enter \'the-org\' into Organization", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 11
 testRunner.When("I press the Project Search button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");

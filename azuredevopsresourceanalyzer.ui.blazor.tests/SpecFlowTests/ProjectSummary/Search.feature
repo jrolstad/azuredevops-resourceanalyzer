@@ -3,7 +3,10 @@
 Background: 
 Given project 'my-project' in organization 'the-org'
 
-Scenario: Execute Search
-Given Project Summary with organization 'the-org', project 'my-project', repository filter '' and start date '12/1/2017'
+Scenario: Execute Search shows all matching components
+Given I enter 'the-org' into Organization
+And I enter 'my-project' into Project
+And I enter '' into Repository Filter
+And I enter '12/25/2018' into Start Date
 When I press the Search button
-Then 1 components are shown
+Then 0 components are shown
