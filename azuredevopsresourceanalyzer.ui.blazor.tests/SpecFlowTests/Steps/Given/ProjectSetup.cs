@@ -17,7 +17,7 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.SpecFlowTests.Steps.Given
         [Given("project '(.*)' in organization '(.*)'")]
         public void GivenOrganizationAndProject(string project, string organization)
         {
-            _context.TestRoot().WithProject(project,organization);
+            _context.TestRoot().WithProject(project,organization:organization);
         }
     }
 }

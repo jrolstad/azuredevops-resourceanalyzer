@@ -98,13 +98,13 @@ testRunner.Given("project \'my-project-4\' in organization \'the-other-org\'", (
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Search Projects in Organization")]
+        [Xunit.SkippableFactAttribute(DisplayName="Search projects in organization shows all projects")]
         [Xunit.TraitAttribute("FeatureTitle", "SearchProjects")]
-        [Xunit.TraitAttribute("Description", "Search Projects in Organization")]
-        public virtual void SearchProjectsInOrganization()
+        [Xunit.TraitAttribute("Description", "Search projects in organization shows all projects")]
+        public virtual void SearchProjectsInOrganizationShowsAllProjects()
         {
             string[] tagsOfScenario = ((string[])(null));
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Search Projects in Organization", null, ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Search projects in organization shows all projects", null, ((string[])(null)));
 #line 9
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
