@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels;
 using azuredevopsresourceanalyzer.ui.blazor.tests.TestUtility;
+using azuredevopsresourceanalyzer.ui.blazor.tests.TestUtility.Extensions;
 using Xunit;
 
 namespace azuredevopsresourceanalyzer.ui.blazor.tests.Application.ViewModels
@@ -126,6 +127,7 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.Application.ViewModels
         {
             // Given
             var root = TestCompositionRoot.Create();
+            root.WithProject("my-project");
 
             var viewModel = root.Get<ProjectSummaryViewModel>();
             await viewModel.Initialize();
@@ -167,6 +169,7 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.Application.ViewModels
         {
             // Given
             var root = TestCompositionRoot.Create();
+            root.WithRepository("FIN-FFS-TP-WRT");
 
             var viewModel = root.Get<ProjectSummaryViewModel>();
             await viewModel.Initialize();
@@ -186,8 +189,6 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.Application.ViewModels
             {
                 Assert.NotNull(result.Repository.Name);
                 Assert.NotNull(result.Repository.Url);
-
-                Assert.NotEmpty(result.Contributors);
             }
         }
 

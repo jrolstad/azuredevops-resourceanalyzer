@@ -24,9 +24,4 @@
     </Reference>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="TestUtility\Fakes\" />
-    <Folder Include="TestUtility\Extensions\" />
-  </ItemGroup>
-
 </Project>
