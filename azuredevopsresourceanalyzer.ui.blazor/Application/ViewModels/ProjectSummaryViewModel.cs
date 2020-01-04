@@ -179,7 +179,7 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
                 {
                     Additions = toMap.Additions.GetValueOrDefault(),
                     Edits = toMap.Edits.GetValueOrDefault(),
-                    Deletions = toMap.Edits.GetValueOrDefault()
+                    Deletions = toMap.Deletions.GetValueOrDefault()
                 }
             };
         }
