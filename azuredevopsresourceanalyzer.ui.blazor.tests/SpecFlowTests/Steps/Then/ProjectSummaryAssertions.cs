@@ -92,6 +92,45 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.SpecFlowTests.Steps.Then
             }
         }
 
+        [Then(@"the project summary results contains contributors for '(.*)'")]
+        public void ThenTheProjectSummaryResultsContainsContributorsFor(string repository, Table table)
+        {
+            var actual = _context.ProjectSummary()
+                .Results
+                .Where(r => string.Equals(r.Repository.Name, repository, StringComparison.CurrentCultureIgnoreCase))
+                .SelectMany(r => r.Contributors)
+                .ToDictionary(r => r.Name);
+
+            var expected = table.Rows
+                .Select(r => new
+                {
+                    name = r[0],
+                    commitCount = r[1].ToInt32(),
+                    lastActivity = r[2].ToDateTime(),
+                    deletionCount = r[3].ToInt32(),
+                    editCount = r[4].ToInt32(),
+                    additionCount = r[5].ToInt32(),
+                })
+                .ToList();
+
+            Assert.Equal(expected.Count, actual.Count);
+
+            foreach (var contributor in expected)
+            {
+                Assert.Contains(contributor.name, actual.Keys);
+                var actualValue = actual[contributor.name];
+
+                Assert.Equal(contributor.commitCount,actualValue.ActivityCount);
+                Assert.Equal(contributor.lastActivity,actualValue.LastActivity);
+
+                Assert.Equal(contributor.additionCount, actualValue.ActivityDetails.Additions);
+                Assert.Equal(contributor.editCount, actualValue.ActivityDetails.Edits);
+                Assert.Equal(contributor.deletionCount, actualValue.ActivityDetails.Deletions);
+
+               
+            }
+
+        }
 
 
 

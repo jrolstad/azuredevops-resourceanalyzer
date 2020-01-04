@@ -45,5 +45,26 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.SpecFlowTests.Steps.Given
             }
         }
 
+        [Given(@"commits for '(.*)'")]
+        public void GivenRepositoryWithCommits(string repository, Table table)
+        {
+            var root = _context.TestRoot();
+
+            foreach (var commit in table.Rows)
+            {
+                root.WithCommit(repository,
+                    commit[0],
+                    commit[1],
+                    commit[2].ToDateTime(),
+                    commit[3].ToInt32(),
+                    commit[4].ToInt32(),
+                    commit[5].ToInt32(),
+                    _context.Organization(),
+                    _context.Project());
+            }
+
+        }
+
+
     }
 }
