@@ -89,13 +89,13 @@ testRunner.Given("project \'my-project\' in organization \'the-org\'", ((string)
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Execute Search")]
+        [Xunit.SkippableFactAttribute(DisplayName="Execute Search shows all matching components")]
         [Xunit.TraitAttribute("FeatureTitle", "Project Summary Search")]
-        [Xunit.TraitAttribute("Description", "Execute Search")]
-        public virtual void ExecuteSearch()
+        [Xunit.TraitAttribute("Description", "Execute Search shows all matching components")]
+        public virtual void ExecuteSearchShowsAllMatchingComponents()
         {
             string[] tagsOfScenario = ((string[])(null));
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute Search", null, ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute Search shows all matching components", null, ((string[])(null)));
 #line 6
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -136,6 +136,9 @@ testRunner.When("I press the Search button", ((string)(null)), ((TechTalk.SpecFl
 #line hidden
 #line 12
 testRunner.Then("0 components are shown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 13
+testRunner.And("no errors are shown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();

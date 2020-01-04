@@ -42,6 +42,12 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.SpecFlowTests.Steps.Then
             Assert.Equal(expected,_context.ProjectSummary().Projects);
         }
 
+        [Then(@"no errors are shown")]
+        public void NoErrorsAreShown()
+        {
+            Assert.Null(_context.ProjectSummary().Error);
+        }
+
 
     }
 }

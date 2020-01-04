@@ -15,3 +15,4 @@ Then the list of projects shown are
 | my-project-2 |
 | my-project-3 |
 And the selected project is 'my-project-1'
+And no errors are shown
