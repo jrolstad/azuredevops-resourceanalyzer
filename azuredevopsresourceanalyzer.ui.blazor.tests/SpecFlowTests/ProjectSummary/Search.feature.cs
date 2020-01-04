@@ -156,10 +156,23 @@ testRunner.Then("no errors are shown", ((string)(null)), ((TechTalk.SpecFlow.Tab
                             "repository"});
                 table2.AddRow(new string[] {
                             "a-repo"});
-                table2.AddRow(new string[] {
-                            "another-repo"});
 #line 17
 testRunner.And("the project summary results contain repositories", ((string)(null)), table2, "And ");
+#line hidden
+                TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+                            "branch name",
+                            "commits behind",
+                            "commits ahead"});
+                table3.AddRow(new string[] {
+                            "master",
+                            "0",
+                            "0"});
+                table3.AddRow(new string[] {
+                            "feature/foo",
+                            "2",
+                            "5"});
+#line 20
+testRunner.And("the project sumary results contains branches for \'a-repo\'", ((string)(null)), table3, "And ");
 #line hidden
             }
             this.ScenarioCleanup();

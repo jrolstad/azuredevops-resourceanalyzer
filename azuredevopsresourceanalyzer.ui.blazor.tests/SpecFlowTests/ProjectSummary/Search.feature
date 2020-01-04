@@ -17,3 +17,7 @@ Then no errors are shown
 And the project summary results contain repositories
 | repository   |
 | a-repo       |
+And the project summary results contains branches for 'a-repo'
+| branch name | commits behind | commits ahead |
+| master      | 0              | 0             |
+| feature/foo | 2              | 5             |

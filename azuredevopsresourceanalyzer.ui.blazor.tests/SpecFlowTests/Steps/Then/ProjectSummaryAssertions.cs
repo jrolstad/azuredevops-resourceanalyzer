@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using azuredevopsresourceanalyzer.ui.blazor.tests.SpecFlowTests.Steps.Extensions;
+using azuredevopsresourceanalyzer.ui.blazor.tests.TestUtility.Extensions;
 using TechTalk.SpecFlow;
 using Xunit;
 
@@ -57,6 +58,40 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.SpecFlowTests.Steps.Then
 
             Assert.Equal(expected,_context.ProjectSummary().Results.Select(r=>r.Repository.Name));
         }
+
+        [Then(@"the project summary results contains branches for '(.*)'")]
+        public void ThenTheProjectSummaryResultsContainsBranchesFor(string repository, Table table)
+        {
+            var actual = _context.ProjectSummary()
+                .Results
+                .Where(r => string.Equals(r.Repository.Name, repository, StringComparison.CurrentCultureIgnoreCase))
+                .SelectMany(r => r.Branches)
+                .ToDictionary(r=>r.Name.Name);
+
+            var expected = table.Rows
+                .Select(r => new
+                {
+                    name = r[0],
+                    behindCount = r[1].ToInt32(),
+                    aheadCount = r[2].ToInt32()
+
+                })
+                .ToList();
+            
+            Assert.Equal(expected.Count,actual.Count);
+
+            foreach (var branch in expected)
+            {
+                Assert.Contains(branch.name,actual.Keys);
+                var actualValue = actual[branch.name];
+
+                Assert.Equal(branch.aheadCount,actualValue.CommitsAhead);
+                Assert.Equal(branch.behindCount,actualValue.CommitsBehind);
+
+                Assert.NotNull(actualValue.Name.Url);
+            }
+        }
+
 
 
 
