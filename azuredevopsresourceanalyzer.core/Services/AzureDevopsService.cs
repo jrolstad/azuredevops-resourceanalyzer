@@ -8,7 +8,20 @@ using azuredevopsresourceanalyzer.core.Models.AzureDevops;
 
 namespace azuredevopsresourceanalyzer.core.Services
 {
-    public class AzureDevopsService
+    public interface IAzureDevopsService
+    {
+        Task<List<GitRepository>> GetRepositories(string organization, string project);
+        Task<List<BuildDefinition>> GetBuildDefinitions(string organization, string project, string repositoryId);
+        Task<List<ReleaseDefinition>> GetReleaseDefinitionsByBuild(string organization, string project, string projectId, string buildId);
+        Task<List<ReleaseDefinition>> GetReleaseDefinitionsByRepository(string organization, string project, string projectId, string repositoryId);
+        Task<List<Release>> GetReleases(string organization, string project, string releaseDefinitionId);
+        Task<List<GitPullRequest>> GetPullRequests(string organization, string project, string repositoryId);
+        Task<List<GitBranchStat>> GetBranchStatistics(string organization, string project, string repositoryId);
+        Task<List<GitCommitRef>> GetRepositoryCommits(string organization, string project, string repositoryId,DateTime? startDate);
+        Task<List<Project>> GetProjects(string organization);
+    }
+
+    public class AzureDevopsService : IAzureDevopsService
     {
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly ConfigurationService _configurationService;

@@ -17,7 +17,7 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.Configuration
             services.AddTransient<ProjectSummaryManager>();
             services.AddTransient<ProjectManager>();
 
-            services.AddSingleton<AzureDevopsService>();
+            services.AddSingleton<IAzureDevopsService,AzureDevopsService>();
             services.AddSingleton<ConfigurationService>();
         }
     }

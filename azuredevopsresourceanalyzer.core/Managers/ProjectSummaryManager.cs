@@ -14,9 +14,9 @@ namespace azuredevopsresourceanalyzer.core.Managers
 {
     public class ProjectSummaryManager
     {
-        private readonly AzureDevopsService _azureDevopsService;
+        private readonly IAzureDevopsService _azureDevopsService;
 
-        public ProjectSummaryManager(AzureDevopsService azureDevopsService)
+        public ProjectSummaryManager(IAzureDevopsService azureDevopsService)
         {
             _azureDevopsService = azureDevopsService;
         }

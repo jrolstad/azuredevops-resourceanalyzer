@@ -8,9 +8,9 @@ namespace azuredevopsresourceanalyzer.core.Managers
 {
     public class ProjectManager
     {
-        private readonly AzureDevopsService _azureDevopsService;
+        private readonly IAzureDevopsService _azureDevopsService;
 
-        public ProjectManager(AzureDevopsService azureDevopsService)
+        public ProjectManager(IAzureDevopsService azureDevopsService)
         {
             _azureDevopsService = azureDevopsService;
         }
