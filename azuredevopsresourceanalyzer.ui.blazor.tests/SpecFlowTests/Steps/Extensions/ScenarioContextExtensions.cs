@@ -26,6 +26,26 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.SpecFlowTests.Steps.Extens
             return context.Get<TestCompositionRoot>("TestCompositionRoot");
         }
 
-        
+        public static string Organization(this ScenarioContext context)
+        {
+            return context.Get<string>("Organization");
+        }
+
+        public static void Organization(this ScenarioContext context, string value)
+        {
+            context.Set(value, "Organization");
+        }
+
+        public static string Project(this ScenarioContext context)
+        {
+            return context.Get<string>("Project");
+        }
+
+        public static void Project(this ScenarioContext context, string value)
+        {
+            context.Set(value, "Project");
+        }
+
+
     }
 }

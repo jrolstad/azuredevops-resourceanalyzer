@@ -82,6 +82,21 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.SpecFlowTests.ProjectSumma
 #line 4
 testRunner.Given("project \'my-project\' in organization \'the-org\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
+            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+                        "branch name",
+                        "commits behind",
+                        "commits ahead"});
+            table1.AddRow(new string[] {
+                        "master",
+                        "0",
+                        "0"});
+            table1.AddRow(new string[] {
+                        "feature/foo",
+                        "2",
+                        "5"});
+#line 5
+testRunner.And("repository \'a-repo\' with branches", ((string)(null)), table1, "And ");
+#line hidden
         }
         
         void System.IDisposable.Dispose()
@@ -96,7 +111,7 @@ testRunner.Given("project \'my-project\' in organization \'the-org\'", ((string)
         {
             string[] tagsOfScenario = ((string[])(null));
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute Search shows all matching components", null, ((string[])(null)));
-#line 6
+#line 10
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -119,25 +134,25 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-#line 7
+#line 11
 testRunner.Given("I enter \'the-org\' into Organization", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 8
+#line 12
 testRunner.And("I enter \'my-project\' into Project", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 9
+#line 13
 testRunner.And("I enter \'\' into Repository Filter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 10
+#line 14
 testRunner.And("I enter \'12/25/2018\' into Start Date", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 11
+#line 15
 testRunner.When("I press the Search button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 12
-testRunner.Then("0 components are shown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 16
+testRunner.Then("1 components are shown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 13
+#line 17
 testRunner.And("no errors are shown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }

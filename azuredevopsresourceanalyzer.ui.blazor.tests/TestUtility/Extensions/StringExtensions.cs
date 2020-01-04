@@ -2,7 +2,7 @@
 
 namespace azuredevopsresourceanalyzer.ui.blazor.tests.TestUtility.Extensions
 {
-    public static class DateTimeExtensions
+    public static class StringExtensions
     {
         public static DateTime? ToDateTime(this string value)
         {
@@ -13,6 +13,17 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.TestUtility.Extensions
             else
             {
                 return null;
+            }
+        }
+        public static int ToInt32(this string value)
+        {
+            if (!string.IsNullOrWhiteSpace(value))
+            {
+                return int.Parse(value);
+            }
+            else
+            {
+                return 0;
             }
         }
     }

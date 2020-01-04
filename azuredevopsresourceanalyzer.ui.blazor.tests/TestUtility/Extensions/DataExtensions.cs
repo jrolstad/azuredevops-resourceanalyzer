@@ -10,7 +10,6 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.TestUtility.Extensions
         public static void WithRepository(this TestCompositionRoot root, 
             string name, 
             string url = "https://dev.azure.com/repo/{0}",
-            string id = null,
             long size = 1,
             string organization="jrolstad",
             string project = "the-project")
@@ -18,7 +17,7 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.TestUtility.Extensions
             var item = new GitRepository
             {
                 name = name,
-                id = id ?? Guid.NewGuid().ToString(),
+                id = Base64Encode(name),
                 weburl = string.Format(url, name),
                 size = size
             };
@@ -28,7 +27,7 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.TestUtility.Extensions
 
         public static void WithBuildDefinition(this TestCompositionRoot root,
             string name,
-            string repositoryId,
+            string repositoryName,
             string url = "https://dev.azure.com/build/{0}",
             string id = null,
             string organization = "jrolstad",
@@ -38,7 +37,7 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.TestUtility.Extensions
             {
                 name = name,
                 id = id ?? Guid.NewGuid().ToString(),
-                RepositoryId = repositoryId,
+                RepositoryId = Base64Encode(repositoryName),
                 project = new Project
                 {
                     name = name,
@@ -53,7 +52,7 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.TestUtility.Extensions
 
         public static void WithReleaseDefinition(this TestCompositionRoot root,
             string name,
-            string repositoryId=null,
+            string repositoryName=null,
             string buildId=null,
             string url = "https://dev.azure.com/release/{0}",
             string id = null,
@@ -64,7 +63,7 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.TestUtility.Extensions
             {
                 name = name,
                 id = id ?? Guid.NewGuid().ToString(),
-                RepositoryId = repositoryId,
+                RepositoryId = Base64Encode(repositoryName),
                 BuildId = buildId,
                 _links = WithLinks(string.Format(url, name))
 
@@ -114,7 +113,7 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.TestUtility.Extensions
         }
 
         public static void WithPullRequest(this TestCompositionRoot root,
-            string repositoryId,
+            string repositoryName,
             string createdBy,
             DateTime? createdAt = null,
             string status = "complete",
@@ -129,14 +128,14 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.TestUtility.Extensions
                 },
                 creationDate = createdAt.ToString(),
                 status = status,
-                RepositoryId = repositoryId
+                RepositoryId = Base64Encode(repositoryName)
             };
 
             WithItem(organization, project, root.Context.PullRequests, item);
         }
 
         public static void WithBranch(this TestCompositionRoot root,
-            string repositoryId,
+            string repositoryName,
             string name,
             int commitsAhead = 0,
             int commitsBehind = 0,
@@ -148,14 +147,14 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.TestUtility.Extensions
                 aheadCount = commitsAhead,
                 behindCount = commitsBehind,
                 name = name,
-                RepositoryId = repositoryId
+                RepositoryId = Base64Encode(repositoryName)
             };
 
             WithItem(organization, project, root.Context.BranchStats, item);
         }
 
         public static void WithCommit(this TestCompositionRoot root,
-            string repositoryId,
+            string repositoryName,
             string authorName,
             string authorEmail=null,
             DateTime? commitDate = null,
@@ -180,7 +179,7 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.TestUtility.Extensions
                     Delete = deletions
                 },
                 commitId = Guid.NewGuid().ToString(),
-                RepositoryId = repositoryId
+                RepositoryId = Base64Encode(repositoryName)
             };
             
 
