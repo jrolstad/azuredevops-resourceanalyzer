@@ -9,16 +9,7 @@ namespace azuredevopsresourceanalyzer.core.Models.AzureDevops
         public string RepositoryId { get; set; }
         public string id { get; set; }
         public string name { get; set; }
-        public string url { get; set; }
         public Dictionary<string, Link> _links { get; set; }
-        public List<ReleaseDefinitionEnvironment> environments { get; set; }
-
-    }
-
-    public class ReleaseDefinitionEnvironment
-    {
-        public string id { get; set; }
-        public string name { get; set; }
     }
 
     public class Release

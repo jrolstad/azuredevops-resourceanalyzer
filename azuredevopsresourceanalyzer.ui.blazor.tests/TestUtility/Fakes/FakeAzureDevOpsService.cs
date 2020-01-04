@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using azuredevopsresourceanalyzer.core.Models.AzureDevops;
@@ -17,7 +18,7 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.TestUtility.Fakes
         }
         public async Task<List<GitRepository>> GetRepositories(string organization, string project)
         {
-            var key = $"{organization}:{project}";
+            var key = GetOrganizationKey(organization, project);
 
             if (!_context.Repositories.ContainsKey(key))
                 throw new HttpRequestException("Organization or project not found");
@@ -27,27 +28,57 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.TestUtility.Fakes
 
         public async Task<List<BuildDefinition>> GetBuildDefinitions(string organization, string project, string repositoryId)
         {
-            return new List<BuildDefinition>();
+            var key = GetOrganizationKey(organization, project);
+
+            var definitions = _context.BuildDefinitions[key];
+
+            return definitions
+                .Where(d => d.RepositoryId == repositoryId)
+                .ToList();
         }
 
         public async Task<List<ReleaseDefinition>> GetReleaseDefinitionsByBuild(string organization, string project, string projectId, string buildId)
         {
-            return new List<ReleaseDefinition>();
+            var key = GetOrganizationKey(organization, project);
+
+            var definitions = _context.ReleaseDefinitions[key];
+
+            return definitions
+                .Where(d => d.BuildId == buildId)
+                .ToList();
         }
 
         public async Task<List<ReleaseDefinition>> GetReleaseDefinitionsByRepository(string organization, string project, string projectId, string repositoryId)
         {
-            return new List<ReleaseDefinition>();
+            var key = GetOrganizationKey(organization, project);
+
+            var definitions = _context.ReleaseDefinitions[key];
+
+            return definitions
+                .Where(d => d.RepositoryId == repositoryId)
+                .ToList();
         }
 
         public async Task<List<Release>> GetReleases(string organization, string project, string releaseDefinitionId)
         {
-            return new List<Release>();
+            var key = GetOrganizationKey(organization, project);
+
+            var definitions = _context.Releases[key];
+
+            return definitions
+                .Where(d => d.ReleaseDefinitionId == releaseDefinitionId)
+                .ToList();
         }
 
         public async Task<List<GitPullRequest>> GetPullRequests(string organization, string project, string repositoryId)
         {
-            return new List<GitPullRequest>();
+            var key = GetOrganizationKey(organization, project);
+
+            var definitions = _context.PullRequests[key];
+
+            return definitions
+                .Where(d => d.RepositoryId == repositoryId)
+                .ToList();
         }
 
         public async Task<List<GitBranchStat>> GetBranchStatistics(string organization, string project, string repositoryId)
@@ -66,6 +97,11 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.TestUtility.Fakes
                 throw new HttpRequestException("Organization not found");
 
             return _context.Projects[organization];
+        }
+
+        private string GetOrganizationKey(string organization, string project)
+        {
+            return $"{organization}:{project}";
         }
     }
 }

@@ -44,6 +44,10 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.TestUtility
     public class TestContext
     {
         public Dictionary<string,List<GitRepository>> Repositories = new Dictionary<string, List<GitRepository>>();
+        public Dictionary<string,List<BuildDefinition>> BuildDefinitions = new Dictionary<string, List<BuildDefinition>>();
+        public Dictionary<string,List<ReleaseDefinition>> ReleaseDefinitions = new Dictionary<string, List<ReleaseDefinition>>();
+        public Dictionary<string,List<GitPullRequest>> PullRequests = new Dictionary<string, List<GitPullRequest>>();
+        public Dictionary<string,List<Release>> Releases = new Dictionary<string, List<Release>>();
         public Dictionary<string,List<Project>> Projects = new Dictionary<string,List<Project>>();
     }
 }
