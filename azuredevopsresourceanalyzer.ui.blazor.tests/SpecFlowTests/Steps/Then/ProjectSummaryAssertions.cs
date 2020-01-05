@@ -196,6 +196,36 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.SpecFlowTests.Steps.Then
             }
         }
 
+        [Then(@"the project summary results contains release definitions for '(.*)'")]
+        public void ThenTheProjectSummaryResultsContainsReleaseDefinitionsFor(string repository, Table table)
+        {
+            var actual = _context.ProjectSummary()
+                .Results
+                .Where(r => string.Equals(r.Repository.Name, repository, StringComparison.CurrentCultureIgnoreCase))
+                .SelectMany(r => r.Releases)
+                .ToDictionary(r => r.ReleaseDefinition.Name);
+
+            var expected = table.Rows
+                .Select(r => new
+                {
+                    name = r[0],
+                    lastProductionRelease = r[1],
+                    lastDeployed = r[2].ToDateTime()
+                })
+                .ToList();
+
+            Assert.Equal(expected.Count, actual.Count);
+
+            foreach (var release in expected)
+            {
+                Assert.Contains(release.name, actual.Keys);
+                var actualValue = actual[release.name];
+                
+                Assert.Equal(release.name,actualValue.ReleaseDefinition.Name);
+                Assert.Equal(release.lastDeployed, actualValue.DeployedAt);
+                Assert.Equal(release.lastProductionRelease, actualValue.LastProductionRelease.Name);
+            }
+        }
 
 
     }

@@ -20,6 +20,13 @@ And build definitions for 'a-repo'
 | name    |
 | build-1 |
 | build-2 |
+And release definitions for build 'build-1'
+| name      |
+| release-1 |
+| release-2 |
+And release definitions for repository 'a-repo'
+| name      |
+| release-3 |
 
 Scenario: Execute Search shows all matching components
 Given I enter 'the-org' into Organization
@@ -47,3 +54,8 @@ And the project summary results contains build definitions for 'a-repo'
 | name    |
 | build-1 |
 | build-2 |
+And the project summary results contains release definitions for 'a-repo'
+| name      | last released to production | last released to production at |
+| release-1 | the-release-11              | 3/5/2019                       |
+| release-2 |                             |                                |
+| release-3 | the-release-55              | 2/18/2019                      |

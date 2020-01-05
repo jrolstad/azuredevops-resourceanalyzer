@@ -36,7 +36,7 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.TestUtility.Extensions
             var item = new BuildDefinition
             {
                 name = name,
-                id = id ?? Guid.NewGuid().ToString(),
+                id = id ?? Base64Encode(name),
                 RepositoryId = Base64Encode(repositoryName),
                 project = new Project
                 {
@@ -53,7 +53,7 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.TestUtility.Extensions
         public static void WithReleaseDefinition(this TestCompositionRoot root,
             string name,
             string repositoryName=null,
-            string buildId=null,
+            string buildName=null,
             string url = "https://dev.azure.com/release/{0}",
             string id = null,
             string organization = "jrolstad",
@@ -62,9 +62,9 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.TestUtility.Extensions
             var item = new ReleaseDefinition
             {
                 name = name,
-                id = id ?? Guid.NewGuid().ToString(),
-                RepositoryId = Base64Encode(repositoryName),
-                BuildId = buildId,
+                id = id ?? Base64Encode(name),
+                RepositoryId = id ?? Base64Encode(repositoryName),
+                BuildId = Base64Encode(buildName),
                 _links = WithLinks(string.Format(url, name))
 
             };
@@ -221,6 +221,9 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.TestUtility.Extensions
         }
         private static string Base64Encode(string plainText)
         {
+            if (string.IsNullOrWhiteSpace(plainText))
+                return null;
+
             var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
             return System.Convert.ToBase64String(plainTextBytes);
         }

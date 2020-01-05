@@ -96,5 +96,35 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.SpecFlowTests.Steps.Given
             }
         }
 
+        [Given(@"release definitions for build '(.*)'")]
+        public void GivenReleaseDefinitionsForBuild(string build, Table table)
+        {
+            var root = _context.TestRoot();
+
+            foreach (var item in table.Rows)
+            {
+                root.WithReleaseDefinition(
+                    item[0],
+                    buildName:build,
+                    organization: _context.Organization(),
+                    project: _context.Project());
+            }
+        }
+
+        [Given(@"release definitions for repository '(.*)'")]
+        public void GivenReleaseDefinitionsForRepository(string repository, Table table)
+        {
+            var root = _context.TestRoot();
+
+            foreach (var item in table.Rows)
+            {
+                root.WithReleaseDefinition(
+                    item[0],
+                    repositoryName: repository,
+                    organization: _context.Organization(),
+                    project: _context.Project());
+            }
+        }
+
     }
 }

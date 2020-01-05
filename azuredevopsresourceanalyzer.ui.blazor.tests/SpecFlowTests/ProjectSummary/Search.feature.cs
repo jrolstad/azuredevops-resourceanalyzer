@@ -156,6 +156,22 @@ testRunner.And("pull requests for \'a-repo\'", ((string)(null)), table3, "And ")
 #line 19
 testRunner.And("build definitions for \'a-repo\'", ((string)(null)), table4, "And ");
 #line hidden
+            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+                        "name"});
+            table5.AddRow(new string[] {
+                        "release-1"});
+            table5.AddRow(new string[] {
+                        "release-2"});
+#line 23
+testRunner.And("release definitions for build \'build-1\'", ((string)(null)), table5, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
+                        "name"});
+            table6.AddRow(new string[] {
+                        "release-3"});
+#line 27
+testRunner.And("release definitions for repository \'a-repo\'", ((string)(null)), table6, "And ");
+#line hidden
         }
         
         void System.IDisposable.Dispose()
@@ -170,7 +186,7 @@ testRunner.And("build definitions for \'a-repo\'", ((string)(null)), table4, "An
         {
             string[] tagsOfScenario = ((string[])(null));
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute Search shows all matching components", null, ((string[])(null)));
-#line 24
+#line 31
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -193,99 +209,118 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-#line 25
+#line 32
 testRunner.Given("I enter \'the-org\' into Organization", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 26
+#line 33
 testRunner.And("I enter \'my-project\' into Project", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 27
+#line 34
 testRunner.And("I enter \'\' into Repository Filter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 28
+#line 35
 testRunner.And("I enter \'12/25/2018\' into Start Date", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 29
+#line 36
 testRunner.When("I press the Search button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 30
+#line 37
 testRunner.Then("no errors are shown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
                             "repository"});
-                table5.AddRow(new string[] {
+                table7.AddRow(new string[] {
                             "a-repo"});
-#line 31
-testRunner.And("the project summary results contain repositories", ((string)(null)), table5, "And ");
+#line 38
+testRunner.And("the project summary results contain repositories", ((string)(null)), table7, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
                             "branch name",
                             "commits behind",
                             "commits ahead"});
-                table6.AddRow(new string[] {
+                table8.AddRow(new string[] {
                             "master",
                             "0",
                             "0"});
-                table6.AddRow(new string[] {
+                table8.AddRow(new string[] {
                             "feature/foo",
                             "2",
                             "5"});
-#line 34
-testRunner.And("the project summary results contains branches for \'a-repo\'", ((string)(null)), table6, "And ");
+#line 41
+testRunner.And("the project summary results contains branches for \'a-repo\'", ((string)(null)), table8, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
                             "contributor",
                             "commits",
                             "last activity",
                             "lines deleted",
                             "lines edited",
                             "lines added"});
-                table7.AddRow(new string[] {
+                table9.AddRow(new string[] {
                             "person-1",
                             "2",
                             "12/10/2019",
                             "5",
                             "4",
                             "8"});
-                table7.AddRow(new string[] {
+                table9.AddRow(new string[] {
                             "person-2",
                             "1",
                             "1/25/2019",
                             "8",
                             "2",
                             "3"});
-#line 38
-testRunner.And("the project summary results contains contributors for \'a-repo\'", ((string)(null)), table7, "And ");
+#line 45
+testRunner.And("the project summary results contains contributors for \'a-repo\'", ((string)(null)), table9, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
                             "created by",
                             "last activity",
                             "abandoned",
                             "active",
                             "completed"});
-                table8.AddRow(new string[] {
+                table10.AddRow(new string[] {
                             "person-1",
                             "2/15/2019",
                             "1",
                             "1",
                             "0"});
-                table8.AddRow(new string[] {
+                table10.AddRow(new string[] {
                             "person-2",
                             "2/25/2018",
                             "0",
                             "0",
                             "1"});
-#line 42
-testRunner.And("the project summary results contains pull requests for \'a-repo\'", ((string)(null)), table8, "And ");
+#line 49
+testRunner.And("the project summary results contains pull requests for \'a-repo\'", ((string)(null)), table10, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
                             "name"});
-                table9.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "build-1"});
-                table9.AddRow(new string[] {
+                table11.AddRow(new string[] {
                             "build-2"});
-#line 46
-testRunner.And("the project summary results contains build definitions for \'a-repo\'", ((string)(null)), table9, "And ");
+#line 53
+testRunner.And("the project summary results contains build definitions for \'a-repo\'", ((string)(null)), table11, "And ");
+#line hidden
+                TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
+                            "name",
+                            "last released to production",
+                            "last released to production at"});
+                table12.AddRow(new string[] {
+                            "release-1",
+                            "the-release-11",
+                            "3/5/2019"});
+                table12.AddRow(new string[] {
+                            "release-2",
+                            "",
+                            ""});
+                table12.AddRow(new string[] {
+                            "release-3",
+                            "the-release-55",
+                            "2/18/2019"});
+#line 57
+testRunner.And("the project summary results contains release definitions for \'a-repo\'", ((string)(null)), table12, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
