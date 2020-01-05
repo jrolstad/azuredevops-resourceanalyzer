@@ -126,5 +126,29 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.SpecFlowTests.Steps.Given
             }
         }
 
+        [Given(@"releases for release definition '(.*)'")]
+        public void GivenReleasesForReleaseDefinition(string releaseDefinition, Table table)
+        {
+            var root = _context.TestRoot();
+
+            foreach (var item in table.Rows)
+            {
+                root.WithRelease(
+                    item[0],
+                    releaseDefinitionName:releaseDefinition,
+                    organization: _context.Organization(),
+                    project: _context.Project());
+
+                root.WithReleaseEnvironment(
+                    item[1],
+                    item[0],
+                    item[2],
+                    deployedAt:item[3].ToDateTime(),
+                    organization: _context.Organization(),
+                    project: _context.Project());
+            }
+        }
+
+
     }
 }

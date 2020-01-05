@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using azuredevopsresourceanalyzer.core.Models.AzureDevops;
 
@@ -74,9 +75,7 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.TestUtility.Extensions
 
         public static void WithRelease(this TestCompositionRoot root,
             string name,
-            string releaseDefinitionId,
-            DateTime? productionReleaseDate,
-            string productionReleaseName = "the-production-release",
+            string releaseDefinitionName,
             string url = "https://dev.azure.com/release/{0}",
             string id = null,
             string organization = "jrolstad",
@@ -85,31 +84,47 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.TestUtility.Extensions
             var item = new Release
             {
                 name = name,
-                id = id ?? Guid.NewGuid().ToString(),
-                ReleaseDefinitionId = releaseDefinitionId,
+                id = id ?? Base64Encode(name),
+                ReleaseDefinitionId = Base64Encode(releaseDefinitionName),
                 _links = WithLinks(string.Format(url, name)),
-                environments = new List<ReleaseEnvironment>
-                {
-                    new ReleaseEnvironment
-                    {
-                        id = Guid.NewGuid().ToString(),
-                        name = productionReleaseName,
-                        status = productionReleaseDate.HasValue ? "succeeded":"pending",
-                        deploySteps = new List<DeployAttempt>
-                        {
-                            new DeployAttempt
-                            {
-                                id = Guid.NewGuid().ToString(),
-                                queuedOn = productionReleaseDate,
-                                status = productionReleaseDate.HasValue ? "succeeded":"pending"
-                            }
-                        }
-                    }
-                }
-
+                environments = new List<ReleaseEnvironment>()
             };
 
             WithItem(organization, project, root.Context.Releases, item);
+        }
+
+        public static void WithReleaseEnvironment(this TestCompositionRoot root,
+            string name,
+            string releaseName,
+            string status,
+            DateTime? deployedAt,
+            string organization = "jrolstad",
+            string project = "the-project")
+        {
+            var key = GetProjectKey(organization, project);
+
+            var release = root.Context.Releases[key]
+                .FirstOrDefault(r => r.name == releaseName);
+
+            if (release == null)
+                throw new ArgumentOutOfRangeException(nameof(name), $"Unable to find release {releaseName}");
+
+            release.environments.Add(new ReleaseEnvironment
+            {
+                id = Guid.NewGuid().ToString(),
+                name = name,
+                status = status,
+                deploySteps = new List<DeployAttempt>
+                {
+                    new DeployAttempt
+                    {
+                        id = Guid.NewGuid().ToString(),
+                        queuedOn = deployedAt,
+                        status = status
+                    }
+                }
+            });
+
         }
 
         public static void WithPullRequest(this TestCompositionRoot root,
@@ -204,12 +219,17 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.TestUtility.Extensions
 
         private static void WithItem<T>(string organization, string project, Dictionary<string, List<T>> dictionary, T item)
         {
-            var key = $"{organization}:{project}";
+            var key = GetProjectKey(organization, project);
             if (!dictionary.ContainsKey(key))
             {
                 dictionary.Add(key, new List<T>());
             }
             dictionary[key].Add(item);
+        }
+
+        private static string GetProjectKey(string organization, string project)
+        {
+            return $"{organization}:{project}";
         }
 
         private static Dictionary<string,Link> WithLinks(string url)

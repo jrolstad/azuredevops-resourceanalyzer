@@ -223,7 +223,7 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.SpecFlowTests.Steps.Then
                 
                 Assert.Equal(release.name,actualValue.ReleaseDefinition.Name);
                 Assert.Equal(release.lastDeployed, actualValue.DeployedAt);
-                Assert.Equal(release.lastProductionRelease, actualValue.LastProductionRelease.Name);
+                Assert.Equal(release.lastProductionRelease ?? "", actualValue.LastProductionRelease?.Name ?? "");
             }
         }
 

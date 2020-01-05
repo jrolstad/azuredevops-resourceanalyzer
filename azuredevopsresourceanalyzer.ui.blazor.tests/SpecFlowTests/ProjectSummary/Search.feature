@@ -27,6 +27,16 @@ And release definitions for build 'build-1'
 And release definitions for repository 'a-repo'
 | name      |
 | release-3 |
+And releases for release definition 'release-1'
+| name           | environment    | status    | deployed at |
+| the-release-00 | pre-production | succeeded | 4/15/2019   |
+| the-release-00 | production     | queued    |             |
+| the-release-11 | pre-production | succeeded | 2/15/2019   |
+| the-release-11 | production     | succeeded | 3/5/2019    |
+And releases for release definition 'release-3'
+| name           | environment    | status    | deployed at |
+| the-release-55 | pre-production | succeeded | 2/25/2019   |
+| the-release-55 | production     | succeeded | 2/18/2019    |
 
 Scenario: Execute Search shows all matching components
 Given I enter 'the-org' into Organization
