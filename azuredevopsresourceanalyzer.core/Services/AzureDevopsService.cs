@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -136,12 +137,26 @@ namespace azuredevopsresourceanalyzer.core.Services
 
         public async Task<List<WebApiTeam>> GetTeams(string organization)
         {
-            var url = $"https://dev.azure.com/{organization}/_apis/teams?api-version=5.1-preview.3";
+          
 
             var client = await GetClient();
-            var releaseDefinitionResult = await client.GetAsJson<ApiResult<WebApiTeam>>(url);
 
-            return releaseDefinitionResult?.value;
+            ApiResult<WebApiTeam> result;
+            var allData = new List<WebApiTeam>();
+            const int batchsize = 1000;
+            var skip = 0;
+            do
+            {
+                var url = $"https://dev.azure.com/{organization}/_apis/teams?api-version=5.1-preview.3&$top={batchsize}&$skip={skip}";
+                result = await client.GetAsJson<ApiResult<WebApiTeam>>(url);
+
+                allData.AddRange(result.value);
+
+                skip += batchsize;
+            } while (result.value.Any());
+
+
+            return allData;
         }
 
         private async Task<HttpClient> GetClient()
