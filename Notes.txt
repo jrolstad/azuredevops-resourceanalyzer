@@ -13,3 +13,24 @@ https://docs.microsoft.com/en-us/rest/api/azure/devops/wit/wiql/query%20by%20wiq
 
 Get Work Items Batch
 https://docs.microsoft.com/en-us/rest/api/azure/devops/wit/work%20items/get%20work%20items%20batch?view=azure-devops-rest-5.1
+
+Work Item Icons
+https://docs.microsoft.com/en-us/rest/api/azure/devops/wit/work%20item%20icons/list?view=azure-devops-rest-5.1
+
+Work Item Summary
+* By Team
+* Work Item Counts
+  * Story Counts (not started, active, done)
+  * Feature Counts (not started, active, done)
+  * Bug Counts (not started, active, done)
+* Work Item Lifespan
+  * Days from inception to agreed upon (based on board column changing)
+  * agreed upon until working (moved to active)
+  * moved to active until first commit
+  * first commit to done
+  * agreed upon to done
+  * total lifespan
+* Contributors
+   * Story Counts (not started, active, done)
+   * Feature Counts (not started, active, done)
+   * Bug Counts (not started, active, done)
