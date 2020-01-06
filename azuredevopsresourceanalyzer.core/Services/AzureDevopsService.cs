@@ -19,6 +19,7 @@ namespace azuredevopsresourceanalyzer.core.Services
         Task<List<GitBranchStat>> GetBranchStatistics(string organization, string project, string repositoryId);
         Task<List<GitCommitRef>> GetRepositoryCommits(string organization, string project, string repositoryId,DateTime? startDate);
         Task<List<Project>> GetProjects(string organization);
+        Task<List<WebApiTeam>> GetTeams(string organization);
     }
 
     public class AzureDevopsService : IAzureDevopsService
@@ -133,6 +134,16 @@ namespace azuredevopsresourceanalyzer.core.Services
             return releaseDefinitionResult?.value;
         }
 
+        public async Task<List<WebApiTeam>> GetTeams(string organization)
+        {
+            var url = $"https://dev.azure.com/{organization}/_apis/teams?api-version=5.1-preview.3";
+
+            var client = await GetClient();
+            var releaseDefinitionResult = await client.GetAsJson<ApiResult<WebApiTeam>>(url);
+
+            return releaseDefinitionResult?.value;
+        }
+
         private async Task<HttpClient> GetClient()
         {
             var client = _httpClientFactory.CreateClient();
@@ -152,7 +163,6 @@ namespace azuredevopsresourceanalyzer.core.Services
 
             return new AuthenticationHeaderValue("Bearer", _accessToken);
         }
-
-
+        
     }
 }

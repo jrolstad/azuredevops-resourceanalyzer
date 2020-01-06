@@ -13,9 +13,11 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.Configuration
             services.AddHttpClient();
 
             services.AddTransient<ProjectSummaryViewModel>();
+            services.AddTransient<WorkSummaryViewModel>();
 
             services.AddTransient<ProjectSummaryManager>();
             services.AddTransient<ProjectManager>();
+            services.AddTransient<WorkSummaryManager>();
 
             services.AddSingleton<IAzureDevopsService,AzureDevopsService>();
             services.AddSingleton<ConfigurationService>();

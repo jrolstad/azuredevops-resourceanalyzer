@@ -206,21 +206,6 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
         public List<BranchSummary> Branches { get; set; }
     }
 
-    public class NavigableItem
-    {
-        public string Name { get; set; }
-        public string Url { get; set; }
-    }
-
-    public class ActivityItem<T>
-    {
-        public string Name { get; set; }
-        public int? ActivityCount { get; set; }
-        public DateTime? LastActivity { get; set; }
-
-        public T ActivityDetails { get; set; }
-    }
-
     public class PullRequestDetail
     {
         public int Active { get; set; }

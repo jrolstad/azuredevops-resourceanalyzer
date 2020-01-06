@@ -217,6 +217,24 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.TestUtility.Extensions
             });
         }
 
+        public static void WithTeam(this TestCompositionRoot root,
+            string name,
+            string id = null,
+            string description = null,
+            string organization = "default")
+        {
+            if (!root.Context.Teams.ContainsKey(organization))
+            {
+                root.Context.Teams.Add(organization, new List<WebApiTeam>());
+            }
+            root.Context.Teams[organization].Add(new WebApiTeam
+            {
+                name = name,
+                id = id ?? Base64Encode(name),
+                description = description
+            });
+        }
+
         private static void WithItem<T>(string organization, string project, Dictionary<string, List<T>> dictionary, T item)
         {
             var key = GetProjectKey(organization, project);

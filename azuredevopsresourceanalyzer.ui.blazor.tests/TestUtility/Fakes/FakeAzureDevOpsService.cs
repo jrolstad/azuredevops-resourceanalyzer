@@ -117,6 +117,14 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.TestUtility.Fakes
             return _context.Projects[organization];
         }
 
+        public async Task<List<WebApiTeam>> GetTeams(string organization)
+        {
+            if (!_context.Projects.ContainsKey(organization))
+                throw new HttpRequestException("Organization not found");
+
+            return _context.Teams[organization];
+        }
+
         private string GetOrganizationKey(string organization, string project)
         {
             return $"{organization}:{project}";

@@ -59,5 +59,6 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.TestUtility
         public Dictionary<string,List<GitCommitRef>> Commits = new Dictionary<string, List<GitCommitRef>>();
         public Dictionary<string,List<Release>> Releases = new Dictionary<string, List<Release>>();
         public Dictionary<string,List<Project>> Projects = new Dictionary<string,List<Project>>();
+        public Dictionary<string,List<WebApiTeam>> Teams = new Dictionary<string,List<WebApiTeam>>();
     }
 }
