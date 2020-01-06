@@ -1,4 +1,6 @@
-﻿namespace azuredevopsresourceanalyzer.core.Models.AzureDevops
+﻿using System.Collections.Generic;
+
+namespace azuredevopsresourceanalyzer.core.Models.AzureDevops
 {
     public class WorkItemReference
     {

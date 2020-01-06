@@ -25,7 +25,8 @@ namespace azuredevopsresourceanalyzer.core.Managers
             var teamData = await _azureDevopsService.GetTeams(organization);
 
             var filteredTeamData = FilterTeams(teamData, teamFilter).ToList();
-            var teams = await ProcessTeams(organization,project, filteredTeamData);
+            var teamTasks = filteredTeamData.Select(t => ProcessTeams(organization, project, t));
+            var teams = await Task.WhenAll(teamTasks);
 
             return new WorkSummary
             {
@@ -33,16 +34,17 @@ namespace azuredevopsresourceanalyzer.core.Managers
             };
         }
 
-        private async Task<List<Team>> ProcessTeams(string organization, string project, ICollection<WebApiTeam> teamData)
+        private async Task<Team> ProcessTeams(string organization, string project, WebApiTeam teamData)
         {
-            var teamFieldValueTasks = teamData
-                .Select(t => _azureDevopsService.GetTeamFieldValues(organization, project, t.name));
+            var teamFieldValues = await _azureDevopsService.GetTeamFieldValues(organization, project, teamData.name);
 
-            var teamFieldValues = (await Task.WhenAll(teamFieldValueTasks))
-                    .ToDictionary(t=>t.Team)
-                ;
-            var teams = teamData.Select(t=>Map(t,teamFieldValues)).ToList();
-            return teams;
+            var areaPaths = teamFieldValues.values?
+                .Select(v => new Tuple<string, bool>(v.value, v.includeChildren))
+                .ToList() ?? new List<Tuple<string, bool>>();
+            var teamworkItems = await _azureDevopsService.GetWorkItems(organization, project, teamData.name, areaPaths);
+
+            var team = Map(teamData, teamFieldValues);
+            return team;
         }
 
         private IEnumerable<Models.AzureDevops.WebApiTeam> FilterTeams(IEnumerable<Models.AzureDevops.WebApiTeam> teamData, string filter)
@@ -50,15 +52,11 @@ namespace azuredevopsresourceanalyzer.core.Managers
             return teamData.Where(t => t.name.ContainsValue(filter));
         }
 
-        private Team Map(WebApiTeam toMap, Dictionary<string, TeamFieldValues> teamFieldValues)
+        private Team Map(WebApiTeam toMap, TeamFieldValues teamFieldValues)
         {
-            var areaPaths = new List<string>();
-            if (teamFieldValues.ContainsKey(toMap.name))
-            {
-                areaPaths = teamFieldValues[toMap.name].values?
-                    .Select(t => t.value)
-                    .ToList();
-            }
+            var areaPaths = teamFieldValues.values?
+                .Select(t => t.value)
+                .ToList();
 
             return new Team
             {

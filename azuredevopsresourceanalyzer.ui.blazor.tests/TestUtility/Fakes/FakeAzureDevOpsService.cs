@@ -130,6 +130,11 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.TestUtility.Fakes
             throw new NotImplementedException();
         }
 
+        public Task<List<WorkItemReference>> GetWorkItems(string organization, string project, string team, List<Tuple<string, bool>> areaPaths)
+        {
+            throw new NotImplementedException();
+        }
+
         private string GetOrganizationKey(string organization, string project)
         {
             return $"{organization}:{project}";

@@ -23,6 +23,7 @@ namespace azuredevopsresourceanalyzer.core.Services
         Task<List<Project>> GetProjects(string organization);
         Task<List<WebApiTeam>> GetTeams(string organization);
         Task<TeamFieldValues> GetTeamFieldValues(string organization, string project, string team);
+        Task<List<WorkItemReference>> GetWorkItems(string organization, string project, string team, List<Tuple<string,bool>> areaPaths);
     }
 
     public class AzureDevopsService : IAzureDevopsService
@@ -175,6 +176,44 @@ namespace azuredevopsresourceanalyzer.core.Services
             }
 
             return result;
+        }
+
+        public async Task<List<WorkItemReference>> GetWorkItems(string organization, string project, string team, List<Tuple<string,bool>> areaPaths)
+        {
+            if(!areaPaths.Any())
+                return new List<WorkItemReference>();
+
+            var url = $"https://dev.azure.com/{organization}/{project}/{team}/_apis/wit/wiql?api-version=5.1";
+
+            var request = new WorkItemQueryRequest
+            {
+                query = GetWorkItemAreaPathQuery(project, areaPaths)
+            };
+
+            var client = await GetClient();
+            var result = await client.PostAsJsonAsync(url, request);
+            var resultData = await result.Content.ReadAsAsync<WorkItemQueryResult>();
+
+            return resultData.workItems;
+        }
+
+        private string GetWorkItemAreaPathQuery(string project, List<Tuple<string,bool>> areaPaths)
+        {
+            var areaPathConditions = areaPaths
+                .Select(a => $"[System.AreaPath] {GetQueryOperator(a.Item2)} '{a.Item1}'");
+
+            var whereClause = $"({string.Join("OR", areaPathConditions)})";
+
+            var query = $@"SELECT [System.Id]
+                     FROM workitems
+                     WHERE [System.TeamProject] = '{project}' AND {whereClause}";
+
+            return query;
+        }
+
+        private string GetQueryOperator(bool includeChildren)
+        {
+            return includeChildren ? "UNDER" : "=";
         }
 
 
