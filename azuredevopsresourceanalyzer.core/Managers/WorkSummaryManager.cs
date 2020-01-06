@@ -17,9 +17,10 @@ namespace azuredevopsresourceanalyzer.core.Managers
         {
             _azureDevopsService = azureDevopsService;
         }
-        public async Task<WorkSummary> GetSummary(string organization, 
-            string project, 
-            string teamFilter=null,
+
+        public async Task<WorkSummary> GetSummary(string organization,
+            string project,
+            string teamFilter = null,
             DateTime? startDate = null)
         {
             var teamData = await _azureDevopsService.GetTeams(organization);
@@ -39,10 +40,11 @@ namespace azuredevopsresourceanalyzer.core.Managers
             var teamFieldValues = await _azureDevopsService.GetTeamFieldValues(organization, project, teamData.name);
 
             var areaPaths = teamFieldValues.values?
-                .Select(v => new Tuple<string, bool>(v.value, v.includeChildren))
-                .ToList() ?? new List<Tuple<string, bool>>();
-            var workItemReferencesForTeam = await _azureDevopsService.GetWorkItems(organization, project, teamData.name, areaPaths);
-            
+                                .Select(v => new Tuple<string, bool>(v.value, v.includeChildren))
+                                .ToList() ?? new List<Tuple<string, bool>>();
+            var workItemReferencesForTeam =
+                await _azureDevopsService.GetWorkItems(organization, project, teamData.name, areaPaths);
+
             var workItemIds = workItemReferencesForTeam
                 .Select(w => w.id)
                 .ToList();
@@ -52,37 +54,52 @@ namespace azuredevopsresourceanalyzer.core.Managers
             return team;
         }
 
-        private IEnumerable<Models.AzureDevops.WebApiTeam> FilterTeams(IEnumerable<Models.AzureDevops.WebApiTeam> teamData, string filter)
+        private IEnumerable<Models.AzureDevops.WebApiTeam> FilterTeams(
+            IEnumerable<Models.AzureDevops.WebApiTeam> teamData, string filter)
         {
             return teamData.Where(t => t.name.ContainsValue(filter));
         }
 
         private Team Map(WebApiTeam toMap, List<WorkItem> workItems)
         {
-            
+
             return new Team
             {
                 Id = toMap.id,
                 Name = toMap.name,
                 Description = toMap.description,
                 Url = toMap.url,
-                WorkItemTypes = Map(workItems)
+                WorkItemTypes = MapWorkItemType(workItems),
+                Contributors = MapWorkItemContributor(workItems)
             };
         }
 
-        private List<TeamWorkItemType> Map(List<WorkItem> workItems)
+        private List<TeamWorkItemType> MapWorkItemType(IEnumerable<WorkItem> workItems)
         {
-            var workItemsByType = workItems.GroupBy(i => i.fields["System.WorkItemType"]);
+            var workItemsByType = workItems.GroupBy(i => i.WorkItemType());
             var teamWorkItems = workItemsByType
                 .Select(t => new TeamWorkItemType
                 {
                     Type = t.Key.ToString(),
-                    StateCount = t.GroupBy(s=>s.fields["System.State"].ToString())
-                        .ToDictionary(k=>k.Key,v=>v.Count())
+                    StateCount = t.GroupBy(s => s.State())
+                        .ToDictionary(k => k.Key, v => v.Count())
                 })
                 .ToList();
 
             return teamWorkItems;
+        }
+
+        private List<TeamWorkItemContributor> MapWorkItemContributor(List<WorkItem> workItems)
+        {
+            var workItemsByContributor = workItems.GroupBy(i => i.AssignedToName());
+            var contributors = workItemsByContributor
+                .Select(w => new TeamWorkItemContributor
+                {
+                    Contributor = w.Key,
+                    WorkItemTypes = MapWorkItemType(w)
+                })
+                .ToList();
+            return contributors;
         }
     }
 }

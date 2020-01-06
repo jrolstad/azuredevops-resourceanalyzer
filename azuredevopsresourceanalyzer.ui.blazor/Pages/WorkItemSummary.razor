@@ -149,20 +149,25 @@
 
                     <td>
                         <ul class="list-unstyled">
-                            <li>
-                                person-1
-                                <span class="badge badge-secondary" title="Not Started">0</span>
-                                <span class="badge badge-primary" title="Active">0</span>
-                                <span class="badge badge-info" title="Resolved">0</span>
-                                <span class="badge badge-success" title="Complete">0</span>
-                            </li>
-                            <li>
-                                person-2
-                                <span class="badge badge-secondary" title="Not Started">0</span>
-                                <span class="badge badge-primary" title="Active">0</span>
-                                <span class="badge badge-info" title="Resolved">0</span>
-                                <span class="badge badge-success" title="Complete">0</span>
-                            </li>
+                            @foreach (var contributor in item.Contributors)
+                            {
+                                <li>
+                                @contributor.Name
+                                    <ul class="">
+                                        @foreach (var type in contributor.ActivityDetails)
+                                        {
+                                            <li>
+                                                @type.Type
+                                                <span class="badge badge-secondary" title="New">@type.New</span>
+                                                <span class="badge badge-primary" title="Active">@type.Active</span>
+                                                <span class="badge badge-info" title="Resolved">@type.Resolved</span>
+                                                <span class="badge badge-success" title="Complete">@type.Closed</span>
+                                            </li>
+                                        }
+                                    </ul>
+                                </li>
+                            }
+                           
                         </ul>
                     </td>
 

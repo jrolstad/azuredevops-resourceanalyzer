@@ -101,8 +101,10 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
                 .Select(t=>new WorkSummary
                 {
                     Team = new NavigableItem { Name = t.Name,Url=t.Url},
-                    WorkItemTypeCounts = Map(t.WorkItemTypes)
+                    WorkItemTypeCounts = Map(t.WorkItemTypes),
+                    Contributors = Map(t.Contributors)
                 })
+                .OrderBy(t=>t.Team?.Name)
                 .ToList();
         }
 
@@ -122,6 +124,22 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
                 .ToList();
         }
 
+        private List<ActivityItem<List<WorkItemTypeCount>>> Map(List<TeamWorkItemContributor> toMap)
+        {
+            var result = toMap.Select(c => new ActivityItem<List<WorkItemTypeCount>>
+                {
+                    Name = c.Contributor,
+                    ActivityCount = c.WorkItemTypes.Count,
+                    ActivityDetails = Map(c.WorkItemTypes)
+                })
+                .Where(c=>!string.IsNullOrWhiteSpace(c.Name))
+                .Where(c=>c.ActivityDetails.Any())
+                .OrderByDescending(c=>c.ActivityDetails.Max(m=>m.Closed))
+                .ToList();
+
+            return result;
+        }
+
         private T GetValue<T>(Dictionary<string, T> values, string key)
         {
             if (!values.ContainsKey(key))
@@ -136,6 +154,7 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
     {
         public NavigableItem Team { get; set; }
         public List<WorkItemTypeCount> WorkItemTypeCounts { get; set; }
+        public List<ActivityItem<List<WorkItemTypeCount>>> Contributors { get; set; }
     }
 
     public class WorkItemTypeCount

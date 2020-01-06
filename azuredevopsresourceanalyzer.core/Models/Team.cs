@@ -10,11 +10,18 @@ namespace azuredevopsresourceanalyzer.core.Models
         public string Url { get; set; }
 
         public List<TeamWorkItemType> WorkItemTypes { get; set; }
+        public List<TeamWorkItemContributor> Contributors { get; set; }
     }
 
     public class TeamWorkItemType
     {
         public string Type { get; set; }
         public Dictionary<string,int> StateCount { get; set; }
+    }
+
+    public class TeamWorkItemContributor
+    {
+        public string Contributor { get; set; }
+        public List<TeamWorkItemType> WorkItemTypes { get; set; }
     }
 }
