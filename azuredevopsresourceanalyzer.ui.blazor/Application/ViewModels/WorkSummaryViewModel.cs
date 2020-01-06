@@ -26,7 +26,7 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
 
         public string Error { get; set; }
         public List<WorkSummary> Results { get; set; } = new List<WorkSummary>();
-
+        public List<SelectableItem> AvailableWorkItemTypes { get; set; } = new List<SelectableItem>();
         public bool IsSearching = false;
         public bool IsSearchingProjects = false;
 
@@ -83,6 +83,13 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
                 var data = await _manager.GetSummary(this.Organization, this.Project, this.TeamsFilter);
 
                 this.Results = Map(data.Teams);
+                this.AvailableWorkItemTypes = this.Results
+                    .SelectMany(r => r.WorkItemTypeCounts)
+                    .Select(r => r.Type)
+                    .Distinct()
+                    .Select(r=>new SelectableItem{IsSelected = true,Name = r})
+                    .OrderBy(r=>r.Name)
+                    .ToList();
             }
             catch (Exception e)
             {

@@ -54,7 +54,7 @@
                 <input type="date" class="form-control" id="startDateInput" placeholder="Start Date" @bind="@ViewModel.StartDate">
             </div>
             <div class="col">
-                @if(@ViewModel.IsSearching)
+                @if (@ViewModel.IsSearching)
                 {
                     <button class="btn btn-primary" type="button" disabled>
                         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
@@ -65,12 +65,40 @@
                 {
                     <button class="btn btn-primary" type="button" id="searchButton" @onclick="@(async () => await ViewModel.Search())">Search</button>
                 }
-                </div>
+                <button class="btn btn-secondary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"
+                        disabled="@(!ViewModel.AvailableWorkItemTypes.Any())">
+                    <span class="oi oi-wrench"></span>
+                </button>
+            </div>
+           
         </div>
     </div>
 </div>
 <div class="row">
     <p class="alert-danger">@ViewModel.Error</p>
+</div>
+<div class="row">
+    <div class="col">
+        <div class="collapse" id="collapseExample">
+            <div class="card card-body">
+                <p>Work Item Types</p>
+                
+                @foreach (var type in ViewModel.AvailableWorkItemTypes)
+                {
+                    var checkboxId = Guid.NewGuid().ToString();
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="@checkboxId" @bind="@type.IsSelected">
+                        <label class="form-check-label" for="@checkboxId">
+                            @type.Name
+                        </label>
+                    </div>
+
+                }
+
+               
+            </div>
+        </div>
+    </div>
 </div>
 <div class="row">
     <div class="col-md-12">
@@ -84,96 +112,96 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach(var item in ViewModel.Results)
+                @foreach (var item in ViewModel.Results)
                 {
-                <tr>
-                    <td><NavigableItemComponent Item="@item.Team" /> </td>
-                    <td>
-                        <ul class="list-unstyled">
-                            @foreach (var type in item.WorkItemTypeCounts)
-                            {
-                                <li>
-                                    @type.Type
-                                    <span class="badge badge-secondary" title="New">@type.New</span>
-                                    <span class="badge badge-primary" title="Active">@type.Active</span>
-                                    <span class="badge badge-info" title="Resolved">@type.Resolved</span>
-                                    <span class="badge badge-success" title="Complete">@type.Closed</span>
-                                </li>
-                            }
-                        </ul>
-                    </td>
-                    <td>
-                        <table class="table-secondary">
-                            <thead>
-                                <tr>
-                                    <th>Work Item</th>
-                                    <th>Lifespan</th>
-                                    <th>In Backlog</th>
-                                    <th>In Agreed Upon</th>
-                                    <th>In Working</th>
-                                    <th>Agreed Upon to Done</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+                    <tr>
+                        <td><NavigableItemComponent Item="@item.Team" /> </td>
+                        <td>
+                            <ul class="list-unstyled">
+                                @foreach (var type in item.WorkItemTypeCounts)
+                                {
+                                    <li>
+                                        @type.Type
+                                        <span class="badge badge-secondary" title="New">@type.New</span>
+                                        <span class="badge badge-primary" title="Active">@type.Active</span>
+                                        <span class="badge badge-info" title="Resolved">@type.Resolved</span>
+                                        <span class="badge badge-success" title="Complete">@type.Closed</span>
+                                    </li>
+                                }
+                            </ul>
+                        </td>
+                        <td>
+                            <table class="table-secondary">
+                                <thead>
+                                    <tr>
+                                        <th>Work Item</th>
+                                        <th>Lifespan</th>
+                                        <th>In Backlog</th>
+                                        <th>In Agreed Upon</th>
+                                        <th>In Working</th>
+                                        <th>Agreed Upon to Done</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
 
-                                <tr>
-                                    <td>Features</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                </tr>
+                                    <tr>
+                                        <td>Features</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                    </tr>
 
-                                <tr>
-                                    <td>User Stories</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                </tr>
-                                <tr>
-                                    <td>Defects</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                </tr>
+                                    <tr>
+                                        <td>User Stories</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Defects</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                    </tr>
 
-                            </tbody>
-                        </table>
+                                </tbody>
+                            </table>
 
-                    </td>
+                        </td>
 
-                    <td>
-                        <ul class="list-unstyled">
-                            @foreach (var contributor in item.Contributors)
-                            {
-                                <li>
-                                @contributor.Name
-                                    <ul class="">
-                                        @foreach (var type in contributor.ActivityDetails)
-                                        {
-                                            <li>
-                                                @type.Type
-                                                <span class="badge badge-secondary" title="New">@type.New</span>
-                                                <span class="badge badge-primary" title="Active">@type.Active</span>
-                                                <span class="badge badge-info" title="Resolved">@type.Resolved</span>
-                                                <span class="badge badge-success" title="Complete">@type.Closed</span>
-                                            </li>
-                                        }
-                                    </ul>
-                                </li>
-                            }
-                           
-                        </ul>
-                    </td>
+                        <td>
+                            <ul class="list-unstyled">
+                                @foreach (var contributor in item.Contributors)
+                                {
+                                    <li>
+                                        @contributor.Name
+                                        <ul class="">
+                                            @foreach (var type in contributor.ActivityDetails)
+                                            {
+                                                <li>
+                                                    @type.Type
+                                                    <span class="badge badge-secondary" title="New">@type.New</span>
+                                                    <span class="badge badge-primary" title="Active">@type.Active</span>
+                                                    <span class="badge badge-info" title="Resolved">@type.Resolved</span>
+                                                    <span class="badge badge-success" title="Complete">@type.Closed</span>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </li>
+                                }
+
+                            </ul>
+                        </td>
 
 
 
-                </tr>
+                    </tr>
                 }
             </tbody>
         </table>
