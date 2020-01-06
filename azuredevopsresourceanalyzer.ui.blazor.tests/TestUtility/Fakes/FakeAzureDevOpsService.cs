@@ -135,6 +135,11 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.TestUtility.Fakes
             throw new NotImplementedException();
         }
 
+        public Task<List<WorkItem>> GetWorkItems(string organization, string project, List<string> workItemIds)
+        {
+            throw new NotImplementedException();
+        }
+
         private string GetOrganizationKey(string organization, string project)
         {
             return $"{organization}:{project}";

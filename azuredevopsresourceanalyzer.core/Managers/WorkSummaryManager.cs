@@ -41,9 +41,14 @@ namespace azuredevopsresourceanalyzer.core.Managers
             var areaPaths = teamFieldValues.values?
                 .Select(v => new Tuple<string, bool>(v.value, v.includeChildren))
                 .ToList() ?? new List<Tuple<string, bool>>();
-            var teamworkItems = await _azureDevopsService.GetWorkItems(organization, project, teamData.name, areaPaths);
+            var workItemReferencesForTeam = await _azureDevopsService.GetWorkItems(organization, project, teamData.name, areaPaths);
+            
+            var workItemIds = workItemReferencesForTeam
+                .Select(w => w.id)
+                .ToList();
+            var workItems = await _azureDevopsService.GetWorkItems(organization, project, workItemIds);
 
-            var team = Map(teamData, teamFieldValues);
+            var team = Map(teamData, workItems);
             return team;
         }
 
@@ -52,19 +57,15 @@ namespace azuredevopsresourceanalyzer.core.Managers
             return teamData.Where(t => t.name.ContainsValue(filter));
         }
 
-        private Team Map(WebApiTeam toMap, TeamFieldValues teamFieldValues)
+        private Team Map(WebApiTeam toMap, List<WorkItem> workItems)
         {
-            var areaPaths = teamFieldValues.values?
-                .Select(t => t.value)
-                .ToList();
-
+            
             return new Team
             {
                 Id = toMap.id,
                 Name = toMap.name,
                 Description = toMap.description,
                 Url = toMap.url,
-                AreaPaths = areaPaths
             };
         }
     }

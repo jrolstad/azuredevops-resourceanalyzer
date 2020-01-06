@@ -24,6 +24,7 @@ namespace azuredevopsresourceanalyzer.core.Services
         Task<List<WebApiTeam>> GetTeams(string organization);
         Task<TeamFieldValues> GetTeamFieldValues(string organization, string project, string team);
         Task<List<WorkItemReference>> GetWorkItems(string organization, string project, string team, List<Tuple<string,bool>> areaPaths);
+        Task<List<WorkItem>> GetWorkItems(string organization, string project, List<string> workItemIds);
     }
 
     public class AzureDevopsService : IAzureDevopsService
@@ -176,6 +177,43 @@ namespace azuredevopsresourceanalyzer.core.Services
             }
 
             return result;
+        }
+
+        public async Task<List<WorkItem>> GetWorkItems(string organization, string project,List<string> workItemIds)
+        {
+            const int batchSize = 200;
+            var workItemTasks = workItemIds
+                .Segment(batchSize)
+                .Select(i => GetWorkItemsBatch(organization, project, i));
+
+            var result = (await Task.WhenAll(workItemTasks))
+                .SelectMany(r => r)
+                .ToList();
+            return result;
+        }
+
+        private async Task<List<WorkItem>> GetWorkItemsBatch(string organization, string project, IEnumerable<string> workItemIds)
+        {
+            var url = $"https://dev.azure.com/{organization}/{project}/_apis/wit/workitemsbatch?api-version=5.1";
+
+            var request = new WorkItemBatchRequest
+            {
+                ids = workItemIds.ToList(),
+                fields = new List<string>
+                {
+                    "System.Id",
+                    "System.AssignedTo",
+                    "System.State",
+                    "System.WorkItemType",
+                    "System.CreatedDate"
+                }
+            };
+
+            var client = await GetClient();
+            var result = await client.PostAsJsonAsync(url, request);
+            var resultData = await result.Content.ReadAsAsync<ApiResult<WorkItem>>();
+
+            return resultData.value;
         }
 
         public async Task<List<WorkItemReference>> GetWorkItems(string organization, string project, string team, List<Tuple<string,bool>> areaPaths)
