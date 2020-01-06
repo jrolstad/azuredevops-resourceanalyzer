@@ -10,7 +10,28 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.IntegrationTests
     {
         [Fact]
         [Trait("Category", "Integration")]
-        public async Task Search_ValidOrganization_GetsTeams()
+        public async Task Search_ValidOrganizationAndProject_GetsTeams()
+        {
+            // Given
+            var root = TestCompositionRoot.CreateIntegration();
+
+            var viewModel = root.Get<WorkSummaryViewModel>();
+
+            viewModel.Organization = "microsoftit";
+            viewModel.Project = "oneitvso";
+            viewModel.TeamsFilter = "";
+
+            // When
+            await viewModel.Search();
+
+            // Then
+            Assert.Null(viewModel.Error);
+            Assert.NotEmpty(viewModel.Results);
+        }
+
+        [Fact]
+        [Trait("Category", "Integration")]
+        public async Task SearchProjects_ValidOrganization_GetsProjects()
         {
             // Given
             var root = TestCompositionRoot.CreateIntegration();
@@ -20,11 +41,12 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.IntegrationTests
             viewModel.Organization = "jrolstad";
 
             // When
-            await viewModel.Search();
+            await viewModel.SearchProjects();
 
             // Then
             Assert.Null(viewModel.Error);
-            Assert.NotEmpty(viewModel.Results);
+            Assert.NotEmpty(viewModel.Projects);
+            Assert.Equal(viewModel.Projects.First(), viewModel.Project);
         }
     }
 }
