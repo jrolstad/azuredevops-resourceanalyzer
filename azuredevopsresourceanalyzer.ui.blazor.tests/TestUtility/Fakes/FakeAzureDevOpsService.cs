@@ -125,6 +125,11 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.TestUtility.Fakes
             return _context.Teams[organization];
         }
 
+        public Task<TeamFieldValues> GetTeamFieldValues(string organization, string project, string team)
+        {
+            throw new NotImplementedException();
+        }
+
         private string GetOrganizationKey(string organization, string project)
         {
             return $"{organization}:{project}";

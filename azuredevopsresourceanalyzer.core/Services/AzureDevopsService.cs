@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using System.Web;
 using azuredevopsresourceanalyzer.core.Extensions;
 using azuredevopsresourceanalyzer.core.Models.AzureDevops;
 
@@ -21,6 +22,7 @@ namespace azuredevopsresourceanalyzer.core.Services
         Task<List<GitCommitRef>> GetRepositoryCommits(string organization, string project, string repositoryId,DateTime? startDate);
         Task<List<Project>> GetProjects(string organization);
         Task<List<WebApiTeam>> GetTeams(string organization);
+        Task<TeamFieldValues> GetTeamFieldValues(string organization, string project, string team);
     }
 
     public class AzureDevopsService : IAzureDevopsService
@@ -158,6 +160,23 @@ namespace azuredevopsresourceanalyzer.core.Services
 
             return allData;
         }
+
+        public async Task<TeamFieldValues> GetTeamFieldValues(string organization, string project, string team)
+        {
+
+            var url = $"https://dev.azure.com/{organization}/{project}/{team}/_apis/work/teamsettings/teamfieldvalues?api-version=5.1";
+
+            var client = await GetClient();
+            var result = await client.GetAsJson<TeamFieldValues>(url);
+
+            if (result != null)
+            {
+                result.Team = team;
+            }
+
+            return result;
+        }
+
 
         private async Task<HttpClient> GetClient()
         {

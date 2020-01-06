@@ -19,7 +19,7 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.IntegrationTests
 
             viewModel.Organization = "microsoftit";
             viewModel.Project = "oneitvso";
-            viewModel.TeamsFilter = "";
+            viewModel.TeamsFilter = "sr-im-auth";
 
             // When
             await viewModel.Search();
