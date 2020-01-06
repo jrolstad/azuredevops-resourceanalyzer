@@ -4,13 +4,12 @@ https://dev.azure.com/microsoftit/oneitvso/_apis/wit/classificationnodes/Areas?a
 Get All Teams
 https://dev.azure.com/{organization}/_apis/teams?$mine={$mine}&$top={$top}&$skip={$skip}&$expandIdentity={$expandIdentity}&api-version=6.0-preview.3
 
-Get All Iterations for team
-https://dev.azure.com/{organization}/{project}/{team}/_apis/work/teamsettings/iterations?api-version=6.0-preview.1
+Get Area Paths for Team (Teamfieldvalues)
+https://docs.microsoft.com/en-us/rest/api/azure/devops/work/teamfieldvalues/get?view=azure-devops-rest-5.1
+https://dev.azure.com/microsoftit/oneitvso/_apis/work/teamsettings/teamfieldvalues?api-version=5.1&team=SR-IM-Auth-AD
 
-Get Iteration work items
-https://dev.azure.com/{organization}/{project}/{team}/_apis/work/teamsettings/iterations/{iterationId}/workitems?api-version=6.0-preview.1
+Query Work Items
+https://docs.microsoft.com/en-us/rest/api/azure/devops/wit/wiql/query%20by%20wiql?view=azure-devops-rest-5.1
 
-Get work items
-https://dev.azure.com/{organization}/{project}/_apis/wit/workitems?ids={ids}&api-version=6.0-preview.3
-
-https://docs.microsoft.com/en-us/rest/api/azure/devops/wit/work%20items/get%20work%20items%20batch?view=azure-devops-rest-6.0
+Get Work Items Batch
+https://docs.microsoft.com/en-us/rest/api/azure/devops/wit/work%20items/get%20work%20items%20batch?view=azure-devops-rest-5.1
