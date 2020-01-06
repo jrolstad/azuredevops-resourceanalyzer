@@ -20,7 +20,7 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
 
         public string Organization { get; set; }
         public string Project { get; set; }
-        public List<string> Projects { get; set; }
+        public List<string> Projects { get; set; } = new List<string>();
         public string TeamsFilter { get; set; }
         public DateTime? StartDate { get; set; }
 
@@ -29,6 +29,11 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
 
         public bool IsSearching = false;
         public bool IsSearchingProjects = false;
+
+        public async Task Initialize()
+        {
+            this.StartDate = DateTime.Today.AddYears(-2);
+        }
 
         public async Task SearchProjects()
         {
