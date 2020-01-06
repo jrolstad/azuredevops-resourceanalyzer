@@ -100,16 +100,50 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
             return toMap
                 .Select(t=>new WorkSummary
                 {
-                    Team = new NavigableItem { Name = t.Name,Url=t.Url}
+                    Team = new NavigableItem { Name = t.Name,Url=t.Url},
+                    WorkItemTypeCounts = Map(t.WorkItemTypes)
                 })
                 .ToList();
         }
 
+        private List<WorkItemTypeCount> Map(List<TeamWorkItemType> toMap)
+        {
+            return toMap.Select(m => new WorkItemTypeCount
+                    {
+                        Type = m.Type,
+                        Active = GetValue(m.StateCount, "Active"),
+                        New = GetValue(m.StateCount, "New"),
+                        Resolved = GetValue(m.StateCount, "Resolved"),
+                        Closed = GetValue(m.StateCount, "Closed"),
+                    }
+                )
+                .Where(m => (m.Active + m.New + m.Resolved + m.Closed) > 0) //Only show items with work attached
+                .OrderBy(m=>m.Type)
+                .ToList();
+        }
+
+        private T GetValue<T>(Dictionary<string, T> values, string key)
+        {
+            if (!values.ContainsKey(key))
+                return default(T);
+
+            return values[key];
+        }
        
     }
 
     public class WorkSummary
     {
         public NavigableItem Team { get; set; }
+        public List<WorkItemTypeCount> WorkItemTypeCounts { get; set; }
+    }
+
+    public class WorkItemTypeCount
+    {
+        public string Type { get; set; }
+        public int New { get; set; }
+        public int Active { get; set; }
+        public int Resolved { get; set; }
+        public int Closed { get; set; }
     }
 }

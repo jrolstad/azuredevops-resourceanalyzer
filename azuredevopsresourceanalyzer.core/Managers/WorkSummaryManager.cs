@@ -66,7 +66,23 @@ namespace azuredevopsresourceanalyzer.core.Managers
                 Name = toMap.name,
                 Description = toMap.description,
                 Url = toMap.url,
+                WorkItemTypes = Map(workItems)
             };
+        }
+
+        private List<TeamWorkItemType> Map(List<WorkItem> workItems)
+        {
+            var workItemsByType = workItems.GroupBy(i => i.fields["System.WorkItemType"]);
+            var teamWorkItems = workItemsByType
+                .Select(t => new TeamWorkItemType
+                {
+                    Type = t.Key.ToString(),
+                    StateCount = t.GroupBy(s=>s.fields["System.State"].ToString())
+                        .ToDictionary(k=>k.Key,v=>v.Count())
+                })
+                .ToList();
+
+            return teamWorkItems;
         }
     }
 }
