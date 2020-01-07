@@ -83,13 +83,7 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
                 var data = await _manager.GetSummary(this.Organization, this.Project, this.TeamsFilter);
 
                 this.Results = Map(data.Teams);
-                this.AvailableWorkItemTypes = this.Results
-                    .SelectMany(r => r.WorkItemTypeCounts)
-                    .Select(r => r.Type)
-                    .Distinct()
-                    .Select(r=>new SelectableItem{IsSelected = true,Name = r})
-                    .OrderBy(r=>r.Name)
-                    .ToList();
+                this.AvailableWorkItemTypes = Map(this.Results);
             }
             catch (Exception e)
             {
@@ -99,7 +93,52 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
             {
                 IsSearching = false;
             }
+        }
 
+        private void FilterWorkItems()
+        {
+            if (!this.AvailableWorkItemTypes.Any())
+                return;
+
+            var visibleWorkItemTypes = this.AvailableWorkItemTypes
+                .Where(t => t.IsSelected)
+                .ToDictionary(t => t.Name);
+
+            this.Results
+                .SelectMany(r=>r.WorkItemTypeCounts)
+                .ToList()
+                .ForEach(w => { w.Visible = visibleWorkItemTypes.ContainsKey(w.Type); });
+
+            this.Results
+                .SelectMany(r => r.Contributors)
+                .SelectMany(c=>c.ActivityDetails)
+                .ToList()
+                .ForEach(w => { w.Visible = visibleWorkItemTypes.ContainsKey(w.Type); });
+
+        }
+
+        private List<SelectableItem> Map(IEnumerable<WorkSummary> toMap)
+        {
+            return toMap.SelectMany(r => r.WorkItemTypeCounts)
+                .Select(r => r.Type)
+                .Distinct()
+                .Select(r =>
+                {
+                    var item = new SelectableItem
+                    {
+                        IsSelected = true,
+                        Name = r
+                    };
+                    item.SelectedChanged += WorkItemTypeSelectedChanged;
+                    return item;
+                })
+                .OrderBy(r => r.Name)
+                .ToList();
+        }
+
+        private void WorkItemTypeSelectedChanged(object sender, EventArgs e)
+        {
+            FilterWorkItems();
         }
 
         private List<WorkSummary> Map(IEnumerable<Team> toMap)
@@ -131,7 +170,7 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
                 .ToList();
         }
 
-        private List<ActivityItem<List<WorkItemTypeCount>>> Map(List<TeamWorkItemContributor> toMap)
+        private List<ActivityItem<List<WorkItemTypeCount>>> Map(IEnumerable<TeamWorkItemContributor> toMap)
         {
             var result = toMap.Select(c => new ActivityItem<List<WorkItemTypeCount>>
                 {
@@ -147,7 +186,7 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
             return result;
         }
 
-        private T GetValue<T>(Dictionary<string, T> values, string key)
+        private static T GetValue<T>(Dictionary<string, T> values, string key)
         {
             if (!values.ContainsKey(key))
                 return default(T);
@@ -171,5 +210,7 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
         public int Active { get; set; }
         public int Resolved { get; set; }
         public int Closed { get; set; }
+
+        public bool Visible { get; set; } = true;
     }
 }

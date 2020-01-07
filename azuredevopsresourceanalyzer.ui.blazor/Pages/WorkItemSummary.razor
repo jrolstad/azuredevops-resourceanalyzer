@@ -1,4 +1,5 @@
 ﻿@page "/worksummary"
+@using azuredevopsresourceanalyzer.core.Models
 @using azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
 @inject WorkSummaryViewModel ViewModel
 @using azuredevopsresourceanalyzer.ui.blazor.Components
@@ -118,7 +119,7 @@
                         <td><NavigableItemComponent Item="@item.Team" /> </td>
                         <td>
                             <ul class="list-unstyled">
-                                @foreach (var type in item.WorkItemTypeCounts)
+                                @foreach (var type in item.WorkItemTypeCounts.Where(t=>t.Visible))
                                 {
                                     <li>
                                         @type.Type
@@ -182,7 +183,7 @@
                                     <li>
                                         @contributor.Name
                                         <ul class="">
-                                            @foreach (var type in contributor.ActivityDetails)
+                                            @foreach (var type in contributor.ActivityDetails.Where(t=>t.Visible))
                                             {
                                                 <li>
                                                     @type.Type
