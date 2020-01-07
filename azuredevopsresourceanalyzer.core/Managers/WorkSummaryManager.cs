@@ -149,10 +149,12 @@ namespace azuredevopsresourceanalyzer.core.Managers
         {
             var workItemsByContributor = workItems.GroupBy(i => i.AssignedToName());
             var contributors = workItemsByContributor
+                .AsParallel()
                 .Select(w => new TeamWorkItemContributor
                 {
                     Contributor = w.Key,
-                    WorkItemTypes = MapWorkItemType(w)
+                    WorkItemTypes = MapWorkItemType(w),
+                    Metrics = MapMetrics(w)
                 })
                 .ToList();
             return contributors;
