@@ -94,7 +94,8 @@ namespace azuredevopsresourceanalyzer.core.Managers
 
         private TeamWorkItemTypeMetrics MapMetrics(IGrouping<string, WorkItem> workItems)
         {
-            var workItemsToMeasure = workItems.Where(w => w.State() != "Removed").ToList();
+            var workItemsToMeasure = workItems.Where(w => w.State() == "Closed").ToList();
+
             var createdToActive = workItemsToMeasure.Median(w => DaysApart(w.ActivedAt(), w.CreatedAt()));
             var activeToResolved = workItemsToMeasure.Median(w => DaysApart(w.ResolvedAt(), w.ActivedAt()));
             var resolvedToComplete = workItemsToMeasure.Median(w => DaysApart(w.ClosedAt(), w.ResolvedAt()));
