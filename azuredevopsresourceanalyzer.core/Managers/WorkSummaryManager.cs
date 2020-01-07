@@ -71,7 +71,8 @@ namespace azuredevopsresourceanalyzer.core.Managers
                 Description = toMap.description,
                 Url = $"https://dev.azure.com/{organization}/{project}/_backlogs/backlog/{toMap.name}",
                 WorkItemTypes = MapWorkItemType(workItems),
-                Contributors = MapWorkItemContributor(workItems)
+                Contributors = MapWorkItemContributor(workItems),
+
             };
         }
 
@@ -83,11 +84,20 @@ namespace azuredevopsresourceanalyzer.core.Managers
                 {
                     Type = t.Key.ToString(),
                     StateCount = t.GroupBy(s => s.State())
-                        .ToDictionary(k => k.Key, v => v.Count())
+                        .ToDictionary(k => k.Key, v => v.Count()),
+                    Metrics = MapMetrics(t)
                 })
                 .ToList();
 
             return teamWorkItems;
+        }
+
+        private TeamWorkItemTypeMetrics MapMetrics(IGrouping<string, WorkItem> workItems)
+        {
+            return new TeamWorkItemTypeMetrics
+            {
+                TotalEndToEndDays = 0
+            };
         }
 
         private List<TeamWorkItemContributor> MapWorkItemContributor(List<WorkItem> workItems)

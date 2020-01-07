@@ -2,52 +2,31 @@
     <table class="table-secondary">
         <thead>
             <tr>
-                <th>Work Item</th>
+                <th>Work Item Type</th>
                 <th>Inception to Agreed Upon</th>
                 <th>Agreed Upon to Active</th>
-                <th>Active to First Commit</th>
-                <th>First Commit to Resolved</th>
+                <th>Active to Resolved</th>
                 <th>Resolved to Done</th>
                 <th>Agreed Upon to Done</th>
                 <th>End to End</th>
             </tr>
         </thead>
         <tbody>
-
-            <tr>
-                <td>Features</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-            </tr>
-
-            <tr>
-                <td>User Stories</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-            </tr>
-            <tr>
-                <td>Defects</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-                <td>0</td>
-            </tr>
-
+            @foreach (var type in Items.Where(t=>t.Visible))
+            {
+                <tr>
+                    <td>@type.Type</td>
+                    <td>@type.InceptionToAgreedUponDays?.ToString("N")</td>
+                    <td>@type.AgreedUponToActiveDays?.ToString("N")</td>
+                    <td>@type.ActiveToResolvedDays?.ToString("N")</td>
+                    <td>@type.ResolvedToDoneDays?.ToString("N")</td>
+                    <td>@type.AgreedUponToDoneDays?.ToString("N")</td>
+                    <td>@type.TotalEndToEndDays?.ToString("N")</td>
+                  
+                </tr>
+            }
         </tbody>
     </table>
 @code {
-    [Parameter] public object Items { get; set; }
+    [Parameter] public List<WorkItemTypeMetrics> Items { get; set; }
 }

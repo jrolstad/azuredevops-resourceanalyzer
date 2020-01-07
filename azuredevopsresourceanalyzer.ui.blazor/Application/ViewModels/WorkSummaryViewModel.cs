@@ -107,12 +107,13 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
             foreach (var result in Results)
             {
                 FilterWorkItemTypes(result.WorkItemTypeCounts, visibleWorkItemTypes);
+                FilterWorkItemTypes(result.LifespanMetrics, visibleWorkItemTypes);
 
                 foreach (var contributor in result.Contributors)
                 {
                     FilterWorkItemTypes(contributor.ActivityDetails, visibleWorkItemTypes);
                 }
-
+                
                 result.Contributors = result.Contributors
                     .OrderByDescending(SortContributorsByClosedCount)
                     .ToList();
@@ -120,7 +121,7 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
 
         }
 
-        private static void FilterWorkItemTypes(IEnumerable<WorkItemTypeCount> toFilter,
+        private static void FilterWorkItemTypes(IEnumerable<IVisibleItem> toFilter,
             IReadOnlyDictionary<string, SelectableItem> visibleWorkItemTypes)
         {
             foreach (var item in toFilter)
@@ -161,9 +162,27 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
                 {
                     Team = new NavigableItem { Name = t.Name,Url=t.Url},
                     WorkItemTypeCounts = Map(t.WorkItemTypes),
-                    Contributors = Map(t.Contributors)
+                    Contributors = Map(t.Contributors),
+                    LifespanMetrics = MapMetrics(t.WorkItemTypes)
                 })
                 .OrderBy(t=>t.Team?.Name)
+                .ToList();
+        }
+
+        private List<WorkItemTypeMetrics> MapMetrics(List<TeamWorkItemType> workItemTypes)
+        {
+            return workItemTypes
+                .Select(t => new WorkItemTypeMetrics
+                {
+                    Type =  t.Type,
+                    InceptionToAgreedUponDays = t.Metrics?.InceptionToAgreedUponDays,
+                    AgreedUponToActiveDays = t.Metrics?.AgreedUponToActiveDays,
+                    ActiveToResolvedDays = t.Metrics?.ActiveToResolvedDays,
+                    ResolvedToDoneDays = t.Metrics?.ResolvedToDoneDays,
+                    AgreedUponToDoneDays = t.Metrics?.AgreedUponToDoneDays,
+                    TotalEndToEndDays = t.Metrics?.TotalEndToEndDays
+                })
+                .OrderBy(t => t.Type)
                 .ToList();
         }
 
@@ -219,9 +238,10 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
         public NavigableItem Team { get; set; }
         public List<WorkItemTypeCount> WorkItemTypeCounts { get; set; }
         public List<ActivityItem<List<WorkItemTypeCount>>> Contributors { get; set; }
+        public List<WorkItemTypeMetrics> LifespanMetrics { get; set; }
     }
 
-    public class WorkItemTypeCount
+    public class WorkItemTypeCount: IVisibleItem
     {
         public string Type { get; set; }
         public int New { get; set; }
@@ -230,5 +250,16 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
         public int Closed { get; set; }
 
         public bool Visible { get; set; } = true;
+    }
+    public class WorkItemTypeMetrics: IVisibleItem
+    {
+        public string Type { get; set; }
+        public bool Visible { get; set; } = true;
+        public decimal? InceptionToAgreedUponDays { get; set; }
+        public decimal? AgreedUponToActiveDays { get; set; }
+        public decimal? ActiveToResolvedDays { get; set; }
+        public decimal? ResolvedToDoneDays { get; set; }
+        public decimal? AgreedUponToDoneDays { get; set; }
+        public decimal? TotalEndToEndDays { get; set; }
     }
 }
