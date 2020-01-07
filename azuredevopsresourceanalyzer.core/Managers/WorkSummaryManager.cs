@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 using azuredevopsresourceanalyzer.core.Extensions;
 using azuredevopsresourceanalyzer.core.Models;
 using azuredevopsresourceanalyzer.core.Models.AzureDevops;
@@ -50,7 +51,7 @@ namespace azuredevopsresourceanalyzer.core.Managers
                 .ToList();
             var workItems = await _azureDevopsService.GetWorkItems(organization, project, workItemIds);
 
-            var team = Map(teamData, workItems);
+            var team = Map(organization,project, teamData, workItems);
             return team;
         }
 
@@ -60,7 +61,7 @@ namespace azuredevopsresourceanalyzer.core.Managers
             return teamData.Where(t => t.name.ContainsValue(filter));
         }
 
-        private Team Map(WebApiTeam toMap, List<WorkItem> workItems)
+        private Team Map(string organization, string project,WebApiTeam toMap, List<WorkItem> workItems)
         {
 
             return new Team
@@ -68,7 +69,7 @@ namespace azuredevopsresourceanalyzer.core.Managers
                 Id = toMap.id,
                 Name = toMap.name,
                 Description = toMap.description,
-                Url = toMap.url,
+                Url = $"https://dev.azure.com/{organization}/{project}/_backlogs/backlog/{toMap.name}",
                 WorkItemTypes = MapWorkItemType(workItems),
                 Contributors = MapWorkItemContributor(workItems)
             };
