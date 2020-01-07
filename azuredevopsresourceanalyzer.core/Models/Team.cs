@@ -23,12 +23,11 @@ namespace azuredevopsresourceanalyzer.core.Models
 
     public class TeamWorkItemTypeMetrics
     {
-        public decimal? InceptionToAgreedUponDays { get; set; }
-        public decimal? AgreedUponToActiveDays { get; set; }
-        public decimal? ActiveToResolvedDays { get; set; }
-        public decimal? ResolvedToDoneDays { get; set; }
-        public decimal? AgreedUponToDoneDays { get; set; }
-        public decimal? TotalEndToEndDays { get; set; }
+        public double? InceptionToActiveDays { get; set; }
+        public double? ActiveToResolvedDays { get; set; }
+        public double? ResolvedToDoneDays { get; set; }
+        public double? TotalEndToEndDays { get; set; }
+        public double? ActiveToDoneDays { get; set; }
     }
 
     public class TeamWorkItemContributor

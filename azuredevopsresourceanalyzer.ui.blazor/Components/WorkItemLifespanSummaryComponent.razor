@@ -3,11 +3,10 @@
         <thead>
             <tr>
                 <th>Work Item Type</th>
-                <th>Inception to Agreed Upon</th>
-                <th>Agreed Upon to Active</th>
+                <th>Inception to Active</th>
                 <th>Active to Resolved</th>
                 <th>Resolved to Done</th>
-                <th>Agreed Upon to Done</th>
+                <th>Active to Done</th>
                 <th>End to End</th>
             </tr>
         </thead>
@@ -16,11 +15,10 @@
             {
                 <tr>
                     <td>@type.Type</td>
-                    <td>@type.InceptionToAgreedUponDays?.ToString("N")</td>
-                    <td>@type.AgreedUponToActiveDays?.ToString("N")</td>
+                    <td>@type.InceptionToActiveDays?.ToString("N")</td>
                     <td>@type.ActiveToResolvedDays?.ToString("N")</td>
                     <td>@type.ResolvedToDoneDays?.ToString("N")</td>
-                    <td>@type.AgreedUponToDoneDays?.ToString("N")</td>
+                    <td>@type.ActiveToDoneDays?.ToString("N")</td>
                     <td>@type.TotalEndToEndDays?.ToString("N")</td>
                   
                 </tr>

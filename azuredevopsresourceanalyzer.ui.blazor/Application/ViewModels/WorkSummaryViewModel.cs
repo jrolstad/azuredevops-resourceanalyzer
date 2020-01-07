@@ -175,11 +175,10 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
                 .Select(t => new WorkItemTypeMetrics
                 {
                     Type =  t.Type,
-                    InceptionToAgreedUponDays = t.Metrics?.InceptionToAgreedUponDays,
-                    AgreedUponToActiveDays = t.Metrics?.AgreedUponToActiveDays,
+                    InceptionToActiveDays = t.Metrics?.InceptionToActiveDays,
                     ActiveToResolvedDays = t.Metrics?.ActiveToResolvedDays,
                     ResolvedToDoneDays = t.Metrics?.ResolvedToDoneDays,
-                    AgreedUponToDoneDays = t.Metrics?.AgreedUponToDoneDays,
+                    ActiveToDoneDays = t.Metrics?.ActiveToDoneDays,
                     TotalEndToEndDays = t.Metrics?.TotalEndToEndDays
                 })
                 .OrderBy(t => t.Type)
@@ -255,11 +254,10 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
     {
         public string Type { get; set; }
         public bool Visible { get; set; } = true;
-        public decimal? InceptionToAgreedUponDays { get; set; }
-        public decimal? AgreedUponToActiveDays { get; set; }
-        public decimal? ActiveToResolvedDays { get; set; }
-        public decimal? ResolvedToDoneDays { get; set; }
-        public decimal? AgreedUponToDoneDays { get; set; }
-        public decimal? TotalEndToEndDays { get; set; }
+        public double? InceptionToActiveDays { get; set; }
+        public double? ActiveToResolvedDays { get; set; }
+        public double? ResolvedToDoneDays { get; set; }
+        public double? ActiveToDoneDays { get; set; }
+        public double? TotalEndToEndDays { get; set; }
     }
 }

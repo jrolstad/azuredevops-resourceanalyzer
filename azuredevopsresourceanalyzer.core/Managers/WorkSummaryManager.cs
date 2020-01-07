@@ -94,10 +94,29 @@ namespace azuredevopsresourceanalyzer.core.Managers
 
         private TeamWorkItemTypeMetrics MapMetrics(IGrouping<string, WorkItem> workItems)
         {
+            var workItemsToMeasure = workItems.Where(w => w.State() != "Removed").ToList();
+            var createdToActive = workItemsToMeasure.Median(w => DaysApart(w.ActivedAt(), w.CreatedAt()));
+            var activeToResolved = workItemsToMeasure.Median(w => DaysApart(w.ResolvedAt(), w.ActivedAt()));
+            var resolvedToComplete = workItemsToMeasure.Median(w => DaysApart(w.ClosedAt(), w.ResolvedAt()));
+            var activeToComplete = workItemsToMeasure.Median(w => DaysApart(w.ClosedAt(), w.ActivedAt()));
+            var totalEndToEnd = workItemsToMeasure.Median(w => DaysApart(w.ClosedAt(), w.CreatedAt()));
+
             return new TeamWorkItemTypeMetrics
             {
-                TotalEndToEndDays = 0
+                InceptionToActiveDays = createdToActive,
+                ActiveToResolvedDays = activeToResolved,
+                ResolvedToDoneDays = resolvedToComplete,
+                ActiveToDoneDays = activeToComplete,
+                TotalEndToEndDays = totalEndToEnd
             };
+        }
+
+        private double? DaysApart(DateTime? value1, DateTime? value2)
+        {
+            if (!value1.HasValue || !value2.HasValue)
+                return null;
+            var daysDifferent = value1?.Subtract(value2.Value).TotalDays;
+            return daysDifferent;
         }
 
         private List<TeamWorkItemContributor> MapWorkItemContributor(List<WorkItem> workItems)
