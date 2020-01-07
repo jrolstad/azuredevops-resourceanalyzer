@@ -153,8 +153,7 @@ namespace azuredevopsresourceanalyzer.core.Managers
                 .Select(w => new TeamWorkItemContributor
                 {
                     Contributor = w.Key,
-                    WorkItemTypes = MapWorkItemType(w),
-                    Metrics = MapMetrics(w)
+                    WorkItemTypes = MapWorkItemType(w)
                 })
                 .ToList();
             return contributors;

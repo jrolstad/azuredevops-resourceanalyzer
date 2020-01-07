@@ -34,6 +34,5 @@ namespace azuredevopsresourceanalyzer.core.Models
     {
         public string Contributor { get; set; }
         public List<TeamWorkItemType> WorkItemTypes { get; set; }
-        public TeamWorkItemTypeMetrics Metrics { get; set; }
     }
 }
