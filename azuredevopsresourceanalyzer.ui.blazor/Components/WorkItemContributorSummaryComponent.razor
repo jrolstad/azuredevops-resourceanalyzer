@@ -7,9 +7,11 @@
             <ul class="">
                 @foreach (var type in contributor.ActivityDetails.Where(t => t.Visible))
                 {
-                    <li>
-                        <WorkItemTypeCountComponent Item="@type" />
-                    </li>
+                <li>
+                    <WorkItemTypeCountComponent Item="@type" />
+                    &nbsp;&nbsp;
+                    <span class="badge badge-pill badge-light" title="Median days from Active to Done">@type.Metrics?.ActiveToDoneDays?.ToString("N")</span>
+                </li>
                 }
             </ul>
         </li>

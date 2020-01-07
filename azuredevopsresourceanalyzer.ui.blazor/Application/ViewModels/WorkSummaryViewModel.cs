@@ -169,20 +169,25 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
                 .ToList();
         }
 
-        private List<WorkItemTypeMetrics> MapMetrics(List<TeamWorkItemType> workItemTypes)
+        private List<WorkItemTypeMetrics> MapMetrics(IEnumerable<TeamWorkItemType> workItemTypes)
         {
             return workItemTypes
-                .Select(t => new WorkItemTypeMetrics
-                {
-                    Type =  t.Type,
-                    InceptionToActiveDays = t.Metrics?.InceptionToActiveDays,
-                    ActiveToResolvedDays = t.Metrics?.ActiveToResolvedDays,
-                    ResolvedToDoneDays = t.Metrics?.ResolvedToDoneDays,
-                    ActiveToDoneDays = t.Metrics?.ActiveToDoneDays,
-                    TotalEndToEndDays = t.Metrics?.TotalEndToEndDays
-                })
+                .Select(t=>MapMetric(t.Type, t.Metrics))
                 .OrderBy(t => t.Type)
                 .ToList();
+        }
+
+        private static WorkItemTypeMetrics MapMetric(string type, TeamWorkItemTypeMetrics toMap)
+        {
+            return new WorkItemTypeMetrics
+            {
+                Type = type,
+                InceptionToActiveDays = toMap?.InceptionToActiveDays,
+                ActiveToResolvedDays = toMap?.ActiveToResolvedDays,
+                ResolvedToDoneDays = toMap?.ResolvedToDoneDays,
+                ActiveToDoneDays = toMap?.ActiveToDoneDays,
+                TotalEndToEndDays = toMap?.TotalEndToEndDays
+            };
         }
 
         private List<WorkItemTypeCount> Map(List<TeamWorkItemType> toMap)
@@ -194,6 +199,7 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
                         New = GetValue(m.StateCount, "New"),
                         Resolved = GetValue(m.StateCount, "Resolved"),
                         Closed = GetValue(m.StateCount, "Closed"),
+                        Metrics = MapMetric(m.Type,m.Metrics)
                     }
                 )
                 .Where(m => (m.Active + m.New + m.Resolved + m.Closed) > 0) //Only show items with work attached
@@ -247,7 +253,7 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
         public int Active { get; set; }
         public int Resolved { get; set; }
         public int Closed { get; set; }
-
+        public WorkItemTypeMetrics Metrics { get; set; }
         public bool Visible { get; set; } = true;
     }
     public class WorkItemTypeMetrics: IVisibleItem
