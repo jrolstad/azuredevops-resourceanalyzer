@@ -1,0 +1,21 @@
+﻿@using azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
+<ul class="list-unstyled">
+    @foreach (var contributor in Items)
+    {
+        <li>
+            @contributor.Name
+            <ul class="">
+                @foreach (var type in contributor.ActivityDetails.Where(t => t.Visible))
+                {
+                    <li>
+                        <WorkItemTypeCountComponent Item="@type" />
+                    </li>
+                }
+            </ul>
+        </li>
+    }
+
+</ul>
+@code {
+    [Parameter] public IEnumerable<ActivityItem<List<WorkItemTypeCount>>> Items { get; set; }
+}

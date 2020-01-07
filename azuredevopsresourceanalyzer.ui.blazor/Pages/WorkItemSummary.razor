@@ -66,7 +66,7 @@
                 {
                     <button class="btn btn-primary" type="button" id="searchButton" @onclick="@(async () => await ViewModel.Search())">Search</button>
                 }
-                <button class="btn btn-secondary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"
+                <button class="btn btn-secondary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample" title="Filter results"
                         disabled="@(!ViewModel.AvailableWorkItemTypes.Any())">
                     <span class="oi oi-wrench"></span>
                 </button>
@@ -122,11 +122,7 @@
                                 @foreach (var type in item.WorkItemTypeCounts.Where(t=>t.Visible))
                                 {
                                     <li>
-                                        @type.Type
-                                        <span class="badge badge-secondary" title="New">@type.New</span>
-                                        <span class="badge badge-primary" title="Active">@type.Active</span>
-                                        <span class="badge badge-info" title="Resolved">@type.Resolved</span>
-                                        <span class="badge badge-success" title="Complete">@type.Closed</span>
+                                        <WorkItemTypeCountComponent Item="@type"/>
                                     </li>
                                 }
                             </ul>
@@ -185,27 +181,7 @@
                         </td>
 
                         <td>
-                            <ul class="list-unstyled">
-                                @foreach (var contributor in item.Contributors)
-                                {
-                                    <li>
-                                        @contributor.Name
-                                        <ul class="">
-                                            @foreach (var type in contributor.ActivityDetails.Where(t=>t.Visible))
-                                            {
-                                                <li>
-                                                    @type.Type
-                                                    <span class="badge badge-secondary" title="New">@type.New</span>
-                                                    <span class="badge badge-primary" title="Active">@type.Active</span>
-                                                    <span class="badge badge-info" title="Resolved">@type.Resolved</span>
-                                                    <span class="badge badge-success" title="Complete">@type.Closed</span>
-                                                </li>
-                                            }
-                                        </ul>
-                                    </li>
-                                }
-
-                            </ul>
+                            <WorkItemContributorSummaryComponent Items="@item.Contributors"/>
                         </td>
 
 
