@@ -35,6 +35,10 @@ namespace azuredevopsresourceanalyzer.core.Extensions
         {
             return item.GetWorkItemDateValue("Microsoft.VSTS.Common.ClosedDate");
         }
+        public static DateTime? LastUpdatedAt(this WorkItem item)
+        {
+            return item.GetWorkItemDateValue("System.ChangedDate");
+        }
 
         private static DateTime? GetWorkItemDateValue(this WorkItem item, string fieldName)
         {

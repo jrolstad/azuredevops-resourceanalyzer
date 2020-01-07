@@ -27,7 +27,7 @@ namespace azuredevopsresourceanalyzer.core.Managers
             var teamData = await _azureDevopsService.GetTeams(organization);
 
             var filteredTeamData = FilterTeams(teamData, teamFilter).ToList();
-            var teamTasks = filteredTeamData.Select(t => ProcessTeams(organization, project, t));
+            var teamTasks = filteredTeamData.Select(t => ProcessTeams(organization, project, startDate, t));
             var teams = await Task.WhenAll(teamTasks);
 
             return new WorkSummary
@@ -36,7 +36,7 @@ namespace azuredevopsresourceanalyzer.core.Managers
             };
         }
 
-        private async Task<Team> ProcessTeams(string organization, string project, WebApiTeam teamData)
+        private async Task<Team> ProcessTeams(string organization, string project, DateTime? startDate, WebApiTeam teamData)
         {
             var teamFieldValues = await _azureDevopsService.GetTeamFieldValues(organization, project, teamData.name);
 
@@ -51,7 +51,9 @@ namespace azuredevopsresourceanalyzer.core.Managers
                 .ToList();
             var workItems = await _azureDevopsService.GetWorkItems(organization, project, workItemIds);
 
-            var team = Map(organization,project, teamData, workItems);
+            var workItemsInDateRange = workItems.Where(w => w.LastUpdatedAt() > startDate.GetValueOrDefault(DateTime.MinValue))
+                .ToList();
+            var team = Map(organization,project, teamData, workItemsInDateRange);
             return team;
         }
 
@@ -80,6 +82,7 @@ namespace azuredevopsresourceanalyzer.core.Managers
         {
             var workItemsByType = workItems.GroupBy(i => i.WorkItemType());
             var teamWorkItems = workItemsByType
+                .AsParallel()
                 .Select(t => new TeamWorkItemType
                 {
                     Type = t.Key.ToString(),
@@ -94,13 +97,35 @@ namespace azuredevopsresourceanalyzer.core.Managers
 
         private TeamWorkItemTypeMetrics MapMetrics(IGrouping<string, WorkItem> workItems)
         {
-            var workItemsToMeasure = workItems.Where(w => w.State() == "Closed").ToList();
+            var workItemsToMeasure = workItems
+                .Where(w => w.State() != "Removed")
+                .Select(w=> new
+                {
+                    createdAt = w.CreatedAt(),
+                    activatedAt = w.ActivedAt(),
+                    resolvedAt = w.ResolvedAt(),
+                    closedAt = w.ClosedAt()
+                }).ToList();
 
-            var createdToActive = workItemsToMeasure.Median(w => DaysApart(w.ActivedAt(), w.CreatedAt()));
-            var activeToResolved = workItemsToMeasure.Median(w => DaysApart(w.ResolvedAt(), w.ActivedAt()));
-            var resolvedToComplete = workItemsToMeasure.Median(w => DaysApart(w.ClosedAt(), w.ResolvedAt()));
-            var activeToComplete = workItemsToMeasure.Median(w => DaysApart(w.ClosedAt(), w.ActivedAt()));
-            var totalEndToEnd = workItemsToMeasure.Median(w => DaysApart(w.ClosedAt(), w.CreatedAt()));
+            var createdToActive = workItemsToMeasure
+                .Where(w=>w.activatedAt.HasValue && w.createdAt.HasValue)
+                .Median(w => DaysApart(w.activatedAt, w.createdAt));
+
+            var activeToResolved = workItemsToMeasure
+                .Where(w => w.resolvedAt.HasValue && w.activatedAt.HasValue)
+                .Median(w => DaysApart(w.resolvedAt, w.activatedAt));
+
+            var resolvedToComplete = workItemsToMeasure
+                .Where(w => w.closedAt.HasValue && w.resolvedAt.HasValue)
+                .Median(w => DaysApart(w.closedAt, w.resolvedAt));
+
+            var activeToComplete = workItemsToMeasure
+                .Where(w => w.closedAt.HasValue && w.activatedAt.HasValue)
+                .Median(w => DaysApart(w.closedAt, w.activatedAt));
+
+            var totalEndToEnd = workItemsToMeasure
+                .Where(w => w.closedAt.HasValue && w.createdAt.HasValue)
+                .Median(w => DaysApart(w.closedAt, w.createdAt));
 
             return new TeamWorkItemTypeMetrics
             {

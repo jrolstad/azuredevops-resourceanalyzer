@@ -80,7 +80,7 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
                 Error = null;
 
                 IsSearching = true;
-                var data = await _manager.GetSummary(this.Organization, this.Project, this.TeamsFilter);
+                var data = await _manager.GetSummary(this.Organization, this.Project, this.TeamsFilter, this.StartDate);
 
                 this.Results = Map(data.Teams);
                 this.AvailableWorkItemTypes = Map(this.Results);

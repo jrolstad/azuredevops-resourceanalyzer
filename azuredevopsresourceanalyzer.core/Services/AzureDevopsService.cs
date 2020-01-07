@@ -205,6 +205,7 @@ namespace azuredevopsresourceanalyzer.core.Services
                     "System.AssignedTo",
                     "System.State",
                     "System.WorkItemType",
+                    "System.ChangedDate",
                     "System.CreatedDate",
                     "Microsoft.VSTS.Common.ActivatedDate",
                     "Microsoft.VSTS.Common.ResolvedDate",

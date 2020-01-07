@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels;
 using azuredevopsresourceanalyzer.ui.blazor.tests.TestUtility;
@@ -19,7 +20,8 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.IntegrationTests
 
             viewModel.Organization = "microsoftit";
             viewModel.Project = "oneitvso";
-            viewModel.TeamsFilter = "sr-im-auth-ad";
+            viewModel.TeamsFilter = "all treasury";
+            viewModel.StartDate = new DateTime(2020,1,1);
 
             // When
             await viewModel.Search();
