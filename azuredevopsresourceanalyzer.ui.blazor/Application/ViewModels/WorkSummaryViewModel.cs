@@ -106,27 +106,30 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
 
             foreach (var result in Results)
             {
-                result.WorkItemTypeCounts = FilterWorkItemTypes(result.WorkItemTypeCounts, visibleWorkItemTypes);
+                FilterWorkItemTypes(result.WorkItemTypeCounts, visibleWorkItemTypes);
 
                 foreach (var contributor in result.Contributors)
                 {
-                    contributor.ActivityDetails = FilterWorkItemTypes(contributor.ActivityDetails, visibleWorkItemTypes);
+                    FilterWorkItemTypes(contributor.ActivityDetails, visibleWorkItemTypes);
                 }
+
+                result.Contributors = result.Contributors
+                    .OrderByDescending(ContributorSort)
+                    .ToList();
             }
 
         }
 
-        private static List<WorkItemTypeCount> FilterWorkItemTypes(List<WorkItemTypeCount> toFilter,
-            Dictionary<string, SelectableItem> visibleWorkItemTypes)
+        private static void FilterWorkItemTypes(List<WorkItemTypeCount> toFilter,
+            IReadOnlyDictionary<string, SelectableItem> visibleWorkItemTypes)
         {
             foreach (var item in toFilter)
             {
                 item.Visible = visibleWorkItemTypes.ContainsKey(item.Type);
             }
 
-            return toFilter.OrderByDescending(f => f.Closed)
-                .ToList();
         }
+
 
         private List<SelectableItem> Map(IEnumerable<WorkSummary> toMap)
         {
@@ -191,10 +194,15 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
                 })
                 .Where(c=>!string.IsNullOrWhiteSpace(c.Name))
                 .Where(c=>c.ActivityDetails.Any())
-                .OrderByDescending(c=>c.ActivityDetails.Max(m=>m.Closed))
+                .OrderByDescending(ContributorSort)
                 .ToList();
 
             return result;
+        }
+
+        private static int ContributorSort(ActivityItem<List<WorkItemTypeCount>> contributor)
+        {
+            return contributor.ActivityDetails.Max(m=> m.Visible? m.Closed:0);
         }
 
         private static T GetValue<T>(Dictionary<string, T> values, string key)
