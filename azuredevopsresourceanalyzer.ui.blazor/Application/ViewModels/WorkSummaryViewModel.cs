@@ -95,7 +95,7 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
             }
         }
 
-        private void FilterWorkItems()
+        private void ExecuteFilterWorkItems()
         {
             if (!this.AvailableWorkItemTypes.Any())
                 return;
@@ -104,17 +104,28 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
                 .Where(t => t.IsSelected)
                 .ToDictionary(t => t.Name);
 
-            this.Results
-                .SelectMany(r=>r.WorkItemTypeCounts)
-                .ToList()
-                .ForEach(w => { w.Visible = visibleWorkItemTypes.ContainsKey(w.Type); });
+            foreach (var result in Results)
+            {
+                result.WorkItemTypeCounts = FilterWorkItemTypes(result.WorkItemTypeCounts, visibleWorkItemTypes);
 
-            this.Results
-                .SelectMany(r => r.Contributors)
-                .SelectMany(c=>c.ActivityDetails)
-                .ToList()
-                .ForEach(w => { w.Visible = visibleWorkItemTypes.ContainsKey(w.Type); });
+                foreach (var contributor in result.Contributors)
+                {
+                    contributor.ActivityDetails = FilterWorkItemTypes(contributor.ActivityDetails, visibleWorkItemTypes);
+                }
+            }
 
+        }
+
+        private static List<WorkItemTypeCount> FilterWorkItemTypes(List<WorkItemTypeCount> toFilter,
+            Dictionary<string, SelectableItem> visibleWorkItemTypes)
+        {
+            foreach (var item in toFilter)
+            {
+                item.Visible = visibleWorkItemTypes.ContainsKey(item.Type);
+            }
+
+            return toFilter.OrderByDescending(f => f.Closed)
+                .ToList();
         }
 
         private List<SelectableItem> Map(IEnumerable<WorkSummary> toMap)
@@ -138,7 +149,7 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
 
         private void WorkItemTypeSelectedChanged(object sender, EventArgs e)
         {
-            FilterWorkItems();
+            ExecuteFilterWorkItems();
         }
 
         private List<WorkSummary> Map(IEnumerable<Team> toMap)
