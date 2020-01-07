@@ -67,9 +67,9 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
 
         public async Task Search()
         {
-            if (string.IsNullOrWhiteSpace(this.Organization))
+            if (string.IsNullOrWhiteSpace(this.Organization) || string.IsNullOrWhiteSpace(this.Project))
             {
-                Error = "Unable to search; please enter an organization first";
+                Error = "Unable to search; please enter an organization and project first";
                 this.Results = new List<WorkSummary>();
 
                 return;
@@ -114,20 +114,19 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
                 }
 
                 result.Contributors = result.Contributors
-                    .OrderByDescending(ContributorSort)
+                    .OrderByDescending(SortContributorsByClosedCount)
                     .ToList();
             }
 
         }
 
-        private static void FilterWorkItemTypes(List<WorkItemTypeCount> toFilter,
+        private static void FilterWorkItemTypes(IEnumerable<WorkItemTypeCount> toFilter,
             IReadOnlyDictionary<string, SelectableItem> visibleWorkItemTypes)
         {
             foreach (var item in toFilter)
             {
                 item.Visible = visibleWorkItemTypes.ContainsKey(item.Type);
             }
-
         }
 
 
@@ -194,13 +193,13 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
                 })
                 .Where(c=>!string.IsNullOrWhiteSpace(c.Name))
                 .Where(c=>c.ActivityDetails.Any())
-                .OrderByDescending(ContributorSort)
+                .OrderByDescending(SortContributorsByClosedCount)
                 .ToList();
 
             return result;
         }
 
-        private static int ContributorSort(ActivityItem<List<WorkItemTypeCount>> contributor)
+        private static int SortContributorsByClosedCount(ActivityItem<List<WorkItemTypeCount>> contributor)
         {
             return contributor.ActivityDetails.Max(m=> m.Visible? m.Closed:0);
         }
@@ -208,7 +207,7 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
         private static T GetValue<T>(Dictionary<string, T> values, string key)
         {
             if (!values.ContainsKey(key))
-                return default(T);
+                return default;
 
             return values[key];
         }
