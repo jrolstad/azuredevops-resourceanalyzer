@@ -44,7 +44,7 @@ namespace azuredevopsresourceanalyzer.core.Managers
                                 .Select(v => new Tuple<string, bool>(v.value, v.includeChildren))
                                 .ToList() ?? new List<Tuple<string, bool>>();
             var workItemReferencesForTeam =
-                await _azureDevopsService.GetWorkItems(organization, project, teamData.name, areaPaths);
+                await _azureDevopsService.GetWorkItems(organization, project, teamData.name, areaPaths) ?? new List<WorkItemReference>();
 
             var workItemIds = workItemReferencesForTeam
                 .Select(w => w.id)
