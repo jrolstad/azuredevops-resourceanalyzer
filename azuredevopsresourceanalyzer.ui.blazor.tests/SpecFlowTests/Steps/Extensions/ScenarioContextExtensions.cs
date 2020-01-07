@@ -16,6 +16,16 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.SpecFlowTests.Steps.Extens
             return context.Get<ProjectSummaryViewModel>("ProjectSummary");
         }
 
+        public static WorkSummaryViewModel WorkSummary(this ScenarioContext context)
+        {
+            if (!context.ContainsKey("WorkSummary"))
+            {
+                context.Set(context.TestRoot().Get<WorkSummaryViewModel>(), "WorkSummary");
+            }
+
+            return context.Get<WorkSummaryViewModel>("WorkSummary");
+        }
+
         public static TestCompositionRoot TestRoot(this ScenarioContext context)
         {
             if (!context.ContainsKey("TestCompositionRoot"))
