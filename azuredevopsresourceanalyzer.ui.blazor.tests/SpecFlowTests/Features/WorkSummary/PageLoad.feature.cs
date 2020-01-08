@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace azuredevopsresourceanalyzer.ui.blazor.tests.SpecFlowTests.ProjectSummary
+namespace azuredevopsresourceanalyzer.ui.blazor.tests.SpecFlowTests.Features.WorkSummary
 {
     using TechTalk.SpecFlow;
     using System;
@@ -19,7 +19,7 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.SpecFlowTests.ProjectSumma
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.1.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class ProjectSummaryPageLoadFeature : object, Xunit.IClassFixture<ProjectSummaryPageLoadFeature.FixtureData>, System.IDisposable
+    public partial class WorkSummaryPageLoadFeature : object, Xunit.IClassFixture<WorkSummaryPageLoadFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
@@ -31,7 +31,7 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.SpecFlowTests.ProjectSumma
 #line 1 "PageLoad.feature"
 #line hidden
         
-        public ProjectSummaryPageLoadFeature(ProjectSummaryPageLoadFeature.FixtureData fixtureData, azuredevopsresourceanalyzer_ui_blazor_tests_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public WorkSummaryPageLoadFeature(WorkSummaryPageLoadFeature.FixtureData fixtureData, azuredevopsresourceanalyzer_ui_blazor_tests_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -40,7 +40,7 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.SpecFlowTests.ProjectSumma
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Project Summary Page Load", null, ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Work Summary Page Load", null, ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -80,13 +80,13 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.SpecFlowTests.ProjectSumma
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Project Summary page is loaded")]
-        [Xunit.TraitAttribute("FeatureTitle", "Project Summary Page Load")]
-        [Xunit.TraitAttribute("Description", "Project Summary page is loaded")]
-        public virtual void ProjectSummaryPageIsLoaded()
+        [Xunit.SkippableFactAttribute(DisplayName="Work Summary page is loaded")]
+        [Xunit.TraitAttribute("FeatureTitle", "Work Summary Page Load")]
+        [Xunit.TraitAttribute("Description", "Work Summary page is loaded")]
+        public virtual void WorkSummaryPageIsLoaded()
         {
             string[] tagsOfScenario = ((string[])(null));
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Project Summary page is loaded", null, ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Work Summary page is loaded", null, ((string[])(null)));
 #line 4
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -108,7 +108,7 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 this.ScenarioStart();
 #line 5
-testRunner.Given("the ProjectSummary page is loaded", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+testRunner.Given("the WorkSummary page is loaded", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 6
 testRunner.Then("Organization is empty", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -139,12 +139,12 @@ testRunner.And("the page shows as not working", ((string)(null)), ((TechTalk.Spe
             
             public FixtureData()
             {
-                ProjectSummaryPageLoadFeature.FeatureSetup();
+                WorkSummaryPageLoadFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                ProjectSummaryPageLoadFeature.FeatureTearDown();
+                WorkSummaryPageLoadFeature.FeatureTearDown();
             }
         }
     }

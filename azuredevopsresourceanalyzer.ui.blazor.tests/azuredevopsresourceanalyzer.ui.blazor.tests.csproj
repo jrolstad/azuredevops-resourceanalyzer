@@ -29,4 +29,9 @@
     </Reference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="SpecFlowTests\Features\ProjectSummary\" />
+    <Folder Include="SpecFlowTests\Features\WorkSummary\" />
+  </ItemGroup>
+
 </Project>

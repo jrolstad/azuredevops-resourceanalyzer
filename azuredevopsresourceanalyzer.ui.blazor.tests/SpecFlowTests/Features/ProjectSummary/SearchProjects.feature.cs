@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace azuredevopsresourceanalyzer.ui.blazor.tests.SpecFlowTests.ProjectSummary
+namespace azuredevopsresourceanalyzer.ui.blazor.tests.SpecFlowTests.Features.ProjectSummary
 {
     using TechTalk.SpecFlow;
     using System;
