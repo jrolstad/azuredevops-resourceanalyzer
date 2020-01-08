@@ -220,19 +220,49 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.TestUtility.Extensions
         public static void WithTeam(this TestCompositionRoot root,
             string name,
             string id = null,
-            string description = null,
             string organization = "default")
         {
             if (!root.Context.Teams.ContainsKey(organization))
             {
-                root.Context.Teams.Add(organization, new List<WebApiTeam>());
+                root.Context.Teams.Add(organization, new List<TestContext.TeamData>());
             }
-            root.Context.Teams[organization].Add(new WebApiTeam
+            root.Context.Teams[organization].Add(new TestContext.TeamData
             {
-                name = name,
-                id = id ?? Base64Encode(name),
-                description = description
+                Name = name,
+                Id = id ?? Base64Encode(name)
             });
+        }
+
+        public static void WithWorkItem(this TestCompositionRoot root,
+            string type,
+            string title,
+            string areaPath,
+            string status,
+            string assignedTo = "someone",
+            DateTime? updatedAt = null,
+            DateTime? createdAt = null,
+            DateTime? activatedAt = null,
+            DateTime? resolvedAt = null,
+            DateTime? closedAt = null,
+            string organization = "jrolstad",
+            string project = "the-project")
+        {
+            var workItem = new TestContext.WorkItemData
+            {
+                Id = Guid.NewGuid().ToString(),
+                Title = title,
+                AreaPath = areaPath,
+                State = status,
+                AssignedTo = assignedTo,
+                UpdatedAt = updatedAt ?? DateTime.Now,
+                CreatedAt = createdAt ?? DateTime.Now.AddDays(-1),
+                ActivatedAt = activatedAt,
+                ResolvedAt = resolvedAt,
+                ClosedAt = closedAt,
+                WorkItemType = type
+            };
+
+            WithItem(organization,project,root.Context.WorkItems,workItem);
         }
 
         private static void WithItem<T>(string organization, string project, Dictionary<string, List<T>> dictionary, T item)

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using azuredevopsresourceanalyzer.ui.blazor.Application.Configuration;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Configuration;
@@ -59,6 +60,37 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.TestUtility
         public Dictionary<string,List<GitCommitRef>> Commits = new Dictionary<string, List<GitCommitRef>>();
         public Dictionary<string,List<Release>> Releases = new Dictionary<string, List<Release>>();
         public Dictionary<string,List<Project>> Projects = new Dictionary<string,List<Project>>();
-        public Dictionary<string,List<WebApiTeam>> Teams = new Dictionary<string,List<WebApiTeam>>();
+        public Dictionary<string,List<TeamData>> Teams = new Dictionary<string,List<TeamData>>();
+        public Dictionary<string,List<WorkItemData>> WorkItems = new Dictionary<string,List<WorkItemData>>();
+
+        public class TeamData
+        {
+            public string Name { get; set; }
+            public string Id { get; set; }
+            public IEnumerable<AreaPathData> AreaPaths { get; set; }
+        }
+
+        public class AreaPathData
+        {
+            public string Name { get; set; }
+            public bool IncludeChildren { get; set; }
+        }
+
+        public class WorkItemData
+        {
+            public string Title { get; set; }
+            public string AreaPath { get; set; }
+            public string State { get; set; }
+            public string AssignedTo { get; set; }
+            public DateTime? CreatedAt { get; set; }
+            public DateTime? UpdatedAt { get; set; }
+            public DateTime? ActivatedAt { get; set; }
+            public DateTime? ResolvedAt { get; set; }
+            public DateTime? ClosedAt { get; set; }
+            public string Id { get; set; }
+            public string WorkItemType { get; set; }
+        }
     }
+
+   
 }

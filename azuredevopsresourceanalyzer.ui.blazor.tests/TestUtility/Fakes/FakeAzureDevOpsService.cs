@@ -122,22 +122,82 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.TestUtility.Fakes
             if (!_context.Projects.ContainsKey(organization))
                 throw new HttpRequestException("Organization not found");
 
-            return _context.Teams[organization];
+            return _context.Teams[organization]
+                .Select(t=>new WebApiTeam
+                {
+                    name = t.Name,
+                    id = t.Id
+                })
+                .ToList();
         }
 
-        public Task<TeamFieldValues> GetTeamFieldValues(string organization, string project, string team)
+        public async Task<TeamFieldValues> GetTeamFieldValues(string organization, string project, string team)
         {
-            throw new NotImplementedException();
+            var key = GetOrganizationKey(organization, project);
+            if (!_context.Teams.ContainsKey(key)) return new TeamFieldValues();
+
+            var values = _context.Teams[key];
+
+            var teamData = values
+                .FirstOrDefault(d => d.Name == team);
+
+            var result = new TeamFieldValues
+            {
+                Team = team,
+                values = teamData?.AreaPaths?
+                    .Select(a => new TeamFieldValue
+                    {
+                        value = a.Name,
+                        includeChildren = a.IncludeChildren
+                    })
+                    .ToList()
+            };
+            
+
+            return result;
         }
 
-        public Task<List<WorkItemReference>> GetWorkItems(string organization, string project, string team, List<Tuple<string, bool>> areaPaths)
+        public async Task<List<WorkItemReference>> GetWorkItems(string organization, string project, string team, List<Tuple<string, bool>> areaPaths)
         {
-            throw new NotImplementedException();
+            var key = GetOrganizationKey(organization, project);
+            if (!_context.WorkItems.ContainsKey(key)) return new List<WorkItemReference>();
+
+            var values = _context.WorkItems[key];
+
+            return values
+                .Where(d => areaPaths.Select(a=>a.Item1).Contains(d.AreaPath))
+                .Select(d=>new WorkItemReference
+                {
+                    id = d.Id
+                })
+                .ToList();
         }
 
-        public Task<List<WorkItem>> GetWorkItems(string organization, string project, List<string> workItemIds)
+        public async Task<List<WorkItem>> GetWorkItems(string organization, string project, List<string> workItemIds)
         {
-            throw new NotImplementedException();
+            var key = GetOrganizationKey(organization, project);
+            if (!_context.WorkItems.ContainsKey(key)) return new List<WorkItem>();
+
+            var values = _context.WorkItems[key];
+
+            return values
+                .Where(d => workItemIds.Contains(d.Id))
+                .Select(d => new WorkItem
+                {
+                    id = d.Id,
+                    fields = new Dictionary<string, object>
+                    {
+                        {"Microsoft.VSTS.Common.ActivatedDate",d.ActivatedAt },
+                        {"System.AssignedTo",new Newtonsoft.Json.Linq.JObject{ { "displayName", d.AssignedTo } } },
+                        {"Microsoft.VSTS.Common.ClosedDate",d.ClosedAt },
+                        {"System.CreatedDate",d.CreatedAt },
+                        {"Microsoft.VSTS.Common.ResolvedDate",d.ResolvedAt },
+                        {"System.State",d.State },
+                        {"System.ChangedDate",d.UpdatedAt },
+                        {"System.WorkItemType",d.WorkItemType }
+                    }
+                })
+                .ToList();
         }
 
         private string GetOrganizationKey(string organization, string project)

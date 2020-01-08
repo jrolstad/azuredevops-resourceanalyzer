@@ -180,7 +180,7 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.SpecFlowTests.Steps.Given
 
             foreach (var team in teamNames)
             {
-                root.WithTeam(team);
+                root.WithTeam(team,organization:_context.Organization());
             }
         }
 
@@ -188,14 +188,36 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.SpecFlowTests.Steps.Given
         public void GivenWorkItemsWithType(string type, Table table)
         {
             var workItems = table.Rows
-                .Select(r => new { })
+                .Select(r => new
+                {
+                    title = r[0],
+                    areaPath = r[1],
+                    status = r[2],
+                    assignedTo = r[3],
+                    updatedAt = r[4].ToDateTime(),
+                    createdAt = r[5].ToDateTime(),
+                    activatedAt = r[6].ToDateTime(),
+                    resolvedAt = r[7].ToDateTime(),
+                    closedAt = r[8].ToDateTime()
+                })
                 .ToList();
 
             var root = _context.TestRoot();
 
             foreach (var item in workItems)
             {
-                root.WithWorkItem()
+                root.WithWorkItem(type,
+                    item.title,
+                    item.areaPath,
+                    item.status,
+                    item.assignedTo,
+                    item.updatedAt,
+                    item.createdAt,
+                    item.activatedAt,
+                    item.resolvedAt,
+                    item.closedAt,
+                    _context.Organization(),
+                    _context.Project());
             }
         }
     }

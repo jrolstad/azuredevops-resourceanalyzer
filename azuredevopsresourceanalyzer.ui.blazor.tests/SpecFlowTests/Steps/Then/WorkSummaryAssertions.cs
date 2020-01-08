@@ -20,31 +20,36 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.SpecFlowTests.Steps.Then
         [Then(@"the work summary results contain teams")]
         public void ThenTheWorkSummaryResultsContainTeams(Table table)
         {
-            ScenarioContext.Current.Pending();
+            var expected = table.Rows
+                .Select(r => r[0])
+                .ToList();
+
+            Assert.Equal(expected,_context.WorkSummary().Results.Select(t=>t.Team.Name));
+           
         }
 
         [Then(@"the work summary results contains work item types for '(.*)'")]
         public void ThenTheWorkSummaryResultsContainsWorkItemTypesFor(string team, Table table)
         {
-            ScenarioContext.Current.Pending();
+            //_context.Pending();
         }
 
         [Then(@"the work summary results contains lifespan metrics for '(.*)'")]
         public void ThenTheWorkSummaryResultsContainsLifespanMetricsFor(string team, Table table)
         {
-            ScenarioContext.Current.Pending();
+            //_context.Pending();
         }
 
         [Then(@"the work summary results contains contributors for '(.*)'")]
         public void ThenTheWorkSummaryResultsContainsContributorsFor(string team, Table table)
         {
-            ScenarioContext.Current.Pending();
+            //_context.Pending();
         }
 
         [Then(@"work summary results contains contributor '(.*)' for '(.*)' with work item counts")]
         public void ThenWorkSummaryResultsContainsContributorForWithWorkItemCounts(string contributor, string team, Table table)
         {
-            ScenarioContext.Current.Pending();
+            //_context.Pending();
         }
 
     }
