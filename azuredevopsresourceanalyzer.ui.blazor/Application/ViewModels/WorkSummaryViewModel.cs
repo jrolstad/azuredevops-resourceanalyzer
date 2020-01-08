@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using azuredevopsresourceanalyzer.core.Managers;
 using azuredevopsresourceanalyzer.core.Models;
+using azuredevopsresourceanalyzer.ui.blazor.Application.Models;
 
 namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
 {
@@ -195,10 +196,10 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
             return toMap.Select(m => new WorkItemTypeCount
                     {
                         Type = m.Type,
-                        Active = GetValue(m.StateCount, "Active"),
-                        New = GetValue(m.StateCount, "New"),
-                        Resolved = GetValue(m.StateCount, "Resolved"),
-                        Closed = GetValue(m.StateCount, "Closed"),
+                        Active = GetValue(m.StateCount, WorkItemStates.Active),
+                        New = GetValue(m.StateCount, WorkItemStates.New),
+                        Resolved = GetValue(m.StateCount, WorkItemStates.Resolved),
+                        Closed = GetValue(m.StateCount, WorkItemStates.Closed),
                         Metrics = MapMetric(m.Type,m.Metrics)
                     }
                 )

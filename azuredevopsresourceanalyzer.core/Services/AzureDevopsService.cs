@@ -201,15 +201,15 @@ namespace azuredevopsresourceanalyzer.core.Services
                 ids = workItemIds.ToList(),
                 fields = new List<string>
                 {
-                    "System.Id",
-                    "System.AssignedTo",
-                    "System.State",
-                    "System.WorkItemType",
-                    "System.ChangedDate",
-                    "System.CreatedDate",
-                    "Microsoft.VSTS.Common.ActivatedDate",
-                    "Microsoft.VSTS.Common.ResolvedDate",
-                    "Microsoft.VSTS.Common.ClosedDate"
+                    WorkItemFieldNames.Id,
+                    WorkItemFieldNames.AssignedTo,
+                    WorkItemFieldNames.State,
+                    WorkItemFieldNames.WorkItemType,
+                    WorkItemFieldNames.ChangedDate,
+                    WorkItemFieldNames.CreatedDate,
+                    WorkItemFieldNames.ActivatedDate,
+                    WorkItemFieldNames.ResolvedDate,
+                    WorkItemFieldNames.ClosedDate
                 }
             };
 

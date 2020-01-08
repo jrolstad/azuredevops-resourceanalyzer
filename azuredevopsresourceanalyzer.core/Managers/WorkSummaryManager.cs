@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using azuredevopsresourceanalyzer.core.Extensions;
 using azuredevopsresourceanalyzer.core.Models;
 using azuredevopsresourceanalyzer.core.Models.AzureDevops;
@@ -98,7 +97,7 @@ namespace azuredevopsresourceanalyzer.core.Managers
         private TeamWorkItemTypeMetrics MapMetrics(IGrouping<string, WorkItem> workItems)
         {
             var workItemsToMeasure = workItems
-                .Where(w => w.State() != "Removed")
+                .Where(w => w.State() != WorkItemStates.Removed)
                 .Select(w=> new
                 {
                     createdAt = w.CreatedAt(),
@@ -137,7 +136,7 @@ namespace azuredevopsresourceanalyzer.core.Managers
             };
         }
 
-        private double? DaysApart(DateTime? value1, DateTime? value2)
+        private static double? DaysApart(DateTime? value1, DateTime? value2)
         {
             if (!value1.HasValue || !value2.HasValue)
                 return null;
@@ -145,7 +144,7 @@ namespace azuredevopsresourceanalyzer.core.Managers
             return daysDifferent;
         }
 
-        private List<TeamWorkItemContributor> MapWorkItemContributor(List<WorkItem> workItems)
+        private List<TeamWorkItemContributor> MapWorkItemContributor(IEnumerable<WorkItem> workItems)
         {
             var workItemsByContributor = workItems.GroupBy(i => i.AssignedToName());
             var contributors = workItemsByContributor
