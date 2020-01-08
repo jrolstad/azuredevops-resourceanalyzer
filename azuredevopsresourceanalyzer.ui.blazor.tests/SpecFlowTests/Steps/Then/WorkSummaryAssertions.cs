@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using azuredevopsresourceanalyzer.ui.blazor.tests.SpecFlowTests.Steps.Extensions;
+using azuredevopsresourceanalyzer.ui.blazor.tests.TestUtility.Extensions;
 using TechTalk.SpecFlow;
 using Xunit;
 
@@ -31,7 +32,35 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.SpecFlowTests.Steps.Then
         [Then(@"the work summary results contains work item types for '(.*)'")]
         public void ThenTheWorkSummaryResultsContainsWorkItemTypesFor(string team, Table table)
         {
-            //_context.Pending();
+            var expected = table.Rows
+                .Select(r => new
+                {
+                    type = r[0],
+                    newCount = r[1].ToInt32(),
+                    activeCount = r[2].ToInt32(),
+                    resolvedCount = r[3].ToInt32(),
+                    completeCount = r[4].ToInt32()
+                })
+                .ToList();
+
+            var actual = _context.WorkSummary().Results
+                .Where(r => r.Team.Name == team)
+                .SelectMany(r => r.WorkItemTypeCounts)
+                .ToDictionary(r=>r.Type);
+
+            Assert.Equal(expected.Select(t=>t.type).ToList(),actual.Keys.Select(r=>r).ToList());
+
+            foreach (var type in expected)
+            {
+                var matching = actual[type.type];
+
+                Assert.Equal(type.activeCount,matching.Active);
+                Assert.Equal(type.completeCount,matching.Closed);
+                Assert.Equal(type.newCount,matching.New);
+                Assert.Equal(type.resolvedCount,matching.Resolved);
+
+                Assert.True(matching.Visible);
+            }
         }
 
         [Then(@"the work summary results contains lifespan metrics for '(.*)'")]
