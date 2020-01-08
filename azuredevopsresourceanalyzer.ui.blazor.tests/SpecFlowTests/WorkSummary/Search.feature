@@ -16,7 +16,7 @@ Scenario: Execute Search shows all matching teams
 Given the WorkSummary page is loaded
 And I enter 'the-org' into Organization
 And I enter 'my-project' into Project
-And I enter '' into Teams Filter
+And I enter '' into Team Filter
 And I enter '1/25/2016' into Start Date
 When I press the Search button
 Then no errors are shown

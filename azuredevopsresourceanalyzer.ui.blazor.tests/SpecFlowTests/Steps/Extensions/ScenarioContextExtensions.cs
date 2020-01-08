@@ -56,6 +56,22 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.SpecFlowTests.Steps.Extens
             context.Set(value, "Project");
         }
 
+        public static ViewType ViewType(this ScenarioContext context)
+        {
+            return context.Get<ViewType>("ViewType");
+        }
 
+        public static void ViewType(this ScenarioContext context, ViewType value)
+        {
+            context.Set(value, "ViewType");
+        }
+
+
+    }
+
+    public enum ViewType
+    {
+        ProjectSummary,
+        WorkSummary
     }
 }
