@@ -122,29 +122,6 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.Application.ViewModels
         }
 
         [Fact]
-        public async Task SearchProjects_ValidOrganization_GetsProjectsAndSelectsFirstOne()
-        {
-            // Given
-            var root = TestCompositionRoot.Create();
-            root.WithProject("project-c",organization:"jrolstad");
-            root.WithProject("project-a",organization:"jrolstad");
-            root.WithProject("project-b",organization:"jrolstad");
-
-            var viewModel = root.Get<ProjectSummaryViewModel>();
-            await viewModel.Initialize();
-
-            viewModel.Organization = "jrolstad";
-
-            // When
-            await viewModel.SearchProjects();
-
-            // Then
-            Assert.Null(viewModel.Error);
-            Assert.NotEmpty(viewModel.Projects);
-            Assert.Equal("project-a",viewModel.Project);
-        }
-
-        [Fact]
         public async Task SearchProjects_InvalidOrganization_ShowsErrors()
         {
             // Given
