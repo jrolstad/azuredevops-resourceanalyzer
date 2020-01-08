@@ -114,7 +114,11 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
                 {
                     FilterWorkItemTypes(contributor.ActivityDetails, visibleWorkItemTypes);
                 }
-                
+                foreach (var iteration in result.Iterations)
+                {
+                    FilterWorkItemTypes(iteration.WorkItemTypeCounts, visibleWorkItemTypes);
+                }
+
                 result.Contributors = result.Contributors
                     .OrderByDescending(SortContributorsByClosedCount)
                     .ToList();
@@ -164,9 +168,23 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
                     Team = new NavigableItem { Name = t.Name,Url=t.Url},
                     WorkItemTypeCounts = Map(t.WorkItemTypes),
                     Contributors = Map(t.Contributors),
-                    LifespanMetrics = MapMetrics(t.WorkItemTypes)
+                    LifespanMetrics = MapMetrics(t.WorkItemTypes),
+                    Iterations = MapIterations(t.Iterations)
                 })
                 .OrderBy(t=>t.Team?.Name)
+                .ToList();
+        }
+
+        private List<WorkItemIteration> MapIterations(IEnumerable<TeamIteration> toMap)
+        {
+            return toMap
+                .AsParallel()
+                .Select(i => new WorkItemIteration
+                {
+                    Name = i.Name,
+                    WorkItemTypeCounts = Map(i.WorkItemTypes)
+                })
+                .OrderByDescending(i => i.Name)
                 .ToList();
         }
 
@@ -249,6 +267,13 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
         public List<WorkItemTypeCount> WorkItemTypeCounts { get; set; }
         public List<ActivityItem<List<WorkItemTypeCount>>> Contributors { get; set; }
         public List<WorkItemTypeMetrics> LifespanMetrics { get; set; }
+        public List<WorkItemIteration> Iterations { get; set; }
+    }
+
+    public class WorkItemIteration
+    {
+        public string Name { get; set; }
+        public List<WorkItemTypeCount> WorkItemTypeCounts { get; set; }
     }
 
     public class WorkItemTypeCount: IVisibleItem

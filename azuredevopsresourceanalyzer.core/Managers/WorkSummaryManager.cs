@@ -73,8 +73,27 @@ namespace azuredevopsresourceanalyzer.core.Managers
                 Url = $"https://dev.azure.com/{organization}/{project}/_backlogs/backlog/{toMap.name}",
                 WorkItemTypes = MapWorkItemType(workItems),
                 Contributors = MapWorkItemContributor(workItems),
+                Iterations = MapIterations(workItems)
 
             };
+        }
+
+        private List<TeamIteration> MapIterations(IEnumerable<WorkItem> workItems)
+        {
+            var workItemsByIteration = workItems
+                .Where(i=>i.State() != WorkItemStates.Removed)
+                .GroupBy(i => i.IterationPath());
+
+            var iterations = workItemsByIteration
+                .AsParallel()
+                .Select(i => new TeamIteration
+                {
+                    Name = i.Key,
+                    WorkItemTypes = MapWorkItemType(i)
+                })
+                .ToList();
+
+            return iterations;
         }
 
         private List<TeamWorkItemType> MapWorkItemType(IEnumerable<WorkItem> workItems)

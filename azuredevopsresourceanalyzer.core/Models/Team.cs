@@ -11,6 +11,7 @@ namespace azuredevopsresourceanalyzer.core.Models
 
         public List<TeamWorkItemType> WorkItemTypes { get; set; }
         public List<TeamWorkItemContributor> Contributors { get; set; }
+        public List<TeamIteration> Iterations { get; set; }
     }
 
     public class TeamWorkItemType
@@ -18,6 +19,12 @@ namespace azuredevopsresourceanalyzer.core.Models
         public string Type { get; set; }
         public Dictionary<string,int> StateCount { get; set; }
         public TeamWorkItemTypeMetrics Metrics { get; set; }
+    }
+
+    public class TeamIteration
+    {
+        public string Name { get; set; }
+        public List<TeamWorkItemType> WorkItemTypes { get; set; }
 
     }
 
