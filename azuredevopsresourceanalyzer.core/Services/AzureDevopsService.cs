@@ -210,7 +210,8 @@ namespace azuredevopsresourceanalyzer.core.Services
                     WorkItemFieldNames.ActivatedDate,
                     WorkItemFieldNames.ResolvedDate,
                     WorkItemFieldNames.ClosedDate,
-                    WorkItemFieldNames.StoryPoints
+                    WorkItemFieldNames.StoryPoints,
+                    WorkItemFieldNames.IterationPath
                 }
             };
 

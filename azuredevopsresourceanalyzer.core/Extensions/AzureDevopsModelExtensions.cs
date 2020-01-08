@@ -13,6 +13,12 @@ namespace azuredevopsresourceanalyzer.core.Extensions
             return value?.ToString();
         }
 
+        public static string IterationPath(this WorkItem item)
+        {
+            item.fields.TryGetValue(WorkItemFieldNames.IterationPath, out var value);
+            return value?.ToString();
+        }
+
         public static string State(this WorkItem item)
         {
             item.fields.TryGetValue(WorkItemFieldNames.State, out var value);

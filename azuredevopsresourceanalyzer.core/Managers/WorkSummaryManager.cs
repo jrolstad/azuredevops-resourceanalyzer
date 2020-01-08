@@ -105,7 +105,8 @@ namespace azuredevopsresourceanalyzer.core.Managers
                     resolvedAt = w.ResolvedAt(),
                     closedAt = w.ClosedAt(),
                     storyPoints = w.StoryPoints(),
-                    state = w.State()
+                    state = w.State(),
+                    iterationPath = w.IterationPath()
                 }).ToList();
 
             var createdToActive = workItemsToMeasure
@@ -138,8 +139,15 @@ namespace azuredevopsresourceanalyzer.core.Managers
             var completedStoryPointsToActualRatio = workItemsToMeasure
                 .Where(w => w.state == WorkItemStates.Closed)
                 .Where(w => w.storyPoints.HasValue && w.storyPoints > 0)
-                .Where(w=> DaysApart(w.closedAt, w.activatedAt) > 0.25)
+                .Where(w=> DaysApart(w.closedAt, w.activatedAt) > 0.1)
                 .Median(w => DaysApart(w.closedAt, w.activatedAt) / w.storyPoints);
+
+            var completedStoryPointsByIteration = workItemsToMeasure
+                .Where(w => w.state == WorkItemStates.Closed)
+                .Where(w => w.storyPoints.HasValue && w.storyPoints > 0)
+                .GroupBy(w=>w.iterationPath)
+                .Select(g=>new {iterationPath = g.Key, storyPoints= g.Sum(w=>w.storyPoints)})
+                .Median(w => w.storyPoints);
 
             return new TeamWorkItemTypeMetrics
             {
@@ -151,6 +159,7 @@ namespace azuredevopsresourceanalyzer.core.Managers
 
                 TotalStoryPointsCompleted = totalStoryPointsCompleted,
                 StoryPointsCompleted = medianStoryPointsCompleted,
+                StoryPointsCompletedPerIteration = completedStoryPointsByIteration,
                 StoryPointsToActualRatio = completedStoryPointsToActualRatio
             };
         }

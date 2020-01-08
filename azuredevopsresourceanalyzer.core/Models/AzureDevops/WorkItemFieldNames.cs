@@ -12,6 +12,7 @@
         public const string ChangedDate = "System.ChangedDate";
         public const string AssignedTo = "System.AssignedTo";
         public const string StoryPoints = "Microsoft.VSTS.Scheduling.StoryPoints";
+        public const string IterationPath = "System.IterationPath";
     }
 
     public static class WorkItemStates

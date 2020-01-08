@@ -271,6 +271,8 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
         public double? TotalEndToEndDays { get; set; }
         public int? TotalStoryPointsCompleted { get; set; }
         public double? StoryPointsCompleted { get; set; }
+        public double? StoryPointsCompletedPerIteration { get; set; }
         public double? StoryPointsToActualRatio { get; set; }
+        
     }
 }
