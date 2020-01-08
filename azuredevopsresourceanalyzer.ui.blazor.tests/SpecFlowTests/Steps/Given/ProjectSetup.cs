@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using azuredevopsresourceanalyzer.ui.blazor.tests.SpecFlowTests.Steps.Extensions;
 using azuredevopsresourceanalyzer.ui.blazor.tests.TestUtility.Extensions;
 using TechTalk.SpecFlow;
@@ -152,19 +153,21 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.SpecFlowTests.Steps.Given
         }
 
         [Given("the (.*) page is loaded")]
-        public void GivenThePageIsLoaded(string page)
+        public async Task GivenThePageIsLoaded(string page)
         {
             switch (page)
             {
                 case "ProjectSummary":
                 {
                     _context.ViewType(ViewType.ProjectSummary);
+                    await _context.ProjectSummary().Initialize();
                     break;
                 }
                 case "WorkSummary":
                 {
                     _context.ViewType(ViewType.WorkSummary);
-                    break;
+                    await _context.WorkSummary().Initialize();
+                        break;
                 }
             }
         }
