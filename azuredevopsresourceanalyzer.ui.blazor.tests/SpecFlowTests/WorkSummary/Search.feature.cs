@@ -207,7 +207,7 @@ testRunner.And("the work summary results contain teams", ((string)(null)), table
                             "0",
                             "0"});
 #line 27
-testRunner.And("the work summary results contains work item types for \'team-1\'", ((string)(null)), table19, "And ");
+testRunner.And("the work summary results contains work item types for \'team-2\'", ((string)(null)), table19, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
                             "type",
@@ -224,14 +224,14 @@ testRunner.And("the work summary results contains work item types for \'team-1\'
                             "",
                             ""});
 #line 30
-testRunner.And("the work summary results contains lifespan metrics for \'team-1\'", ((string)(null)), table20, "And ");
+testRunner.And("the work summary results contains lifespan metrics for \'team-2\'", ((string)(null)), table20, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
                             "contributor"});
                 table21.AddRow(new string[] {
                             "person-1"});
 #line 33
-testRunner.And("the work summary results contains contributors for \'team-1\'", ((string)(null)), table21, "And ");
+testRunner.And("the work summary results contains contributors for \'team-2\'", ((string)(null)), table21, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
                             "type",
@@ -248,7 +248,7 @@ testRunner.And("the work summary results contains contributors for \'team-1\'", 
                             "0",
                             ""});
 #line 36
-testRunner.And("work summary results contains contributor \'person-1\' for \'team-1\' with work item " +
+testRunner.And("work summary results contains contributor \'person-1\' for \'team-2\' with work item " +
                         "counts", ((string)(null)), table22, "And ");
 #line hidden
             }

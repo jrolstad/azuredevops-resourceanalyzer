@@ -24,15 +24,15 @@ And the work summary results contain teams
 | team   |
 | team-1 |
 | team-2 |
-And the work summary results contains work item types for 'team-1' 
+And the work summary results contains work item types for 'team-2' 
 | type       | new count | active count | resolved count | completed count |
 | user story | 0         | 1            | 0              | 0               |
-And the work summary results contains lifespan metrics for 'team-1'
+And the work summary results contains lifespan metrics for 'team-2'
 | type       | days in backlog | days in active | days in resolved | days active to done | days end to end |
 | user story | 14              |                |                  |                     |                 |
-And the work summary results contains contributors for 'team-1' 
+And the work summary results contains contributors for 'team-2' 
 | contributor |
 | person-1    |
-And work summary results contains contributor 'person-1' for 'team-1' with work item counts
+And work summary results contains contributor 'person-1' for 'team-2' with work item counts
 | type       | new count | active count | resolved count | completed count | days active to done |
 | user story | 0         | 1            | 0              | 0               |                     |
