@@ -189,7 +189,8 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
                 ActiveToDoneDays = toMap?.ActiveToDoneDays,
                 TotalEndToEndDays = toMap?.TotalEndToEndDays,
                 TotalStoryPointsCompleted = toMap?.TotalStoryPointsCompleted,
-                StoryPointsCompleted = toMap?.StoryPointsCompleted
+                StoryPointsCompleted = toMap?.StoryPointsCompleted,
+                StoryPointsToActualRatio = toMap?.StoryPointsToActualRatio
             };
         }
 
@@ -270,5 +271,6 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
         public double? TotalEndToEndDays { get; set; }
         public int? TotalStoryPointsCompleted { get; set; }
         public double? StoryPointsCompleted { get; set; }
+        public double? StoryPointsToActualRatio { get; set; }
     }
 }

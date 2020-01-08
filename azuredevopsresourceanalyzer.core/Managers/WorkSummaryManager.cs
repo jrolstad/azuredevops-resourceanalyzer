@@ -135,6 +135,12 @@ namespace azuredevopsresourceanalyzer.core.Managers
                 .Where(w => w.state == WorkItemStates.Closed)
                 .Median(w => w.storyPoints ?? 0);
 
+            var completedStoryPointsToActualRatio = workItemsToMeasure
+                .Where(w => w.state == WorkItemStates.Closed)
+                .Where(w => w.storyPoints.HasValue && w.storyPoints > 0)
+                .Where(w=> DaysApart(w.closedAt, w.activatedAt) > 0.25)
+                .Median(w => DaysApart(w.closedAt, w.activatedAt) / w.storyPoints);
+
             return new TeamWorkItemTypeMetrics
             {
                 InceptionToActiveDays = createdToActive,
@@ -144,7 +150,8 @@ namespace azuredevopsresourceanalyzer.core.Managers
                 TotalEndToEndDays = totalEndToEnd,
 
                 TotalStoryPointsCompleted = totalStoryPointsCompleted,
-                StoryPointsCompleted = medianStoryPointsCompleted
+                StoryPointsCompleted = medianStoryPointsCompleted,
+                StoryPointsToActualRatio = completedStoryPointsToActualRatio
             };
         }
 

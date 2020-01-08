@@ -8,9 +8,21 @@
                 @foreach (var type in contributor.ActivityDetails.Where(t => t.Visible))
                 {
                 <li>
-                    <WorkItemTypeCountComponent Item="@type" />
-                    &nbsp;&nbsp;
-                    <span class="badge badge-pill badge-light" title="Median days from Active to Done">@type.Metrics?.ActiveToDoneDays?.ToString("N")</span>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td><WorkItemTypeCountComponent Item="@type" /></td>
+                                <td>
+                                    <span class="badge badge-pill badge-light" title="Median days from Active to Done">@type.Metrics?.ActiveToDoneDays?.ToString("N")</span>
+                                </td>
+                                <td>
+                                     <span class="badge badge-pill badge-success" title="Total story points completed">@type.Metrics?.TotalStoryPointsCompleted?.ToString("N")</span>
+                                    <span class="badge badge-pill badge-info" title="Estimated to actual ratio">@type.Metrics?.StoryPointsToActualRatio?.ToString("N")</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
                 </li>
                 }
             </ul>
