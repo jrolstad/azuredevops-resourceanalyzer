@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using azuredevopsresourceanalyzer.ui.blazor.tests.SpecFlowTests.Steps.Extensions;
 using azuredevopsresourceanalyzer.ui.blazor.tests.TestUtility.Extensions;
 using TechTalk.SpecFlow;
@@ -25,8 +27,8 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.SpecFlowTests.Steps.Then
                 .Select(r => r[0])
                 .ToList();
 
-            Assert.Equal(expected,_context.WorkSummary().Results.Select(t=>t.Team.Name));
-           
+            AssertCollectionsAreEquivalent(expected, _context.WorkSummary().Results.Select(t => t.Team.Name));
+
         }
 
         [Then(@"the work summary results contains work item types for '(.*)'")]
@@ -48,7 +50,7 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.SpecFlowTests.Steps.Then
                 .SelectMany(r => r.WorkItemTypeCounts)
                 .ToDictionary(r=>r.Type);
 
-            Assert.Equal(expected.Select(t=>t.type).OrderBy(t=>t).ToList(),actual.Keys.Select(r=>r).OrderBy(t => t).ToList());
+            AssertCollectionsAreEquivalent(expected.Select(t => t.type), actual.Keys.Select(r => r));
 
             foreach (var type in expected)
             {
@@ -83,7 +85,7 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.SpecFlowTests.Steps.Then
                 .SelectMany(r => r.LifespanMetrics)
                 .ToDictionary(r => r.Type);
 
-            Assert.Equal(expected.Select(t => t.type).OrderBy(t => t).ToList(), actual.Keys.Select(r => r).OrderBy(t => t).ToList());
+            AssertCollectionsAreEquivalent(expected.Select(t => t.type), actual.Keys.Select(r => r));
 
             foreach (var type in expected)
             {
@@ -102,13 +104,32 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.SpecFlowTests.Steps.Then
         [Then(@"the work summary results contains contributors for '(.*)'")]
         public void ThenTheWorkSummaryResultsContainsContributorsFor(string team, Table table)
         {
-            //_context.Pending();
+            var expected = table.Rows
+                .Select(r => new
+                {
+                    contributor = r[0]
+                })
+                .ToList();
+
+            var actual = _context.WorkSummary().Results
+                .Where(r => r.Team.Name == team)
+                .SelectMany(r => r.Contributors)
+                .ToDictionary(r => r.Name);
+
+            AssertCollectionsAreEquivalent(expected.Select(t => t.contributor), actual.Keys.Select(r => r));
+
         }
 
         [Then(@"work summary results contains contributor '(.*)' for '(.*)' with work item counts")]
         public void ThenWorkSummaryResultsContainsContributorForWithWorkItemCounts(string contributor, string team, Table table)
         {
             //_context.Pending();
+        }
+
+        private void AssertCollectionsAreEquivalent(IEnumerable<string> expected, IEnumerable<string> actual)
+        {
+            Assert.Equal(expected.OrderBy(t => t).ToList(), actual.OrderBy(t => t).ToList());
+
         }
 
     }
