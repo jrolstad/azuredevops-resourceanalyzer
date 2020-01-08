@@ -83,7 +83,6 @@
         <div class="collapse" id="collapseExample">
             <div class="card card-body">
                 <p>Work Item Types</p>
-                
                 @foreach (var type in ViewModel.AvailableWorkItemTypes)
                 {
                     var checkboxId = Guid.NewGuid().ToString();
@@ -96,10 +95,17 @@
 
                 }
 
-               
+                <p>Summary Columns</p>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="iterations-visible-check" @bind="@ViewModel.IsIterationsVisible">
+                    <label class="form-check-label" for="iterations-visible-check">
+                        Iterations
+                    </label>
+                </div>
             </div>
         </div>
     </div>
+    
 </div>
 <div class="row">
     <div class="col-md-12">
@@ -109,34 +115,40 @@
                     <th>Team</th>
                     <th>Work Items</th>
                     <th>Lifespan</th>
-                    <th>Iterations</th>
+                    @if(ViewModel.IsIterationsVisible)
+                    {
+                        <th>Iterations</th>
+                    }
                     <th>Contributors</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in ViewModel.Results)
                 {
-                    <tr>
-                        <td><NavigableItemComponent Item="@item.Team" /> </td>
-                        <td>
-                            <ul class="list-unstyled">
-                                @foreach (var type in item.WorkItemTypeCounts.Where(t=>t.Visible))
-                                {
-                                    <li>
-                                        <WorkItemTypeCountComponent Item="@type"/>
-                                    </li>
-                                }
-                            </ul>
-                        </td>
-                        <td>
-                            <WorkItemLifespanSummaryComponent Items="@item.LifespanMetrics"/>
-                        </td>
+                <tr>
+                    <td><NavigableItemComponent Item="@item.Team" /> </td>
+                    <td>
+                        <ul class="list-unstyled">
+                            @foreach (var type in item.WorkItemTypeCounts.Where(t => t.Visible))
+                            {
+                                <li>
+                                    <WorkItemTypeCountComponent Item="@type" />
+                                </li>
+                            }
+                        </ul>
+                    </td>
+                    <td>
+                        <WorkItemLifespanSummaryComponent Items="@item.LifespanMetrics" />
+                    </td>
+                    @if (ViewModel.IsIterationsVisible)
+                    {
                         <td>
                             <WorkItemIterationSummaryComponent Items="@item.Iterations"/>
                         </td>
-                        <td>
-                            <WorkItemContributorSummaryComponent Items="@item.Contributors"/>
-                        </td>
+                    }
+                    <td>
+                        <WorkItemContributorSummaryComponent Items="@item.Contributors" />
+                    </td>
 
 
 

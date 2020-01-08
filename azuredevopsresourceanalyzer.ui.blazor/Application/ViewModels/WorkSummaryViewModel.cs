@@ -28,8 +28,9 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
         public string Error { get; set; }
         public List<WorkSummary> Results { get; set; } = new List<WorkSummary>();
         public List<SelectableItem> AvailableWorkItemTypes { get; set; } = new List<SelectableItem>();
-        public bool IsSearching = false;
-        public bool IsSearchingProjects = false;
+        public bool IsSearching { get; set; } = false;
+        public bool IsSearchingProjects { get; set; } = false;
+        public bool IsIterationsVisible { get; set; } = false;
 
         public async Task Initialize()
         {
