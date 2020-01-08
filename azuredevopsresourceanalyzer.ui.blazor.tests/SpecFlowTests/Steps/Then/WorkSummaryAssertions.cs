@@ -123,7 +123,37 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.SpecFlowTests.Steps.Then
         [Then(@"work summary results contains contributor '(.*)' for '(.*)' with work item counts")]
         public void ThenWorkSummaryResultsContainsContributorForWithWorkItemCounts(string contributor, string team, Table table)
         {
-            //_context.Pending();
+            var expected = table.Rows
+                .Select(r => new
+                {
+                    type = r[0],
+                    newCount = r[1].ToInt32(),
+                    activeCount = r[2].ToInt32(),
+                    resolvedCount = r[3].ToInt32(),
+                    completeCount = r[4].ToInt32()
+                })
+                .ToList();
+
+            var actual = _context.WorkSummary().Results
+                .Where(r => r.Team.Name == team)
+                .SelectMany(r => r.Contributors)
+                .Where(c => c.Name == contributor)
+                .SelectMany(c => c.ActivityDetails)
+                .ToDictionary(c => c.Type);
+
+            AssertCollectionsAreEquivalent(expected.Select(t => t.type), actual.Keys.Select(r => r));
+
+            foreach (var type in expected)
+            {
+                var matching = actual[type.type];
+
+                Assert.Equal(type.activeCount, matching.Active);
+                Assert.Equal(type.completeCount, matching.Closed);
+                Assert.Equal(type.newCount, matching.New);
+                Assert.Equal(type.resolvedCount, matching.Resolved);
+
+                Assert.True(matching.Visible);
+            }
         }
 
         private void AssertCollectionsAreEquivalent(IEnumerable<string> expected, IEnumerable<string> actual)
