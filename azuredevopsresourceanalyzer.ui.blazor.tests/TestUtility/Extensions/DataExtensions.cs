@@ -220,6 +220,7 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.TestUtility.Extensions
         public static void WithTeam(this TestCompositionRoot root,
             string name,
             string id = null,
+            IEnumerable<string> areaPaths = null,
             string organization = "default")
         {
             if (!root.Context.Teams.ContainsKey(organization))
@@ -229,7 +230,9 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.TestUtility.Extensions
             root.Context.Teams[organization].Add(new TestContext.TeamData
             {
                 Name = name,
-                Id = id ?? Base64Encode(name)
+                Id = id ?? Base64Encode(name),
+                AreaPaths = areaPaths?.Select(a=>new TestContext.AreaPathData{Name = a,IncludeChildren = true})
+                    ?? new List<TestContext.AreaPathData>()
             });
         }
 

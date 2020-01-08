@@ -133,10 +133,9 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.TestUtility.Fakes
 
         public async Task<TeamFieldValues> GetTeamFieldValues(string organization, string project, string team)
         {
-            var key = GetOrganizationKey(organization, project);
-            if (!_context.Teams.ContainsKey(key)) return new TeamFieldValues();
+            if (!_context.Teams.ContainsKey(organization)) return new TeamFieldValues();
 
-            var values = _context.Teams[key];
+            var values = _context.Teams[organization];
 
             var teamData = values
                 .FirstOrDefault(d => d.Name == team);

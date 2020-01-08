@@ -172,15 +172,21 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.SpecFlowTests.Steps.Given
         [Given(@"and teams")]
         public void GivenAndTeams(Table table)
         {
-            var teamNames = table.Rows
-                .Select(r => r[0])
+            var teams = table.Rows
+                .Select(r => new
+                {
+                    name=r[0],
+                    areaPath = r[1]
+                })
                 .ToList();
 
             var root = _context.TestRoot();
 
-            foreach (var team in teamNames)
+            foreach (var team in teams)
             {
-                root.WithTeam(team,organization:_context.Organization());
+                root.WithTeam(team.name,
+                    areaPaths: team.areaPath.Split(';'),
+                    organization:_context.Organization());
             }
         }
 
