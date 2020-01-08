@@ -190,6 +190,7 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
                 TotalEndToEndDays = toMap?.TotalEndToEndDays,
                 TotalStoryPointsCompleted = toMap?.TotalStoryPointsCompleted,
                 StoryPointsCompleted = toMap?.StoryPointsCompleted,
+                StoryPointsCompletedPerIteration = toMap?.StoryPointsCompletedPerIteration,
                 StoryPointsToActualRatio = toMap?.StoryPointsToActualRatio
             };
         }
