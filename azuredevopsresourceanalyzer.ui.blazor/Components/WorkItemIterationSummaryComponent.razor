@@ -1,0 +1,26 @@
+﻿@using azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
+<ul class="list-unstyled">
+    @foreach (var iteration in Items)
+    {
+        <li>
+            @iteration.Name
+            <ul>
+                @foreach (var type in iteration.WorkItemTypeCounts)
+                {
+                    if (type.Visible)
+                    {
+                        <li>
+                            @type.Type
+                            <span class="badge badge-success" title="Completed stories">@type.Closed</span>
+                            <span class="badge badge-pill badge-light" title="Total story points completed">@type.Metrics?.TotalStoryPointsCompleted?.ToString("N0")</span>
+                        </li>
+                    }
+                }
+            </ul>
+                                    
+        </li>
+    }
+</ul>
+@code {
+    [Parameter] public IEnumerable<WorkItemIteration> Items { get; set; }
+}
