@@ -17,3 +17,14 @@ Then the list of projects shown are
 | my-project-3 |
 And the selected project is 'my-project-1'
 And no errors are shown
+
+Scenario: Search projects with invalid organization shows error
+Given the ProjectSummary page is loaded
+And I enter 'something-else' into Organization
+When I press the Project Search button
+Then the error is shown
+
+Scenario: Search projects with empty organization shows error
+Given the ProjectSummary page is loaded
+When I press the Project Search button
+Then the error 'Unable to search projects; please enter an organization first' is shown

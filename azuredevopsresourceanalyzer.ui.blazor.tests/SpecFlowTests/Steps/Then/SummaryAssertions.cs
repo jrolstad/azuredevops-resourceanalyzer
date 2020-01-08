@@ -74,5 +74,41 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.SpecFlowTests.Steps.Then
             }
         }
 
+        [Then(@"the error '(.*)' is shown")]
+        public void TheErrorTextIsShown(string error)
+        {
+            switch (_context.ViewType())
+            {
+                case ViewType.ProjectSummary:
+                {
+                    Assert.Equal(error, _context.ProjectSummary().Error);
+                    break;
+                }
+                case ViewType.WorkSummary:
+                {
+                    Assert.Equal(error, _context.WorkSummary().Error);
+                    break;
+                }
+            }
+        }
+
+        [Then(@"the error is shown")]
+        public void TheErrorIsShown()
+        {
+            switch (_context.ViewType())
+            {
+                case ViewType.ProjectSummary:
+                {
+                    Assert.NotNull(_context.ProjectSummary().Error);
+                    break;
+                }
+                case ViewType.WorkSummary:
+                {
+                    Assert.NotNull(_context.WorkSummary().Error);
+                    break;
+                }
+            }
+        }
+
     }
 }

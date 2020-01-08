@@ -70,3 +70,20 @@ And the project summary results contains release definitions for 'a-repo'
 | release-1 | the-release-11              | 3/5/2019                       |
 | release-2 |                             |                                |
 | release-3 | the-release-55              | 2/18/2019                      |
+
+Scenario: Search projects with invalid organization shows error
+Given the ProjectSummary page is loaded
+And I enter 'something-else' into Organization
+When I press the Search button
+Then the error is shown
+
+Scenario: Search projects with empty organization shows error
+Given the ProjectSummary page is loaded
+When I press the Search button
+Then the error 'Unable to search; please enter an organization and project first' is shown
+
+Scenario: Search projects with empty project shows error
+Given the ProjectSummary page is loaded
+And I enter 'the-org' into Organization
+When I press the Search button
+Then the error 'Unable to search; please enter an organization and project first' is shown
