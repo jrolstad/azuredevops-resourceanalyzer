@@ -277,11 +277,11 @@ testRunner.And("the work summary results contains work item types for \'team-2\'
                             "days end to end"});
                 table21.AddRow(new string[] {
                             "user story",
-                            "14",
+                            "33",
                             "1",
                             "1",
                             "2",
-                            "28"});
+                            "35"});
                 table21.AddRow(new string[] {
                             "feature",
                             "14",

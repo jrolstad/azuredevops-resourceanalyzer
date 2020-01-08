@@ -26,5 +26,17 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.TestUtility.Extensions
                 return 0;
             }
         }
+
+        public static double? ToDouble(this string value)
+        {
+            if (!string.IsNullOrWhiteSpace(value))
+            {
+                return double.Parse(value);
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }

@@ -66,7 +66,37 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.SpecFlowTests.Steps.Then
         [Then(@"the work summary results contains lifespan metrics for '(.*)'")]
         public void ThenTheWorkSummaryResultsContainsLifespanMetricsFor(string team, Table table)
         {
-            //_context.Pending();
+            var expected = table.Rows
+                .Select(r => new
+                {
+                    type = r[0],
+                    backlogDays = r[1].ToDouble(),
+                    activeDays = r[2].ToDouble(),
+                    resolvedDays = r[3].ToDouble(),
+                    activeToDoneDays = r[4].ToDouble(),
+                    endToEndDays = r[5].ToDouble()
+                })
+                .ToList();
+
+            var actual = _context.WorkSummary().Results
+                .Where(r => r.Team.Name == team)
+                .SelectMany(r => r.LifespanMetrics)
+                .ToDictionary(r => r.Type);
+
+            Assert.Equal(expected.Select(t => t.type).OrderBy(t => t).ToList(), actual.Keys.Select(r => r).OrderBy(t => t).ToList());
+
+            foreach (var type in expected)
+            {
+                var matching = actual[type.type];
+
+                Assert.Equal(type.backlogDays, matching.InceptionToActiveDays);
+                Assert.Equal(type.activeDays, matching.ActiveToResolvedDays);
+                Assert.Equal(type.resolvedDays, matching.ResolvedToDoneDays);
+                Assert.Equal(type.activeToDoneDays, matching.ActiveToDoneDays);
+                Assert.Equal(type.endToEndDays, matching.TotalEndToEndDays);
+
+                Assert.True(matching.Visible);
+            }
         }
 
         [Then(@"the work summary results contains contributors for '(.*)'")]
