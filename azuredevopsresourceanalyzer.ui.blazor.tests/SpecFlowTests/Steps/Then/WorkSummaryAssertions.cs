@@ -48,7 +48,7 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.SpecFlowTests.Steps.Then
                 .SelectMany(r => r.WorkItemTypeCounts)
                 .ToDictionary(r=>r.Type);
 
-            Assert.Equal(expected.Select(t=>t.type).ToList(),actual.Keys.Select(r=>r).ToList());
+            Assert.Equal(expected.Select(t=>t.type).OrderBy(t=>t).ToList(),actual.Keys.Select(r=>r).OrderBy(t => t).ToList());
 
             foreach (var type in expected)
             {

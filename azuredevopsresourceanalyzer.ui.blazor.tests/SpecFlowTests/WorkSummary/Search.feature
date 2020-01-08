@@ -8,8 +8,14 @@ And and teams
 | team-2 | path-2        |
 And work items with type 'user story'
 | title  | area path | status | assigned to | updated at | created at | activated at | resolved at | completed at |
-| work-1 | path-0    | Active | person-1    | 4/2/2018   | 3/1/2018   | 3/15/2018    |             |              |
+| work-0 | path-0    | Active | person-1    | 4/2/2018   | 3/1/2018   | 3/15/2018    |             |              |
+| work-1 | path-1    | Active | person-1    | 4/2/2018   | 3/1/2018   | 3/15/2018    |             |              |
 | work-2 | path-2    | Active | person-1    | 1/2/2017   | 1/1/2017   | 2/3/2017     |             |              |
+| work-3 | path-2    | New    | person-2    | 1/2/2017   | 1/1/2017   |              |             |              |
+| work-4 | path-2    | Closed | person-2    | 1/2/2017   | 1/1/2017   | 2/3/2017     | 2/4/2017    | 2/5/2017     |
+And work items with type 'feature'
+| title  | area path | status | assigned to | updated at | created at | activated at | resolved at | completed at |
+| work-5 | path-2    | Active | person-1    | 4/2/2018   | 3/1/2018   | 3/15/2018    |             |              |
 
 
 Scenario: Execute Search shows all matching teams
@@ -26,13 +32,20 @@ And the work summary results contain teams
 | team-2 |
 And the work summary results contains work item types for 'team-2' 
 | type       | new count | active count | resolved count | completed count |
-| user story | 0         | 1            | 0              | 0               |
+| user story | 1         | 1            | 0              | 1               |
+| feature    | 0         | 1            | 0              | 0               |
 And the work summary results contains lifespan metrics for 'team-2'
 | type       | days in backlog | days in active | days in resolved | days active to done | days end to end |
-| user story | 14              |                |                  |                     |                 |
+| user story | 14              | 1              | 1                | 2                   | 28              |
+| feature    | 14              |                |                  |                     |                 |
 And the work summary results contains contributors for 'team-2' 
 | contributor |
 | person-1    |
+| person-2    |
 And work summary results contains contributor 'person-1' for 'team-2' with work item counts
 | type       | new count | active count | resolved count | completed count | days active to done |
 | user story | 0         | 1            | 0              | 0               |                     |
+| feature    | 0         | 1            | 0              | 0               |                     |
+And work summary results contains contributor 'person-2' for 'team-2' with work item counts
+| type       | new count | active count | resolved count | completed count | days active to done |
+| user story | 1         | 0            | 0              | 1               |                     |

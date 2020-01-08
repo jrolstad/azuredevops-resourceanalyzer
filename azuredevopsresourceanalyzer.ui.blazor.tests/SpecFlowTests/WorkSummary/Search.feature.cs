@@ -105,8 +105,18 @@ testRunner.And("and teams", ((string)(null)), table16, "And ");
                         "resolved at",
                         "completed at"});
             table17.AddRow(new string[] {
-                        "work-1",
+                        "work-0",
                         "path-0",
+                        "Active",
+                        "person-1",
+                        "4/2/2018",
+                        "3/1/2018",
+                        "3/15/2018",
+                        "",
+                        ""});
+            table17.AddRow(new string[] {
+                        "work-1",
+                        "path-1",
                         "Active",
                         "person-1",
                         "4/2/2018",
@@ -124,8 +134,51 @@ testRunner.And("and teams", ((string)(null)), table16, "And ");
                         "2/3/2017",
                         "",
                         ""});
+            table17.AddRow(new string[] {
+                        "work-3",
+                        "path-2",
+                        "New",
+                        "person-2",
+                        "1/2/2017",
+                        "1/1/2017",
+                        "",
+                        "",
+                        ""});
+            table17.AddRow(new string[] {
+                        "work-4",
+                        "path-2",
+                        "Closed",
+                        "person-2",
+                        "1/2/2017",
+                        "1/1/2017",
+                        "2/3/2017",
+                        "2/4/2017",
+                        "2/5/2017"});
 #line 9
 testRunner.And("work items with type \'user story\'", ((string)(null)), table17, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
+                        "title",
+                        "area path",
+                        "status",
+                        "assigned to",
+                        "updated at",
+                        "created at",
+                        "activated at",
+                        "resolved at",
+                        "completed at"});
+            table18.AddRow(new string[] {
+                        "work-5",
+                        "path-2",
+                        "Active",
+                        "person-1",
+                        "4/2/2018",
+                        "3/1/2018",
+                        "3/15/2018",
+                        "",
+                        ""});
+#line 16
+testRunner.And("work items with type \'feature\'", ((string)(null)), table18, "And ");
 #line hidden
         }
         
@@ -141,7 +194,7 @@ testRunner.And("work items with type \'user story\'", ((string)(null)), table17,
         {
             string[] tagsOfScenario = ((string[])(null));
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute Search shows all matching teams", null, ((string[])(null)));
-#line 15
+#line 21
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -164,92 +217,132 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-#line 16
+#line 22
 testRunner.Given("the WorkSummary page is loaded", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 17
+#line 23
 testRunner.And("I enter \'the-org\' into Organization", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 18
+#line 24
 testRunner.And("I enter \'my-project\' into Project", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 19
+#line 25
 testRunner.And("I enter \'\' into Team Filter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 20
+#line 26
 testRunner.And("I enter \'1/25/2016\' into Start Date", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 21
+#line 27
 testRunner.When("I press the Search button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 22
+#line 28
 testRunner.Then("no errors are shown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-                TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
-                            "team"});
-                table18.AddRow(new string[] {
-                            "team-1"});
-                table18.AddRow(new string[] {
-                            "team-2"});
-#line 23
-testRunner.And("the work summary results contain teams", ((string)(null)), table18, "And ");
-#line hidden
                 TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
+                            "team"});
+                table19.AddRow(new string[] {
+                            "team-1"});
+                table19.AddRow(new string[] {
+                            "team-2"});
+#line 29
+testRunner.And("the work summary results contain teams", ((string)(null)), table19, "And ");
+#line hidden
+                TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
                             "type",
                             "new count",
                             "active count",
                             "resolved count",
                             "completed count"});
-                table19.AddRow(new string[] {
+                table20.AddRow(new string[] {
                             "user story",
+                            "1",
+                            "1",
+                            "0",
+                            "1"});
+                table20.AddRow(new string[] {
+                            "feature",
                             "0",
                             "1",
                             "0",
                             "0"});
-#line 27
-testRunner.And("the work summary results contains work item types for \'team-2\'", ((string)(null)), table19, "And ");
+#line 33
+testRunner.And("the work summary results contains work item types for \'team-2\'", ((string)(null)), table20, "And ");
 #line hidden
-                TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
                             "type",
                             "days in backlog",
                             "days in active",
                             "days in resolved",
                             "days active to done",
                             "days end to end"});
-                table20.AddRow(new string[] {
+                table21.AddRow(new string[] {
                             "user story",
+                            "14",
+                            "1",
+                            "1",
+                            "2",
+                            "28"});
+                table21.AddRow(new string[] {
+                            "feature",
                             "14",
                             "",
                             "",
                             "",
                             ""});
-#line 30
-testRunner.And("the work summary results contains lifespan metrics for \'team-2\'", ((string)(null)), table20, "And ");
-#line hidden
-                TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
-                            "contributor"});
-                table21.AddRow(new string[] {
-                            "person-1"});
-#line 33
-testRunner.And("the work summary results contains contributors for \'team-2\'", ((string)(null)), table21, "And ");
+#line 37
+testRunner.And("the work summary results contains lifespan metrics for \'team-2\'", ((string)(null)), table21, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
+                            "contributor"});
+                table22.AddRow(new string[] {
+                            "person-1"});
+                table22.AddRow(new string[] {
+                            "person-2"});
+#line 41
+testRunner.And("the work summary results contains contributors for \'team-2\'", ((string)(null)), table22, "And ");
+#line hidden
+                TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
                             "type",
                             "new count",
                             "active count",
                             "resolved count",
                             "completed count",
                             "days active to done"});
-                table22.AddRow(new string[] {
+                table23.AddRow(new string[] {
                             "user story",
                             "0",
                             "1",
                             "0",
                             "0",
                             ""});
-#line 36
+                table23.AddRow(new string[] {
+                            "feature",
+                            "0",
+                            "1",
+                            "0",
+                            "0",
+                            ""});
+#line 45
 testRunner.And("work summary results contains contributor \'person-1\' for \'team-2\' with work item " +
-                        "counts", ((string)(null)), table22, "And ");
+                        "counts", ((string)(null)), table23, "And ");
+#line hidden
+                TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
+                            "type",
+                            "new count",
+                            "active count",
+                            "resolved count",
+                            "completed count",
+                            "days active to done"});
+                table24.AddRow(new string[] {
+                            "user story",
+                            "1",
+                            "0",
+                            "0",
+                            "1",
+                            ""});
+#line 49
+testRunner.And("work summary results contains contributor \'person-2\' for \'team-2\' with work item " +
+                        "counts", ((string)(null)), table24, "And ");
 #line hidden
             }
             this.ScenarioCleanup();

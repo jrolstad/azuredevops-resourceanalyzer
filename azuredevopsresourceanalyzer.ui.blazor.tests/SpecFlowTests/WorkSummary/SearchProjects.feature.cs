@@ -137,16 +137,16 @@ testRunner.And("I enter \'the-org\' into Organization", ((string)(null)), ((Tech
 #line 12
 testRunner.When("I press the Project Search button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-                TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
+                TechTalk.SpecFlow.Table table25 = new TechTalk.SpecFlow.Table(new string[] {
                             "Project"});
-                table23.AddRow(new string[] {
+                table25.AddRow(new string[] {
                             "my-project-1"});
-                table23.AddRow(new string[] {
+                table25.AddRow(new string[] {
                             "my-project-2"});
-                table23.AddRow(new string[] {
+                table25.AddRow(new string[] {
                             "my-project-3"});
 #line 13
-testRunner.Then("the list of projects shown are", ((string)(null)), table23, "Then ");
+testRunner.Then("the list of projects shown are", ((string)(null)), table25, "Then ");
 #line hidden
 #line 18
 testRunner.And("the selected project is \'my-project-1\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
