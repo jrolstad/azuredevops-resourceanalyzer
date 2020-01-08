@@ -19,7 +19,7 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.SpecFlowTests.WorkSummary
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.1.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public partial class SearchProjectsFeature : object, Xunit.IClassFixture<SearchProjectsFeature.FixtureData>, System.IDisposable
+    public partial class WorkSummarySearchFeature : object, Xunit.IClassFixture<WorkSummarySearchFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
@@ -28,10 +28,10 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.SpecFlowTests.WorkSummary
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "SearchProjects.feature"
+#line 1 "Search.feature"
 #line hidden
         
-        public SearchProjectsFeature(SearchProjectsFeature.FixtureData fixtureData, azuredevopsresourceanalyzer_ui_blazor_tests_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public WorkSummarySearchFeature(WorkSummarySearchFeature.FixtureData fixtureData, azuredevopsresourceanalyzer_ui_blazor_tests_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -40,7 +40,7 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.SpecFlowTests.WorkSummary
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "SearchProjects", null, ProgrammingLanguage.CSharp, ((string[])(null)));
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Work Summary Search", null, ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -80,16 +80,52 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.SpecFlowTests.WorkSummary
 #line 3
 #line hidden
 #line 4
-testRunner.Given("project \'my-project-2\' in organization \'the-org\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+testRunner.Given("project \'my-project\' in organization \'the-org\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
+            TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
+                        "name",
+                        "area paths"});
+            table16.AddRow(new string[] {
+                        "team-1",
+                        "path-1;path-3"});
+            table16.AddRow(new string[] {
+                        "team-2",
+                        "path-2"});
 #line 5
-testRunner.Given("project \'my-project-3\' in organization \'the-org\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+testRunner.And("and teams", ((string)(null)), table16, "And ");
 #line hidden
-#line 6
-testRunner.Given("project \'my-project-1\' in organization \'the-org\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-#line 7
-testRunner.Given("project \'my-project-4\' in organization \'the-other-org\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+            TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
+                        "title",
+                        "area path",
+                        "status",
+                        "assigned to",
+                        "updated at",
+                        "created at",
+                        "activated at",
+                        "resolved at",
+                        "completed at"});
+            table17.AddRow(new string[] {
+                        "work-1",
+                        "path-0",
+                        "Active",
+                        "person-1",
+                        "4/2/2018",
+                        "3/1/2018",
+                        "3/15/2018",
+                        "",
+                        ""});
+            table17.AddRow(new string[] {
+                        "work-2",
+                        "path-2",
+                        "Active",
+                        "person-1",
+                        "1/2/2017",
+                        "1/1/2017",
+                        "2/3/2017",
+                        "",
+                        ""});
+#line 9
+testRunner.And("work items with type \'user story\'", ((string)(null)), table17, "And ");
 #line hidden
         }
         
@@ -98,14 +134,14 @@ testRunner.Given("project \'my-project-4\' in organization \'the-other-org\'", (
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Search projects in organization shows all projects")]
-        [Xunit.TraitAttribute("FeatureTitle", "SearchProjects")]
-        [Xunit.TraitAttribute("Description", "Search projects in organization shows all projects")]
-        public virtual void SearchProjectsInOrganizationShowsAllProjects()
+        [Xunit.SkippableFactAttribute(DisplayName="Execute Search shows all matching teams")]
+        [Xunit.TraitAttribute("FeatureTitle", "Work Summary Search")]
+        [Xunit.TraitAttribute("Description", "Execute Search shows all matching teams")]
+        public virtual void ExecuteSearchShowsAllMatchingTeams()
         {
             string[] tagsOfScenario = ((string[])(null));
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Search projects in organization shows all projects", null, ((string[])(null)));
-#line 9
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute Search shows all matching teams", null, ((string[])(null)));
+#line 15
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -128,31 +164,35 @@ this.ScenarioInitialize(scenarioInfo);
 #line 3
 this.FeatureBackground();
 #line hidden
-#line 10
+#line 16
 testRunner.Given("the WorkSummary page is loaded", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 11
-testRunner.And("I enter \'the-org\' into Organization", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 12
-testRunner.When("I press the Project Search button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-                TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
-                            "Project"});
-                table19.AddRow(new string[] {
-                            "my-project-1"});
-                table19.AddRow(new string[] {
-                            "my-project-2"});
-                table19.AddRow(new string[] {
-                            "my-project-3"});
-#line 13
-testRunner.Then("the list of projects shown are", ((string)(null)), table19, "Then ");
+#line 17
+testRunner.Given("I enter \'the-org\' into Organization", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
 #line 18
-testRunner.And("the selected project is \'my-project-1\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+testRunner.And("I enter \'my-project\' into Project", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 19
-testRunner.And("no errors are shown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+testRunner.And("I enter \'\' into Teams Filter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 20
+testRunner.And("I enter \'1/25/2016\' into Start Date", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 21
+testRunner.When("I press the Search button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 22
+testRunner.Then("no errors are shown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+                TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
+                            "team"});
+                table18.AddRow(new string[] {
+                            "team-1"});
+                table18.AddRow(new string[] {
+                            "team-2"});
+#line 23
+testRunner.And("the work summary results contain teams", ((string)(null)), table18, "And ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -165,12 +205,12 @@ testRunner.And("no errors are shown", ((string)(null)), ((TechTalk.SpecFlow.Tabl
             
             public FixtureData()
             {
-                SearchProjectsFeature.FeatureSetup();
+                WorkSummarySearchFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                SearchProjectsFeature.FeatureTearDown();
+                WorkSummarySearchFeature.FeatureTearDown();
             }
         }
     }

@@ -39,7 +39,8 @@ And releases for release definition 'release-3'
 | the-release-55 | production     | succeeded | 2/18/2019    |
 
 Scenario: Execute Search shows all matching components
-Given I enter 'the-org' into Organization
+Given the ProjectSummary page is loaded
+And I enter 'the-org' into Organization
 And I enter 'my-project' into Project
 And I enter '' into Repository Filter
 And I enter '12/25/2018' into Start Date
