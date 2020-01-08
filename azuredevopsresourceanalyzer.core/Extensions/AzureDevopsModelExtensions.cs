@@ -40,6 +40,11 @@ namespace azuredevopsresourceanalyzer.core.Extensions
             return item.GetWorkItemDateValue(WorkItemFieldNames.ChangedDate);
         }
 
+        public static int? StoryPoints(this WorkItem item)
+        {
+            return item.GetWorkItemIntValue(WorkItemFieldNames.StoryPoints);
+        }
+
         private static DateTime? GetWorkItemDateValue(this WorkItem item, string fieldName)
         {
             item.fields.TryGetValue(fieldName, out var value);
@@ -47,6 +52,15 @@ namespace azuredevopsresourceanalyzer.core.Extensions
                 return null;
             DateTime.TryParse(value.ToString(), out var dateTimeValue);
             return dateTimeValue;
+        }
+
+        private static int? GetWorkItemIntValue(this WorkItem item, string fieldName)
+        {
+            item.fields.TryGetValue(fieldName, out var value);
+            if (string.IsNullOrWhiteSpace(value?.ToString()))
+                return null;
+            int.TryParse(value.ToString(), out var intValue);
+            return intValue;
         }
 
         public static string AssignedToName(this WorkItem item)

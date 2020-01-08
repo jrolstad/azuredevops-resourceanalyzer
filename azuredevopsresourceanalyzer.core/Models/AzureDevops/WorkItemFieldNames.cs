@@ -11,10 +11,12 @@
         public const string ClosedDate = "Microsoft.VSTS.Common.ClosedDate";
         public const string ChangedDate = "System.ChangedDate";
         public const string AssignedTo = "System.AssignedTo";
+        public const string StoryPoints = "Microsoft.VSTS.Scheduling.StoryPoints";
     }
 
     public static class WorkItemStates
     {
         public const string Removed = "Removed";
+        public const string Closed = "Closed";
     }
 }

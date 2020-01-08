@@ -103,7 +103,9 @@ namespace azuredevopsresourceanalyzer.core.Managers
                     createdAt = w.CreatedAt(),
                     activatedAt = w.ActivedAt(),
                     resolvedAt = w.ResolvedAt(),
-                    closedAt = w.ClosedAt()
+                    closedAt = w.ClosedAt(),
+                    storyPoints = w.StoryPoints(),
+                    state = w.State()
                 }).ToList();
 
             var createdToActive = workItemsToMeasure
@@ -126,13 +128,23 @@ namespace azuredevopsresourceanalyzer.core.Managers
                 .Where(w => w.closedAt.HasValue && w.createdAt.HasValue)
                 .Median(w => DaysApart(w.closedAt, w.createdAt));
 
+            var totalStoryPointsCompleted = workItemsToMeasure
+                .Where(w=>w.state == WorkItemStates.Closed)
+                .Sum(w => w.storyPoints ?? 0);
+            var medianStoryPointsCompleted = workItemsToMeasure
+                .Where(w => w.state == WorkItemStates.Closed)
+                .Median(w => w.storyPoints ?? 0);
+
             return new TeamWorkItemTypeMetrics
             {
                 InceptionToActiveDays = createdToActive,
                 ActiveToResolvedDays = activeToResolved,
                 ResolvedToDoneDays = resolvedToComplete,
                 ActiveToDoneDays = activeToComplete,
-                TotalEndToEndDays = totalEndToEnd
+                TotalEndToEndDays = totalEndToEnd,
+
+                TotalStoryPointsCompleted = totalStoryPointsCompleted,
+                StoryPointsCompleted = medianStoryPointsCompleted
             };
         }
 

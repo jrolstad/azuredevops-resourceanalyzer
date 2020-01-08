@@ -28,6 +28,8 @@ namespace azuredevopsresourceanalyzer.core.Models
         public double? ResolvedToDoneDays { get; set; }
         public double? TotalEndToEndDays { get; set; }
         public double? ActiveToDoneDays { get; set; }
+        public int? TotalStoryPointsCompleted { get; set; }
+        public double? StoryPointsCompleted { get; set; }
     }
 
     public class TeamWorkItemContributor

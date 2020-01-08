@@ -8,6 +8,7 @@
                 <th title="Median number of days from resolved to done state">Resolved</th>
                 <th title="Median number of days from active to done state">Active to Done</th>
                 <th title="Median number of days from inception to done state">End to End</th>
+                <th title="Story point metrics">Story Points</th>
             </tr>
         </thead>
         <tbody>
@@ -20,6 +21,10 @@
                     <td>@type.ResolvedToDoneDays?.ToString("N")</td>
                     <td>@type.ActiveToDoneDays?.ToString("N")</td>
                     <td>@type.TotalEndToEndDays?.ToString("N")</td>
+                    <td>
+                        <span class="badge badge-pill badge-primary" title="Median story point size for completed stories">@type.StoryPointsCompleted?.ToString("N")</span>
+                        <span class="badge badge-pill badge-success" title="Total story points completed">@type.TotalStoryPointsCompleted?.ToString("N")</span>
+                    </td>
                   
                 </tr>
             }
