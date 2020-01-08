@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Linq;
 using azuredevopsresourceanalyzer.ui.blazor.tests.SpecFlowTests.Steps.Extensions;
 using azuredevopsresourceanalyzer.ui.blazor.tests.TestUtility.Extensions;
 using TechTalk.SpecFlow;
@@ -171,13 +172,31 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.SpecFlowTests.Steps.Given
         [Given(@"and teams")]
         public void GivenAndTeams(Table table)
         {
-            ScenarioContext.Current.Pending();
+            var teamNames = table.Rows
+                .Select(r => r[0])
+                .ToList();
+
+            var root = _context.TestRoot();
+
+            foreach (var team in teamNames)
+            {
+                root.WithTeam(team);
+            }
         }
 
         [Given(@"work items with type '(.*)'")]
-        public void GivenWorkItemsWithType(string p0, Table table)
+        public void GivenWorkItemsWithType(string type, Table table)
         {
-            ScenarioContext.Current.Pending();
+            var workItems = table.Rows
+                .Select(r => new { })
+                .ToList();
+
+            var root = _context.TestRoot();
+
+            foreach (var item in workItems)
+            {
+                root.WithWorkItem()
+            }
         }
     }
 
