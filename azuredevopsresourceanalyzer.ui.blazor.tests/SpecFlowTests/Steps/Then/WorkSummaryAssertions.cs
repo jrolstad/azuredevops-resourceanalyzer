@@ -15,26 +15,37 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.SpecFlowTests.Steps.Then
             _context = context;
         }
 
-        [Then(@"the list of projects shown on the WorkSummary page are")]
-        public void ThenTheListOfProjectsShownAre(Table table)
-        {
-            var expected = table.Rows
-                .Select(r => r[0].Trim())
-                .ToList();
+        
 
-            Assert.Equal(expected, _context.WorkSummary().Projects);
+        [Then(@"the work summary results contain teams")]
+        public void ThenTheWorkSummaryResultsContainTeams(Table table)
+        {
+            ScenarioContext.Current.Pending();
         }
 
-        [Then(@"no errors are shown on the WorkSummary page")]
-        public void NoErrorsAreShown()
+        [Then(@"the work summary results contains work item types for '(.*)'")]
+        public void ThenTheWorkSummaryResultsContainsWorkItemTypesFor(string team, Table table)
         {
-            Assert.Null(_context.WorkSummary().Error);
+            ScenarioContext.Current.Pending();
         }
 
-        [Then(@"the selected project on the WorkSummary page is '(.*)'")]
-        public void ThenTheSelectedProjectIs(string project)
+        [Then(@"the work summary results contains lifespan metrics for '(.*)'")]
+        public void ThenTheWorkSummaryResultsContainsLifespanMetricsFor(string team, Table table)
         {
-            Assert.Equal(project, _context.WorkSummary().Project);
+            ScenarioContext.Current.Pending();
         }
+
+        [Then(@"the work summary results contains contributors for '(.*)'")]
+        public void ThenTheWorkSummaryResultsContainsContributorsFor(string team, Table table)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Then(@"work summary results contains contributor '(.*)' for '(.*)' with work item counts")]
+        public void ThenWorkSummaryResultsContainsContributorForWithWorkItemCounts(string contributor, string team, Table table)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
     }
 }

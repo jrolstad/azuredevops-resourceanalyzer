@@ -167,6 +167,18 @@ namespace azuredevopsresourceanalyzer.ui.blazor.tests.SpecFlowTests.Steps.Given
                 }
             }
         }
+
+        [Given(@"and teams")]
+        public void GivenAndTeams(Table table)
+        {
+            ScenarioContext.Current.Pending();
+        }
+
+        [Given(@"work items with type '(.*)'")]
+        public void GivenWorkItemsWithType(string p0, Table table)
+        {
+            ScenarioContext.Current.Pending();
+        }
     }
 
     
