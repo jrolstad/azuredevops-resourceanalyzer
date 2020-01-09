@@ -13,6 +13,9 @@ namespace azuredevopsresourceanalyzer.ui.blazor.Application.Configuration
     {
         public static void Configure(IServiceCollection services, IConfiguration configuration)
         {
+            //TODO: Use info from https://github.com/juunas11/azure-ad-on-behalf-of-sample-aspnetcore
+            
+
             services.AddAuthentication(AzureADDefaults.AuthenticationScheme)
                 .AddAzureAD(options => configuration.Bind("AzureAd", options));
 
