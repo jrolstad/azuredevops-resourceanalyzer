@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Blazor.Hosting;
 
-namespace azuredevopsresourceanalyzer.ui.blazorclient
+namespace Blazor.Msal.Client
 {
     public class Program
     {
