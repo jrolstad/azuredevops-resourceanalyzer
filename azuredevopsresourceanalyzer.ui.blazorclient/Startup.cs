@@ -10,6 +10,7 @@ namespace azuredevopsresourceanalyzer.ui.blazorclient
         public void ConfigureServices(IServiceCollection services)
         {
             AuthenticationConfig.Configure(services);
+            DependencyInjectionConfig.Configure(services);
         }
 
         public void Configure(IComponentsApplicationBuilder app)
