@@ -1,19 +1,13 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="sidebar">
-    <NavMenu />
-</div>
+<NavBar />
 
 <div class="main">
     <div class="top-row px-4">
-        <LoginStatus AdditionalScopes="@_apiScope"></LoginStatus>
-</div>
+        &nbsp;
+    </div>
 
     <div class="content px-4">
         @Body
     </div>
 </div>
-
-@code {
-    private string _apiScope = "app://blazor.msal.api/api.access";
-}

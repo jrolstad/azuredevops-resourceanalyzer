@@ -1,0 +1,136 @@
+﻿@page "/projectsummary"
+@using azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
+@inject ProjectSummaryViewModel ViewModel
+@using azuredevopsresourceanalyzer.ui.blazorclient.Components
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-row">
+            <div class="col">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Organization" @bind="@ViewModel.Organization">
+                    <div class="input-group-append">
+                        @if (ViewModel.IsSearchingProjects)
+                        {
+                            <button class="btn btn-outline-secondary" type="button">
+                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            </button>
+                        }
+                        else
+                        {
+                            <button class="btn btn-outline-secondary" type="button" @onclick="@(async () => await ViewModel.SearchProjects())">
+                                <span class="oi oi-magnifying-glass"></span>
+                            </button>
+                        }
+
+                    </div>
+                </div>
+               
+            </div>
+            <div class="col">
+                @if (ViewModel.Projects.Any())
+                {
+                    <select class="custom-select" id="projectInput" @bind="@ViewModel.Project">
+                        @foreach (var item in ViewModel.Projects)
+                        {
+                            <option value="@item">@item</option>
+                        }
+                    </select>
+                }
+                else
+                {
+                    if (!ViewModel.IsSearchingProjects)
+                    {
+                        <input type="text" class="form-control" id="projectInput" placeholder="Project" @bind="@ViewModel.Project">
+
+                    }
+                }
+            </div>
+            <div class="col">
+                <input type="text" class="form-control" id="repositoryInput" placeholder="Repository Filter" @bind="@ViewModel.RepositoryFilter">
+                       </div>
+            <div class="col">
+                <input type="date" class="form-control" id="startDateInput" placeholder="Start Date" @bind="@ViewModel.StartDate">
+            </div>
+            <div class="col">
+                @if(@ViewModel.IsSearching)
+                {
+                    <button class="btn btn-primary" type="button" disabled>
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        Loading...
+                    </button>
+                }
+                else
+                {
+                    <button class="btn btn-primary" type="button" id="searchButton" @onclick="@(async () => await ViewModel.Search())">Search</button>
+                }
+                </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <p class="alert-danger">@ViewModel.Error</p>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Repository</th>
+                    <th>Builds</th>
+                    <th>Releases</th>
+                    <th>Branches</th>
+                    <th>Contributors</th>
+                    <th>Pull Requests</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var item in ViewModel.Results)
+                {
+                <tr>
+                    <td><NavigableItemComponent Item="@item.Repository" /> </td>
+                    <td>
+                        <ul class="list-unstyled">
+                            @foreach (var build in item.Builds)
+                            {
+                                <li><NavigableItemComponent Item="@build" /></li>
+                            }
+                        </ul>
+                    </td>
+                    <td>
+                        <ReleaseSummaryComponent Releases="@item.Releases" />
+                    </td>
+                    <td>
+                        <ul class="list-unstyled">
+                            @foreach (var branch in item.Branches)
+                            {
+                                <li><BranchSummaryComponent Branch="@branch"/></li>
+                            }
+                        </ul>
+                    </td>
+                    <td>
+                        <ContributorSummaryComponent Items="@item.Contributors"/>
+                        
+                    </td>
+                    <td>
+                        <PullRequestSummaryComponent Items="@item.PullRequests"/>
+                    </td>
+
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@code
+{
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ViewModel.Initialize();
+        await base.OnInitializedAsync();
+    }
+
+}

@@ -1,0 +1,9 @@
+﻿@using azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
+@if (Item != null)
+{
+    <a href="@Item.Url" target="_blank" class="text-reset">@Item.Name</a>
+}
+
+@code {
+    [Parameter] public NavigableItem Item { get; set; }
+}
