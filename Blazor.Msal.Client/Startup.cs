@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Components.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace Blazor.Msal.Client
+namespace azuredevopsresourceanalyzer.ui.blazorclient
 {
     public class Startup
     {

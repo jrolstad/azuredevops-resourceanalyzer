@@ -1,6 +1,6 @@
 ﻿using Des.Blazor.Authorization.Msal;
 
-namespace Blazor.Msal.Client
+namespace azuredevopsresourceanalyzer.ui.blazorclient
 {
     public class ClientConfig : IMsalConfig
     {

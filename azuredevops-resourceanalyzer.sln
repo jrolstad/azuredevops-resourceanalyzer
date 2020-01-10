@@ -18,9 +18,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "azuredevopsresourceanalyzer
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "azuredevopsresourceanalyzer.ui.blazor.tests", "azuredevopsresourceanalyzer.ui.blazor.tests\azuredevopsresourceanalyzer.ui.blazor.tests.csproj", "{C052B067-F753-44DD-94F0-30834601E24E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blazor.Msal.Client", "Blazor.Msal.Client\Blazor.Msal.Client.csproj", "{6D07A0AA-0EB8-4B43-A457-B64FF472170E}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Des.Blazor.Authorization.Msal", "Des.Blazor.Authorization.Msal\Des.Blazor.Authorization.Msal.csproj", "{46F3A0AF-CEF1-4701-BE0E-9AE5ED093D62}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "azuredevopsresourceanalyzer.ui.blazorclient", "Blazor.Msal.Client\azuredevopsresourceanalyzer.ui.blazorclient.csproj", "{C8DE9372-0120-4BE9-8966-1B4D527EA17D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -40,14 +40,14 @@ Global
 		{C052B067-F753-44DD-94F0-30834601E24E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C052B067-F753-44DD-94F0-30834601E24E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C052B067-F753-44DD-94F0-30834601E24E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6D07A0AA-0EB8-4B43-A457-B64FF472170E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6D07A0AA-0EB8-4B43-A457-B64FF472170E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6D07A0AA-0EB8-4B43-A457-B64FF472170E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6D07A0AA-0EB8-4B43-A457-B64FF472170E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{46F3A0AF-CEF1-4701-BE0E-9AE5ED093D62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{46F3A0AF-CEF1-4701-BE0E-9AE5ED093D62}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{46F3A0AF-CEF1-4701-BE0E-9AE5ED093D62}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{46F3A0AF-CEF1-4701-BE0E-9AE5ED093D62}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8DE9372-0120-4BE9-8966-1B4D527EA17D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8DE9372-0120-4BE9-8966-1B4D527EA17D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8DE9372-0120-4BE9-8966-1B4D527EA17D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8DE9372-0120-4BE9-8966-1B4D527EA17D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
