@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using azuredevopsresourceanalyzer.ui.blazorclient.Application.Configuration;
 
 namespace azuredevopsresourceanalyzer.ui.blazorclient
 {
@@ -8,14 +9,12 @@ namespace azuredevopsresourceanalyzer.ui.blazorclient
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAuthorizationCore();
-            services.AddAzureActiveDirectory(
-                new Uri($"/config/appsettings.json?{DateTime.Now.Ticks}", UriKind.Relative));
+            AuthenticationConfig.Configure(services);
         }
 
         public void Configure(IComponentsApplicationBuilder app)
         {
-            app.AddComponent<App>("app");
+           BlazorConfig.Configure(app);
         }
     }
 }

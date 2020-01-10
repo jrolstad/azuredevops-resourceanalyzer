@@ -20,7 +20,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "azuredevopsresourceanalyzer
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Des.Blazor.Authorization.Msal", "Des.Blazor.Authorization.Msal\Des.Blazor.Authorization.Msal.csproj", "{46F3A0AF-CEF1-4701-BE0E-9AE5ED093D62}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "azuredevopsresourceanalyzer.ui.blazorclient", "Blazor.Msal.Client\azuredevopsresourceanalyzer.ui.blazorclient.csproj", "{C8DE9372-0120-4BE9-8966-1B4D527EA17D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "azuredevopsresourceanalyzer.ui.blazorclient", "azuredevopsresourceanalyzer.ui.blazorclient\azuredevopsresourceanalyzer.ui.blazorclient.csproj", "{C8DE9372-0120-4BE9-8966-1B4D527EA17D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
