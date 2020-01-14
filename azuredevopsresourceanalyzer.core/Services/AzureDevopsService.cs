@@ -31,12 +31,16 @@ namespace azuredevopsresourceanalyzer.core.Services
     {
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly ConfigurationService _configurationService;
+        private readonly ITokenService _tokenService;
 
 
-        public AzureDevopsService(IHttpClientFactory httpClientFactory, ConfigurationService configurationService)
+        public AzureDevopsService(IHttpClientFactory httpClientFactory, 
+            ConfigurationService configurationService,
+            ITokenService tokenService)
         {
             _httpClientFactory = httpClientFactory;
             _configurationService = configurationService;
+            _tokenService = tokenService;
         }
         public async Task<List<GitRepository>> GetRepositories(string organization, string project)
         {
@@ -275,7 +279,7 @@ namespace azuredevopsresourceanalyzer.core.Services
             {
 
                 var azureAdTrustedResource = _configurationService.AzureAdTrustedResource();
-                _accessToken = await AzureAdTokenService.GetBearerToken(azureAdTrustedResource);
+                _accessToken = await _tokenService.GetBearerToken(azureAdTrustedResource);
             }
 
             return new AuthenticationHeaderValue("Bearer", _accessToken);

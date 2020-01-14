@@ -20,6 +20,7 @@ namespace azuredevopsresourceanalyzer.ui.blazorclient.Application.Configuration
 
             services.AddSingleton<IAzureDevopsService,AzureDevopsService>();
             services.AddSingleton<ConfigurationService>();
+            services.AddSingleton<ITokenService,AzureAdUserTokenService>();
         }
     }
 }

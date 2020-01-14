@@ -3,9 +3,9 @@ using Microsoft.Azure.Services.AppAuthentication;
 
 namespace azuredevopsresourceanalyzer.core.Services
 {
-    public class AzureAdTokenService
+    public class AzureAdTokenService : ITokenService
     {
-        public static async Task<string> GetBearerToken(string resource)
+        public async Task<string> GetBearerToken(string resource)
         {
             var tokenProvider = new AzureServiceTokenProvider();
             var token = await tokenProvider.GetAccessTokenAsync(resource);
