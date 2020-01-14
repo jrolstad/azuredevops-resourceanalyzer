@@ -4,8 +4,10 @@
 <AuthorizeView>
     <Authorized>
         <ul class="nav navbar-nav ml-auto">
-            <li class="navbar-text">
-                @context.User.Identity.Name
+            <li>
+                <NavLink class="nav-link" href="user" Match="NavLinkMatch.All">
+                    @context.User.Identity.Name
+                </NavLink>
             </li>
             <li>
                 <button class="btn btn-primary" @onclick="this.AuthenticationManager.SignOutAsync">Logout</button>

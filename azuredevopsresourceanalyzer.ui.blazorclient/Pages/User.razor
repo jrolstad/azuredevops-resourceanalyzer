@@ -1,0 +1,40 @@
+﻿@page "/user"
+@using azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
+@inject UserViewModel ViewModel
+
+
+<div class="h4">
+    @ViewModel.Name (@ViewModel.AuthenticationType)
+</div>
+
+<div>
+    <h2>Claims</h2>
+    <table class="table table-striped table-sm">
+        <thead>
+            <tr>
+                <th>Type</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var claim in ViewModel.Claims)
+            {
+                <tr>
+                    <td>@claim.Key</td>
+                    <td>@claim.Value</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@code
+{
+
+    protected override async Task OnInitializedAsync()
+    {
+        await ViewModel.Initialize();
+        await base.OnInitializedAsync();
+    }
+
+}

@@ -13,6 +13,7 @@ namespace azuredevopsresourceanalyzer.ui.blazorclient.Application.Configuration
 
             services.AddTransient<ProjectSummaryViewModel>();
             services.AddTransient<WorkSummaryViewModel>();
+            services.AddTransient<UserViewModel>();
 
             services.AddTransient<ProjectSummaryManager>();
             services.AddTransient<ProjectManager>();
