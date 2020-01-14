@@ -3,11 +3,22 @@
 
 <AuthorizeView>
     <Authorized>
-        <span class="mr-5">Welcome <b>@context.User.Identity.Name</b></span>
-        <button class="btn btn-primary" @onclick="this.AuthenticationManager.SignOutAsync">Logout</button>
+        <ul class="nav navbar-nav ml-auto">
+            <li class="navbar-text">
+            @context.User.Identity.Name
+            </li>
+            <li>
+                <button class="btn btn-primary" @onclick="this.AuthenticationManager.SignOutAsync">Logout</button>
+            </li>
+        </ul>         
     </Authorized>
     <NotAuthorized>
-        <button class="btn btn-primary" @onclick="@(e => this.AuthenticationManager.SignInAsync(this.Scopes))">Login</button>
+        <ul class="nav navbar-nav ml-auto">
+            <li>
+                <button class="btn btn-primary" @onclick="@(e => this.AuthenticationManager.SignInAsync(this.Scopes))">Login</button>
+            </li>
+        </ul>
+     
     </NotAuthorized>
 </AuthorizeView>
 
