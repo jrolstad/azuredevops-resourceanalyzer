@@ -1,6 +1,8 @@
-﻿using azuredevopsresourceanalyzer.core.Managers;
+﻿using System.Net.Http;
+using azuredevopsresourceanalyzer.core.Managers;
 using azuredevopsresourceanalyzer.core.Services;
 using azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels;
+using azuredevopsresourceanalyzer.ui.blazorclient.Application.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace azuredevopsresourceanalyzer.ui.blazorclient.Application.Configuration
@@ -9,7 +11,7 @@ namespace azuredevopsresourceanalyzer.ui.blazorclient.Application.Configuration
     {
         public static void Configure(IServiceCollection services)
         {
-            services.AddHttpClient();
+            services.AddTransient<IHttpClientFactory, BlazorClientHttpClientFactory>();
 
             services.AddTransient<ProjectSummaryViewModel>();
             services.AddTransient<WorkSummaryViewModel>();
