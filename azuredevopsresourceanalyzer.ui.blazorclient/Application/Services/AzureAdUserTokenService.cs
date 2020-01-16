@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using azuredevopsresourceanalyzer.core.Services;
 using Des.Blazor.Authorization.Msal;
 
@@ -14,7 +15,8 @@ namespace azuredevopsresourceanalyzer.ui.blazorclient.Application
         }
         public async Task<string> GetBearerToken(string resource)
         {
-            var token = await _authenticationManager.GetAccessTokenAsync(new string[0]);
+            var token = await _authenticationManager.GetAccessTokenAsync("");
+            
             return token?.AccessToken;
         }
     }

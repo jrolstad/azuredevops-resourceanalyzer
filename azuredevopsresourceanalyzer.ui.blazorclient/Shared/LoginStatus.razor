@@ -17,16 +17,9 @@
     <NotAuthorized>
         <ul class="nav navbar-nav ml-auto">
             <li>
-                <button class="btn btn-primary" @onclick="@(e => this.AuthenticationManager.SignInAsync(this.Scopes))">Login</button>
+                <button class="btn btn-primary" @onclick="@(e => this.AuthenticationManager.SignInAsync(""))">Login</button>
             </li>
         </ul>
      
     </NotAuthorized>
 </AuthorizeView>
-
-@code {
-    [Parameter]
-    public string AdditionalScopes { get; set; }
-
-    private string[] Scopes => this.AdditionalScopes?.Split(',');
-}
