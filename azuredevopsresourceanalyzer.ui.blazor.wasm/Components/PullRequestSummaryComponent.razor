@@ -1,0 +1,30 @@
+﻿@using azuredevopsresourceanalyzer.ui.blazor.Application.ViewModels
+@if (Items == null || Items.Any())
+{
+    <table class="table-secondary">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>Count</th>
+            <th>Last</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Items)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>
+                    <span class="badge badge-danger" hidden="@(item.ActivityDetails.Abandoned==0)" title="Abandoned">@item.ActivityDetails.Abandoned</span>
+                    <span class="badge badge-primary" hidden="@(item.ActivityDetails.Active==0)" title="Active">@item.ActivityDetails.Active</span>
+                    <span class="badge badge-success" hidden="@(item.ActivityDetails.Complete==0)" title="Complete">@item.ActivityDetails.Complete</span>
+                </td>
+                <td>@item.LastActivity?.ToString("M/d/yyy")</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+@code {
+    [Parameter] public IEnumerable<ActivityItem<PullRequestDetail>> Items { get; set; }
+}
