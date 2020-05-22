@@ -23,7 +23,7 @@ namespace azuredevopsresourceanalyzer.ui.blazor.wasm
             builder.Services.AddMsalAuthentication(options =>
             {
                 builder.Configuration.Bind("AzureAd", options.ProviderOptions.Authentication);
-                //options.ProviderOptions.DefaultAccessTokenScopes.Add("https://app.vssps.visualstudio.com/user_impersonation");
+                options.ProviderOptions.DefaultAccessTokenScopes.Add("https://app.vssps.visualstudio.com/user_impersonation");
             });
 
             await builder.Build().RunAsync();
