@@ -19,10 +19,11 @@ namespace azuredevopsresourceanalyzer.ui.blazor.wasm
             builder.RootComponents.Add<App>("app");
             builder.Logging.SetMinimumLevel(LogLevel.Warning);
 
-            DependencyInjectionConfig.Configure(builder.Services,builder.Configuration);
+            DependencyInjectionConfig.Configure(builder);
             builder.Services.AddMsalAuthentication(options =>
             {
                 builder.Configuration.Bind("AzureAd", options.ProviderOptions.Authentication);
+                //options.ProviderOptions.DefaultAccessTokenScopes.Add("https://app.vssps.visualstudio.com/user_impersonation");
             });
 
             await builder.Build().RunAsync();

@@ -263,23 +263,10 @@ namespace azuredevopsresourceanalyzer.core.Services
 
         private async Task<HttpClient> GetClient()
         {
-            var client = _httpClientFactory.CreateClient();
-            client.DefaultRequestHeaders.Authorization = await GetAuthenticationHeader();
-
+            var client = _httpClientFactory.CreateClient("AzureDevOpsApi");
+ 
             return client;
         }
-        private string _accessToken = null;
-        private async Task<AuthenticationHeaderValue> GetAuthenticationHeader()
-        {
-            if (string.IsNullOrWhiteSpace(_accessToken))
-            {
 
-                var azureAdTrustedResource = _configurationService.AzureAdTrustedResource();
-                _accessToken = await AzureAdTokenService.GetBearerToken(azureAdTrustedResource);
-            }
-
-            return new AuthenticationHeaderValue("Bearer", _accessToken);
-        }
-        
     }
 }
