@@ -280,6 +280,6 @@ namespace azuredevopsresourceanalyzer.core.Services
 
             return new AuthenticationHeaderValue("Bearer", _accessToken);
         }
-        
+
     }
 }

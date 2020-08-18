@@ -1,0 +1,28 @@
+﻿@page "/user/claims"
+@using System.Security.Claims
+@inject AuthenticationStateProvider _authenticationStateProvider
+
+<h1>Claims</h1>
+<table class="table table-striped table-condensed">
+
+    <tr><th>Type</th><th>Value</th></tr>
+
+    @if (ClaimsPrincipal?.Claims != null)
+    {
+        foreach (var claim in ClaimsPrincipal.Claims.OrderBy(c => c.Type))
+        {
+            <tr><td>@claim.Type</td><td>@claim.Value</td></tr>
+        }
+    }
+</table>
+
+
+@code {
+    public ClaimsPrincipal ClaimsPrincipal = new ClaimsPrincipal();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await _authenticationStateProvider.GetAuthenticationStateAsync();
+        ClaimsPrincipal = authState?.User;
+    }
+}
