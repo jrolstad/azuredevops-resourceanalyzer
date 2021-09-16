@@ -106,7 +106,9 @@ namespace azuredevopsresourceanalyzer.core.Managers
             IEnumerable<Models.AzureDevops.ReleaseDefinition> releaseDefinitionsForRepo = null,
             IEnumerable<Models.AzureDevops.Release> releases = null)
         {
-            var commitSummary = Map(commits ?? new List<GitCommitRef>())?.ToList();
+            var commitsRealized = commits.ToList();
+
+            var commitSummary = Map(commitsRealized ?? new List<GitCommitRef>())?.ToList();
             var pullRequestSummary = Map(pullRequests ?? new List<GitPullRequest>())?.ToList();
             var branchSummary = Map(branches ?? new List<GitBranchStat>(),toMap)?.ToList();
             var releaseDefinitionsByBuildId = releaseDefinitions?.ToLookup(r => r.BuildId);
@@ -144,9 +146,11 @@ namespace azuredevopsresourceanalyzer.core.Managers
             //For Git commits, author vs committer here is a good explanation: 
             //https://stackoverflow.com/questions/18750808/difference-between-author-and-committer-in-git
 
+            
+
             // Email addresses and names can be inconsistent. (ex: jorolsta@microsoft.com and josh.rolstad@microsoft.com can both be there but are the same person)
-            var nameByEmail = commits.ToLookup(c => c.author.email)
-                .ToDictionary(g => g.Key, g => g.First().author.name);
+            var nameByEmail = commits.ToLookup(c => c?.author?.email ?? "unknown")
+                .ToDictionary(g => g?.Key ?? "unknown", g => g?.FirstOrDefault()?.author?.name ?? "unknown");
 
             return commits?
                 .GroupBy(c => nameByEmail[c.author.email])
